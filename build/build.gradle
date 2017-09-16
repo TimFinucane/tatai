@@ -1,0 +1,32 @@
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.8
+
+project.buildDir = 'jar/'
+libsDirName = '../bin'
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir '../src/main/java'
+        }
+        resources {
+            srcDir '../src/main/resources'
+        }
+    }
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'tatai.Application'
+    }
+
+    destinationDir = file(libsDirName)
+}
