@@ -1,0 +1,16 @@
+# Ignore hidden files/folders
+**/.*
+# Except for a gitignore
+!.gitignore
+
+# Compiled/Intermediate files
+bin/
+*.class
+
+# Build dir
+build/
+!build/build.gradle
+!build/settings.gradle
+!build/gradlew.bat
+!build/gradlew
+!build/gradle
