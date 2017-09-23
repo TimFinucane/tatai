@@ -1,9 +1,12 @@
 package tatai;
 
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.IOException;
 
@@ -18,13 +21,13 @@ public class Application extends javafx.application.Application {
     @Override
     public void start(Stage stage) {
         // Load the application fxml, and set self to be its controller
-        FXMLLoader loader = new FXMLLoader(getClass().getResource( "/tatai/Application.fxml" ));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/tatai/Application.fxml"));
         loader.setController(this);
 
         Parent root;
         try {
             root = loader.load();
-        } catch( IOException e ) {
+        } catch(IOException e) {
             throw new RuntimeException("Unable to load tatai.Application.fxml: " + e.getMessage());
         }
 
@@ -32,10 +35,33 @@ public class Application extends javafx.application.Application {
         stage.setTitle("Tatai"); // TODO: Unicode
         stage.setScene(_scene);
 
+        _easyBtn.setOnAction((ignored) -> easyTest());
+        _hardBtn.setOnAction((ignored) -> hardTest());
+        _infoBtn.setOnAction((ignored) -> info());
+
         stage.show();
-        // TODO: Logic
     }
 
+    // Called when the easy button has been pressed
+    private void easyTest() {
+        throw new NotImplementedException();
+    }
+    // Called when the hard button has been pressed
+    private void hardTest() {
+        throw new NotImplementedException();
+    }
+    // Called when the info button has been pressed
+    private void info() {
+        throw new NotImplementedException();
+    }
 
-    private Scene _scene;
+    private Scene   _scene;
+
+    // JavaFX controls
+    @FXML
+    private Button  _easyBtn;
+    @FXML
+    private Button  _hardBtn;
+    @FXML
+    private Button  _infoBtn;
 }

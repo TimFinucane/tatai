@@ -5,17 +5,17 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Region VBox.vgrow="ALWAYS" />
       <HBox>
          <children>
             <Region HBox.hgrow="SOMETIMES" />
-            <Button mnemonicParsing="false" text="Easy" />
+            <Button fx:id="easyBtn" mnemonicParsing="false" text="Easy" />
             <Region HBox.hgrow="SOMETIMES" />
-            <Button mnemonicParsing="false" text="Hard" />
+            <Button fx:id="hardBtn" mnemonicParsing="false" text="Hard" />
             <Region HBox.hgrow="SOMETIMES" />
-            <Button mnemonicParsing="false" text="Info" />
+            <Button fx:id="infoBtn" mnemonicParsing="false" text="Info" />
             <Region HBox.hgrow="SOMETIMES" />
          </children>
       </HBox>
