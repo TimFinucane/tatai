@@ -34,6 +34,9 @@ public class Recording {
      * @return The recording
      */
     public static Recording start() {
+        File file = new File(TEMP_FOLDER);
+        file.mkdir();
+
         return new Recording();
     }
 
