@@ -12,10 +12,10 @@ import tatai.model.Recording;
  */
 public class RecorderControl extends Region {
     public RecorderControl() {
-        button = new Button("Play");
-        getChildren().add(button);
-        button.setOnAction((ignored) -> {
-            if(recording == null || recording.stopped()) {
+        _button = new Button("Play");
+        getChildren().add(_button);
+        _button.setOnAction((ignored) -> {
+            if( _recording == null || _recording.stopped()) {
                 start();
             } else {
                 stop();
@@ -27,47 +27,44 @@ public class RecorderControl extends Region {
      * Runs the arg when a new piece of media becomes available
      */
     public void     onMediaAvailable(Runnable runnable) {
-        mediaAvailableEvent = runnable;
+        _mediaAvailableEvent = runnable;
     }
 
     /**
-     * Runs the arg when a recording has started
+     * Runs the arg when a _recording has started
      */
-    public void     onRecordingStarted(Runnable runnable) { startEvent = runnable; }
+    public void     onRecordingStarted(Runnable runnable) { _startEvent = runnable; }
 
     // Getters
     public Media    media() {
-        return recording.output();
-    }
-    public String   filename() {
-        return recording.outputName();
+        return _recording.media();
     }
 
-    // Starts a recording
+    // Starts a _recording
     private void    start() {
-        if(recording != null && !recording.stopped()) {
-            recording.stop();
+        if( _recording != null && !_recording.stopped()) {
+            _recording.stop();
         }
-        button.setText("Start");
-        recording = Recording.start();
+        _button.setText("Start");
+        _recording = Recording.start();
 
-        if(startEvent != null) {
-            startEvent.run();
+        if(_startEvent != null) {
+            _startEvent.run();
         }
     }
-    // Stops that recording
+    // Stops that _recording
     private void    stop() {
-        button.setText("Stop");
-        recording.stop();
+        _button.setText("Stop");
+        _recording.stop();
 
-        if(mediaAvailableEvent != null) {
-            mediaAvailableEvent.run();
+        if(_mediaAvailableEvent != null) {
+            _mediaAvailableEvent.run();
         }
     }
 
-    private Button      button;
-    private Recording   recording = null;
+    private Button      _button;
+    private Recording   _recording = null;
 
-    private Runnable    mediaAvailableEvent = null;
-    private Runnable    startEvent = null;
+    private Runnable    _mediaAvailableEvent = null;
+    private Runnable    _startEvent = null;
 }

@@ -19,10 +19,10 @@ public class Recording {
         try {
             ProcessBuilder pb = new ProcessBuilder( COMMAND.split(" ") );
 
-            pb.redirectError(getLog());
+            pb.redirectError(new File(SOUND_LOG)); // TODO: Save this log when errors occur
             pb.redirectOutput();
 
-            recording = pb.start();
+            _recording = pb.start();
         } catch(IOException e) {
             throw new RuntimeException("Starting of recording failed with message: " + e.getMessage());
         }
@@ -38,33 +38,30 @@ public class Recording {
     }
 
     /**
-     * Stops the recording, and gives a Media of the sound alone
-     * @return The recording just made
+     * Stops the recording if one is happening
      */
     public void     stop() {
-        if(recording != null) {
-            recording.destroy();
+        if(_recording != null) {
+            _recording.destroy();
         }
 
-        media = new Media(new File("").toURI().toString() + SOUND_FILE);
+        _media = new Media(new File("").toURI().toString() + SOUND_FILE);
     }
     public boolean  stopped() {
-        return !recording.isAlive();
+        return !_recording.isAlive();
     }
 
-    public Media    output() {
-        return media;
+    public Media    media() {
+        return _media;
     }
+
     /**
      * Get the relative path to the sound file
      */
-    public String   outputName() {
-        return SOUND_LOG;
-    }
-    public File     getLog() {
-        return new File(SOUND_LOG);
+    public String   fileName() {
+        return SOUND_FILE;
     }
 
-    private Media			media = null;
-    private Process         recording = null;
+    private Media			_media = null;
+    private Process         _recording = null;
 }
