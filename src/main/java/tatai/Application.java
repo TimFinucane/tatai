@@ -14,6 +14,8 @@ import java.io.IOException;
  * The top level class of this project. Is controller of the application/initial window
  */
 public class Application extends javafx.application.Application {
+    private static String APP_NAME = "T\u0101tai";
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -32,7 +34,7 @@ public class Application extends javafx.application.Application {
         }
 
         _scene = new Scene(root);
-        stage.setTitle("Tatai"); // TODO: Unicode
+        stage.setTitle(APP_NAME);
         stage.setScene(_scene);
 
         easyBtn.setOnAction((ignored) -> easyTest());
