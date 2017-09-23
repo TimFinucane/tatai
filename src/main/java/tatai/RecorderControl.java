@@ -3,7 +3,10 @@ package tatai;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Region;
 import javafx.scene.media.Media;
+import tatai.model.Recognizer;
 import tatai.model.Recording;
+
+import java.util.function.Consumer;
 
 
 /**
@@ -27,20 +30,22 @@ public class RecorderControl extends Region {
      * Runs the arg when a new piece of media becomes available
      */
     public void     onMediaAvailable(Runnable runnable) {
-        _mediaAvailableEvent = runnable;
+        _mediaAvailable = runnable;
     }
-
+    public void     onRecognitionComplete(Consumer<String> handler) { _recognizerCompleted = handler; }
     /**
      * Runs the arg when a _recording has started
      */
-    public void     onRecordingStarted(Runnable runnable) { _startEvent = runnable; }
+    public void     onRecordingStarted(Runnable runnable) { _recordingStarted = runnable; }
 
-    // Getters
+    /**
+     * Gets a Media object with the audio contained
+     */
     public Media    media() {
         return _recording.media();
     }
 
-    // Starts a _recording
+    // Starts a recording. Is called when button is pressed
     private void    start() {
         if( _recording != null && !_recording.stopped()) {
             _recording.stop();
@@ -48,23 +53,27 @@ public class RecorderControl extends Region {
         _button.setText("Start");
         _recording = Recording.start();
 
-        if(_startEvent != null) {
-            _startEvent.run();
+        if(_recordingStarted != null) {
+            _recordingStarted.run();
         }
     }
-    // Stops that _recording
+    // Stops that recording. Called when button pressed again
     private void    stop() {
         _button.setText("Stop");
         _recording.stop();
 
-        if(_mediaAvailableEvent != null) {
-            _mediaAvailableEvent.run();
+        if(_mediaAvailable != null) {
+            _mediaAvailable.run();
         }
+
+        // Start recognizing the sequence
+        Recognizer.recognize(_recording.fileName(), _recognizerCompleted);
     }
 
     private Button      _button;
     private Recording   _recording = null;
 
-    private Runnable    _mediaAvailableEvent = null;
-    private Runnable    _startEvent = null;
+    private Runnable            _mediaAvailable = null;
+    private Runnable            _recordingStarted = null;
+    private Consumer<String>    _recognizerCompleted = null;
 }

@@ -9,7 +9,7 @@ import java.io.IOException;
  * Class for recording from device input and saving that input to a file
  */
 public class Recording {
-    private static String TEMP_FOLDER = "tmp/";
+    private static String TEMP_FOLDER = ".tmp/";
     private static String SOUND_LOG = TEMP_FOLDER + "sound.log";
     private static String SOUND_FILE = TEMP_FOLDER + "sound.mp3";
 
@@ -56,7 +56,7 @@ public class Recording {
     }
 
     /**
-     * Get the relative path to the sound file
+     * Gets the string result of running the recognizer on the input
      */
     public String   fileName() {
         return SOUND_FILE;
