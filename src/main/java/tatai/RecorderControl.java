@@ -17,6 +17,8 @@ public class RecorderControl extends Region {
     public RecorderControl() {
         _button = new Button("Record");
         getChildren().add(_button);
+        
+        // Play when the button is pressed first, then Stop on the second time, repeat.
         _button.setOnAction((ignored) -> {
             if( _recording == null || _recording.stopped()) {
                 start();
@@ -24,6 +26,13 @@ public class RecorderControl extends Region {
                 stop();
             }
         });
+
+        // Clean up on exit
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            if(_recording != null) {
+                _recording.clean();
+            }
+        }));
     }
 
     /**

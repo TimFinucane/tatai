@@ -38,6 +38,17 @@ public class Recording {
     }
 
     /**
+     * Cleans all temporary files made by the recording
+     */
+    public void clean() {
+        File dir = new File(TEMP_FOLDER);
+        for(File child : dir.listFiles()) {
+            child.delete();
+        }
+        dir.delete();
+    }
+
+    /**
      * Stops the recording if one is happening
      */
     public void     stop() {
