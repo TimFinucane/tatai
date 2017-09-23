@@ -15,7 +15,7 @@ import java.util.function.Consumer;
  */
 public class RecorderControl extends Region {
     public RecorderControl() {
-        _button = new Button("Play");
+        _button = new Button("Record");
         getChildren().add(_button);
         _button.setOnAction((ignored) -> {
             if( _recording == null || _recording.stopped()) {
@@ -50,7 +50,7 @@ public class RecorderControl extends Region {
         if( _recording != null && !_recording.stopped()) {
             _recording.stop();
         }
-        _button.setText("Start");
+        _button.setText("Stop");
         _recording = Recording.start();
 
         if(_recordingStarted != null) {
@@ -59,7 +59,7 @@ public class RecorderControl extends Region {
     }
     // Stops that recording. Called when button pressed again
     private void    stop() {
-        _button.setText("Stop");
+        _button.setText("Record");
         _recording.stop();
 
         if(_mediaAvailable != null) {
