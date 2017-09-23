@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Class for creating a Creation.
+ * Class for recording from device input and saving that input to a file
  */
 public class Recording {
     private static String TEMP_FOLDER = "tmp/";
@@ -16,7 +16,6 @@ public class Recording {
     private static String COMMAND = "ffmpeg -y -f alsa -ac 1 -i default " + SOUND_FILE;
 
     private Recording() {
-
         try {
             ProcessBuilder pb = new ProcessBuilder( COMMAND.split(" ") );
 
@@ -56,6 +55,9 @@ public class Recording {
     public Media    output() {
         return media;
     }
+    /**
+     * Get the relative path to the sound file
+     */
     public String   outputName() {
         return SOUND_LOG;
     }
