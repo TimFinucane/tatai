@@ -35,9 +35,9 @@ public class Application extends javafx.application.Application {
         stage.setTitle("Tatai"); // TODO: Unicode
         stage.setScene(_scene);
 
-        _easyBtn.setOnAction((ignored) -> easyTest());
-        _hardBtn.setOnAction((ignored) -> hardTest());
-        _infoBtn.setOnAction((ignored) -> info());
+        easyBtn.setOnAction((ignored) -> easyTest());
+        hardBtn.setOnAction((ignored) -> hardTest());
+        infoBtn.setOnAction((ignored) -> info());
 
         stage.show();
     }
@@ -59,9 +59,9 @@ public class Application extends javafx.application.Application {
 
     // JavaFX controls
     @FXML
-    private Button  _easyBtn;
+    private Button  easyBtn;
     @FXML
-    private Button  _hardBtn;
+    private Button  hardBtn;
     @FXML
-    private Button  _infoBtn;
+    private Button  infoBtn;
 }
