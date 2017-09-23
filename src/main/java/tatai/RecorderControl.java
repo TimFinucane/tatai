@@ -3,7 +3,10 @@ package tatai;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Region;
 import javafx.scene.media.Media;
+import tatai.model.Recognizer;
 import tatai.model.Recording;
+
+import java.util.function.Consumer;
 
 
 /**
@@ -12,62 +15,74 @@ import tatai.model.Recording;
  */
 public class RecorderControl extends Region {
     public RecorderControl() {
-        button = new Button("Play");
-        getChildren().add(button);
-        button.setOnAction((ignored) -> {
-            if(recording == null || recording.stopped()) {
+        _button = new Button("Record");
+        getChildren().add(_button);
+
+        // Play when the button is pressed first, then Stop on the second time, repeat.
+        _button.setOnAction((ignored) -> {
+            if( _recording == null || _recording.stopped()) {
                 start();
             } else {
                 stop();
             }
         });
+
+        // Clean up on exit
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            if(_recording != null) {
+                _recording.clean();
+            }
+        }));
     }
 
     /**
      * Runs the arg when a new piece of media becomes available
      */
     public void     onMediaAvailable(Runnable runnable) {
-        mediaAvailableEvent = runnable;
+        _mediaAvailable = runnable;
     }
+    public void     onRecognitionComplete(Consumer<String> handler) { _recognizerCompleted = handler; }
+    /**
+     * Runs the arg when a _recording has started
+     */
+    public void     onRecordingStarted(Runnable runnable) { _recordingStarted = runnable; }
 
     /**
-     * Runs the arg when a recording has started
+     * Gets a Media object with the audio contained
      */
-    public void     onRecordingStarted(Runnable runnable) { startEvent = runnable; }
-
-    // Getters
     public Media    media() {
-        return recording.output();
-    }
-    public String   filename() {
-        return recording.outputName();
+        return _recording.media();
     }
 
-    // Starts a recording
+    // Starts a recording. Is called when button is pressed
     private void    start() {
-        if(recording != null && !recording.stopped()) {
-            recording.stop();
+        if( _recording != null && !_recording.stopped()) {
+            _recording.stop();
         }
-        button.setText("Start");
-        recording = Recording.start();
+        _button.setText("Stop");
+        _recording = Recording.start();
 
-        if(startEvent != null) {
-            startEvent.run();
+        if(_recordingStarted != null) {
+            _recordingStarted.run();
         }
     }
-    // Stops that recording
+    // Stops that recording. Called when button pressed again
     private void    stop() {
-        button.setText("Stop");
-        recording.stop();
+        _button.setText("Record");
+        _recording.stop();
 
-        if(mediaAvailableEvent != null) {
-            mediaAvailableEvent.run();
+        if(_mediaAvailable != null) {
+            _mediaAvailable.run();
         }
+
+        // Start recognizing the sequence
+        Recognizer.recognize(_recording.fileName(), _recognizerCompleted);
     }
 
-    private Button      button;
-    private Recording   recording = null;
+    private Button      _button;
+    private Recording   _recording = null;
 
-    private Runnable    mediaAvailableEvent = null;
-    private Runnable    startEvent = null;
+    private Runnable            _mediaAvailable = null;
+    private Runnable            _recordingStarted = null;
+    private Consumer<String>    _recognizerCompleted = null;
 }
