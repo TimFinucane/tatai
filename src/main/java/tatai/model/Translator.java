@@ -27,7 +27,7 @@ public class Translator {
 	 * @param number the number to be translated between 1-99 inclusive.
 	 * @return the Maori translation of the specified number.
 	 */
-	public String convert(int number) {
+	public static String convert(int number) {
 		String word;
 		if (number < 10) {
 			word = onesNames[number];
