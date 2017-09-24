@@ -12,6 +12,10 @@ repositories {
     mavenCentral()
 }
 
+dependencies {
+	testCompile "junit:junit:4.12"
+}
+
 sourceSets {
     main {
         java {
@@ -21,6 +25,11 @@ sourceSets {
             srcDir '../src/main/resources'
         }
     }
+	test {
+		java {
+			srcDir '../src/test/java'
+		}
+	}
 }
 
 jar {
