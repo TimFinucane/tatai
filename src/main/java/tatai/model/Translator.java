@@ -5,55 +5,39 @@ package tatai.model;
  */
 public class Translator {
 
-	private static final String[] onesNames = {
-			"",
-			"tahi ",
-			"rua ",
-			"toru ",
-			"wha ",
-			"rima ",
-			"ono ",
-			"whitu ",
-			"waru ",
-			"iwa ",
+	// Starts at 1
+	private static final String[] DIGITS = {
+			"tahi",
+			"rua",
+			"toru",
+			"wha",
+			"rima",
+			"ono",
+			"whitu",
+			"waru",
+			"iwa",
 	};
-	
-	private static final String ten = "tekau ";
-	
-	private static final String connector = "ma ";
-	
+
+	private static final String TEN = "tekau";
+
+	private static final String CONNECTOR = "ma";
+
 	/**
 	 * Returns the Maori translation of an integer.
 	 * @param number the number to be translated between 1-99 inclusive.
 	 * @return the Maori translation of the specified number.
 	 */
 	public static String convert(int number) {
-		String word;
 		if (number < 10) {
-			word = onesNames[number];
-			return word;
-		}
-		
-		else if (number == 10) {
-			word = ten;
-			return word;
-		}
-		
-		if (number % 10 != 0) {
-			word = onesNames[number %10];	
-			number /= 10;
-			if(number ==1) {
-				return ten + connector + word;
-			}
-			else {
-				return onesNames[number] + ten + connector + word;
-			}
-			
-		}
-		else {
-			number /= 10;
-			return onesNames[number] + ten;
-		}	
+			return DIGITS[number - 1];
+		} else if(number % 10 == 0) {
+            if(number == 10) {
+                return TEN;
+            } else {
+                return DIGITS[number / 10 - 1] + " " + TEN;
+            }
+        } else {
+		    return convert(number - number%10) + " " + CONNECTOR + " " + convert(number % 10);
+        }
 	}
-
 }
