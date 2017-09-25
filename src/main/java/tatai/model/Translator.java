@@ -10,7 +10,7 @@ public class Translator {
 			"tahi",
 			"rua",
 			"toru",
-			"wha",
+			"wh\u0101",
 			"rima",
 			"ono",
 			"whitu",
@@ -20,7 +20,7 @@ public class Translator {
 
 	private static final String TEN = "tekau";
 
-	private static final String CONNECTOR = "ma";
+	private static final String CONNECTOR = "m\u0101";
 
 	/**
 	 * Returns the Maori translation of an integer.

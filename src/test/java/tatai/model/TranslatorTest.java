@@ -31,8 +31,8 @@ public class TranslatorTest {
 
     @Test
     public void testMultiDigit() {
-        assertEquals("tekau ma tahi", Translator.convert(11));
-        assertEquals("toru tekau ma rima", Translator.convert(35));
-        assertEquals("waru tekau ma waru", Translator.convert(88));
+        assertEquals("tekau m\u0101 tahi", Translator.convert(11));
+        assertEquals("toru tekau m\u0101 rima", Translator.convert(35));
+        assertEquals("waru tekau m\u0101 waru", Translator.convert(88));
     }
 }
