@@ -1,4 +1,4 @@
-package tatai;
+package tatai.model;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -6,7 +6,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * Model class for the easy level.
  */
 
-public class EasyTestModel extends TestModel {
+public class EasyTest extends Test {
 
 	private static final int MINTESTVALUE = 1;
 	private static final int MAXTESTVALUE = 9;

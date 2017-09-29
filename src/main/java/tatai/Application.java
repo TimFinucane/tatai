@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import tatai.model.EasyTest;
+import tatai.model.HardTest;
 
 import java.io.IOException;
 
@@ -48,7 +50,7 @@ public class Application extends javafx.application.Application {
     private void easyTest() {
     	FXMLLoader loader = new FXMLLoader(getClass().getResource("/tatai/Test.fxml"));
         
-    	TestController controller = new TestController(new EasyTestModel());
+    	TestController controller = new TestController(new EasyTest());
         loader.setController(controller);
         
         Stage stage = (Stage) easyBtn.getScene().getWindow();
@@ -70,7 +72,7 @@ public class Application extends javafx.application.Application {
     private void hardTest() {
     	FXMLLoader loader = new FXMLLoader(getClass().getResource("/tatai/Test.fxml"));
         
-    	TestController controller = new TestController(new HardTestModel());
+    	TestController controller = new TestController(new HardTest());
         loader.setController(controller);
         
         Stage stage = (Stage) easyBtn.getScene().getWindow();

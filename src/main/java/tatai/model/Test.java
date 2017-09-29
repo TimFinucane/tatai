@@ -1,10 +1,10 @@
-package tatai;
+package tatai.model;
 
 /**
  * Base model class for testing.
  */
 
-public abstract class TestModel{
+public abstract class Test {
 
 	private int _score;
 		

@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import tatai.model.Test;
 
 /**
  * Controller class for Test.fxml
@@ -15,9 +16,9 @@ public class TestController implements Initializable{
 	
 	@FXML
 	private Label _label;
-	private TestModel _model;
+	private Test _model;
 	
-	public TestController(TestModel _model) {
+	public TestController(Test _model) {
 		this._model = _model;
 	}
 
