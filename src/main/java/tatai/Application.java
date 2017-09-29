@@ -47,7 +47,8 @@ public class Application extends javafx.application.Application {
     // Called when the easy button has been pressed
     private void easyTest() {
     	FXMLLoader loader = new FXMLLoader(getClass().getResource("/tatai/Test.fxml"));
-        LevelController controller = LevelControllerFactory.getLevelController("Easy");
+        
+    	TestController controller = new TestController(new EasyTestModel());
         loader.setController(controller);
         
         Stage stage = (Stage) easyBtn.getScene().getWindow();
@@ -68,7 +69,8 @@ public class Application extends javafx.application.Application {
     // Called when the hard button has been pressed
     private void hardTest() {
     	FXMLLoader loader = new FXMLLoader(getClass().getResource("/tatai/Test.fxml"));
-        LevelController controller = LevelControllerFactory.getLevelController("Hard");
+        
+    	TestController controller = new TestController(new HardTestModel());
         loader.setController(controller);
         
         Stage stage = (Stage) easyBtn.getScene().getWindow();
