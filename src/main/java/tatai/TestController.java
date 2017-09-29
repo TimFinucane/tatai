@@ -1,41 +1,52 @@
 package tatai;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Region;
 import tatai.model.Test;
 
-/**
- * Controller class for Test.fxml
- */
+import java.io.IOException;
 
-public class TestController implements Initializable{
-	
+/**
+ * A test window, to which you can pass specifications for the type of test
+ */
+public class TestController extends Region {
+
+	public TestController(Test model) {
+	    _model = model;
+
+	    // Load fxml, set self to act as controller and root
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/tatai/Test.fxml"));
+
+		loader.setController(this);
+		loader.setRoot(this);
+
+		try {
+			loader.load();
+		} catch(IOException e) {
+			throw new RuntimeException("Unable to load tatai.Test.fxml");
+		}
+	}
+
+    /**
+     * Called when the 'continue' or 'start' button has been pressed.
+     * Starts a round by presenting a number and waiting for a guess
+     */
+	private void    startRound() {
+    }
+
+    /**
+     * Called when the submit button has been pressed.
+     * Checks the guess and informs whether or not it
+     *  was correct.
+     */
+    private void    endRound() {
+    }
+
+
+
 	@FXML
 	private Label _label;
 	private Test _model;
-	
-	public TestController(Test _model) {
-		this._model = _model;
-	}
-
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		_label.setText(Integer.toString(getLabel()));
-		
-	}
-	
-	public int getLabel() {
-		return _model.getRandom();
-	}
-	
-	public void setLabel() {
-		_label.setText(Integer.toString(getLabel()));
-	}
-	
-	//TODO: Get the string output from recognizer.
-	
 }
