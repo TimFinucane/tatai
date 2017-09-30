@@ -15,29 +15,39 @@ public abstract class Test {
 	public abstract int getRandom();
 	
 	/**
-	 * Generates a random number for the question given that there is at least one round remaining.
+	 * Generates a random number for the question.
 	 * @return the number generated for that round.
 	 */
-	public int nextRound() {
-		if(_roundsRemaining == 0) {
-			endTest();
-		}
+	public int getNextRound() {
 		_testValue = getRandom();
 		_roundsRemaining--;
 		return _testValue;
 	}
 	
 	/**
-	 * Method that is called when there are no more rounds left.
-	 * @return the final score.
+	 * Method which returns whether or not there are any more rounds
+	 * @return true if there is at least one round remaining
 	 */
-	public int endTest() {
+	public boolean hasNextRound() {
+		if(_roundsRemaining > 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Method that returns the user's score.
+	 * @return the user's score.
+	 */
+	public int getScore() {
 		return _score;
 	}
 	
 	/**
 	 * Method which compares the users answer to the expected result.
-	 * @param answer the users response 
+	 * @param answer the user's response 
 	 * @return true if the answer is equal to the expected result.
 	 */
 	public boolean verify(String answer) {
