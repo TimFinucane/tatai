@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import tatai.model.Test;
 
 import java.io.IOException;
@@ -34,21 +35,6 @@ public class TestController extends VBox {
 		}
 	}
 
-    /**
-     * Called when the 'continue' or 'start' button has been pressed.
-     * Starts a round by presenting a number and waiting for a guess
-     */
-	private void    startRound() {
-    }
-
-    /**
-     * Called when the submit button has been pressed.
-     * Checks the guess and informs whether or not it
-     *  was correct.
-     */
-    private void    endRound() {
-    }
-
     @Override
     public void    resize(double width, double height) {
         super.resize(width, height);
@@ -62,6 +48,50 @@ public class TestController extends VBox {
         playbackCntrl.setStyle("-fx-font-size: " + controlSize);
         recorderCntrl.setStyle("-fx-font-size: " + controlSize);
     }
+
+	/**
+	 * Called when the audio recording has been recognized. Handles all
+	 * the state
+	 */
+    private void	recognize(String text) {
+    	recognitionLbl.setText(text);
+    	if(_model.verify(text)) {
+    		recognitionLbl.setTextFill(Color.GREEN);
+    		if(_model.hasMultipleTries()) {
+				// TODO: Inform them they can have a retry
+			} else {
+    			// TODO: Inform them they have run out of retries
+    			recorderCntrl.setDisable(true);
+			}
+		} else {
+    		recognitionLbl.setTextFill(Color.RED);
+		}
+
+		if(_model.hasNextRound()) {
+			submitBtn.setText("Continue");
+			submitBtn.setOnAction(e -> nextRound());
+		} else {
+			submitBtn.setText("Finish");
+			submitBtn.setOnAction(e -> finish());
+		}
+	}
+
+	/**
+	 * Sets up the screen for the next round
+	 */
+	private void	nextRound() {
+		recorderCntrl.setDisable(false);
+		recognitionLbl.setText("");
+
+		numberLbl.setText(Integer.toString(_model.getNextRound()));
+	}
+
+	/**
+	 * Sets up the screen when complete
+	 */
+	private void	finish() {
+		// TODO:
+	}
 
 	private Test    _model;
 
