@@ -8,17 +8,31 @@ public abstract class Test {
 
 	private int _score = 0;
 	private int _testValue;
+	private int _roundsRemaining = 10;
 	private boolean _hasMultipleTries = true;	
+	
 	
 	public abstract int getRandom();
 	
 	/**
-	 * Generates a random number for the question.
-	 * @return maori translation of that number.
+	 * Generates a random number for the question given that there is at least one round remaining.
+	 * @return the number generated for that round.
 	 */
-	public String generate() {
+	public int nextRound() {
+		if(_roundsRemaining == 0) {
+			endTest();
+		}
 		_testValue = getRandom();
-		return Translator.convert(_testValue);
+		_roundsRemaining--;
+		return _testValue;
+	}
+	
+	/**
+	 * Method that is called when there are no more rounds left.
+	 * @return the final score.
+	 */
+	public int endTest() {
+		return _score;
 	}
 	
 	/**
@@ -42,7 +56,7 @@ public abstract class Test {
 	 * Method which returns whether or not the user is on their first or second try.
 	 * @return true if they are on their first true or false if they are on their second try.
 	 */
-	public boolean hasMultpleTries() {
+	public boolean hasMultipleTries() {
 		return _hasMultipleTries;
 	}
 	
