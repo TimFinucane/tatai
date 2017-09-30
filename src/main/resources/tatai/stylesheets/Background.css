@@ -1,6 +1,6 @@
 .root
 {
-    -fx-background-image: url("background.png");
+    -fx-background-image: url("/tatai/background.png");
 
     -fx-font-family: "Lucida Unicode";
     -fx-font-weight: bold;
