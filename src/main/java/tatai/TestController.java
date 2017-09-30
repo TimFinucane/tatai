@@ -2,6 +2,7 @@ package tatai;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import tatai.model.Test;
@@ -71,4 +72,8 @@ public class TestController extends VBox {
     private PlaybackControl playbackCntrl;
     @FXML
     private RecorderControl recorderCntrl;
+    @FXML
+	private Label			recognitionLbl;
+    @FXML
+	private Button			submitBtn;
 }
