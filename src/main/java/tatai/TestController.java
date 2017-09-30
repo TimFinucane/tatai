@@ -15,8 +15,7 @@ public class TestController extends VBox {
     // Determines the ratio of window size to number/control text size
     private static double NUMBER_HEIGHT_DIV = 5;
     private static double NUMBER_WIDTH_DIV = 3;
-    private static double CONTROL_HEIGHT_DIV = 15;
-    private static double CONTROL_WIDTH_DIV = 12;
+    private static double CONTROL_SIZE_DIV = 4;
 
 	public TestController(Test model) {
 	    _model = model;
@@ -56,11 +55,11 @@ public class TestController extends VBox {
         // Adjust children to be approx. the right size based on window size
         // These numbers are pretty good as they are
         double numberSize = Math.min(getHeight()/NUMBER_HEIGHT_DIV, getWidth()/NUMBER_WIDTH_DIV);
-        double controlSize = Math.min(getHeight()/CONTROL_HEIGHT_DIV, getWidth()/CONTROL_WIDTH_DIV);
+        double controlSize = Math.min(getHeight()/CONTROL_SIZE_DIV, getWidth()/CONTROL_SIZE_DIV);
 
         numberLbl.setStyle("-fx-font-size: " + numberSize);
-        playbackCntrl.setStyle("-fx-font-size: " + controlSize);
-        recorderCntrl.setStyle("-fx-font-size: " + controlSize);
+        playbackCntrl.resize(controlSize);
+        recorderCntrl.resize(controlSize);
     }
 
 	private Test    _model;
