@@ -33,10 +33,13 @@ public class TestController extends VBox {
 		} catch(IOException e) {
 			throw new RuntimeException("Unable to load tatai.Test.fxml: " + e.getMessage());
 		}
+
+		recorderCntrl.onMediaAvailable(this::mediaAvailable);
+		recorderCntrl.onRecognitionComplete(this::recognize);
 	}
 
     @Override
-    public void    resize(double width, double height) {
+    public void    	resize(double width, double height) {
         super.resize(width, height);
 
         // Adjust children to be approx. the right size based on window size
@@ -50,7 +53,14 @@ public class TestController extends VBox {
     }
 
 	/**
-	 * Called when the audio recording has been recognized. Handles all
+	 * Called when the recorder has recorded something
+	 */
+	private void	mediaAvailable() {
+		playbackCntrl.setMedia(recorderCntrl.media());
+	}
+
+	/**
+	 * Called when the recorder  has finished recognizing the text. Handles all
 	 * the state
 	 */
     private void	recognize(String text) {
@@ -82,6 +92,7 @@ public class TestController extends VBox {
 	private void	nextRound() {
 		recorderCntrl.setDisable(false);
 		recognitionLbl.setText("");
+		playbackCntrl.dispose();
 
 		numberLbl.setText(Integer.toString(_model.getNextRound()));
 	}
