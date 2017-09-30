@@ -37,6 +37,7 @@ public class RecorderControl extends Region {
         }));
 
         _imageView.setPreserveRatio(true);
+        getStyleClass().add("recorder");
     }
 
     /**

@@ -18,6 +18,7 @@ public class PlaybackControl extends Region {
         getChildren().add(_playbackBtn);
 
         _imageView.setPreserveRatio(true);
+        getStyleClass().add("playback");
     }
 
     /**
