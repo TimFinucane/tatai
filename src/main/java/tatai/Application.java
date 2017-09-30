@@ -17,6 +17,10 @@ import java.io.IOException;
 public class Application extends javafx.application.Application {
     private static String APP_NAME = "T\u0101tai";
 
+    // Determines ratio of window size to text size
+    private static double TEXT_WIDTH_DIV = 18;
+    private static double TEXT_HEIGHT_DIV = 10;
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -37,6 +41,9 @@ public class Application extends javafx.application.Application {
 
         _stage.setTitle(APP_NAME);
         _stage.setScene(_mainScreen);
+
+        _mainScreen.widthProperty().addListener( e -> onResize() );
+        _mainScreen.heightProperty().addListener( e -> onResize() );
 
         easyBtn.setOnAction((ignored) -> easyTest());
         hardBtn.setOnAction((ignored) -> hardTest());
@@ -62,6 +69,19 @@ public class Application extends javafx.application.Application {
     // Called when the info button has been pressed
     private void info() {
         throw new NotImplementedException();
+    }
+
+    /**
+     * Called when the main screen resizes, and adjusts the button sizes as a result
+     */
+    private void onResize() {
+        // Adjust children to be approx. the right size based on window size
+        // These numbers are pretty good as they are
+        double size = Math.min(_mainScreen.getHeight()/TEXT_HEIGHT_DIV, _mainScreen.getWidth()/TEXT_WIDTH_DIV);
+
+        easyBtn.setStyle("-fx-font-size: " + size);
+        hardBtn.setStyle("-fx-font-size: " + size);
+        infoBtn.setStyle("-fx-font-size: " + size);
     }
 
     private Scene   _mainScreen;

@@ -12,6 +12,7 @@ import java.io.IOException;
  * A test window, to which you can pass specifications for the type of test
  */
 public class TestController extends VBox {
+    // Determines the ratio of window size to number/control text size
     private static double NUMBER_HEIGHT_DIV = 5;
     private static double NUMBER_WIDTH_DIV = 3;
     private static double CONTROL_HEIGHT_DIV = 15;
