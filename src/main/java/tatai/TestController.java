@@ -15,7 +15,7 @@ public class TestController extends VBox {
     // Determines the ratio of window size to number/control text size
     private static double NUMBER_HEIGHT_DIV = 5;
     private static double NUMBER_WIDTH_DIV = 3;
-    private static double CONTROL_SIZE_DIV = 4;
+    private static double CONTROL_SIZE_DIV = 8;
 
 	public TestController(Test model) {
 	    _model = model;
