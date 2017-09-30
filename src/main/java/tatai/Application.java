@@ -18,8 +18,8 @@ public class Application extends javafx.application.Application {
     private static String APP_NAME = "T\u0101tai";
 
     // Determines ratio of window size to text size
-    private static double TEXT_WIDTH_DIV = 18;
-    private static double TEXT_HEIGHT_DIV = 10;
+    private static double TEXT_WIDTH_DIV = 24;
+    private static double TEXT_HEIGHT_DIV = 14;
 
     public static void main(String[] args) {
         launch(args);
@@ -41,6 +41,8 @@ public class Application extends javafx.application.Application {
 
         _stage.setTitle(APP_NAME);
         _stage.setScene(_mainScreen);
+
+        _mainScreen.getStylesheets().add(getClass().getResource("/tatai/stylesheet.css").toExternalForm());
 
         _mainScreen.widthProperty().addListener( e -> onResize() );
         _mainScreen.heightProperty().addListener( e -> onResize() );

@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <?import tatai.PlaybackControl?>
 <?import tatai.RecorderControl?>
-
+<?import java.net.URL?>
 <fx:root alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" type="VBox" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Region VBox.vgrow="SOMETIMES" />
@@ -28,4 +26,7 @@
       </HBox>
       <Region VBox.vgrow="SOMETIMES" />
    </children>
+   <stylesheets>
+      <URL value="@stylesheet.css" />
+   </stylesheets>
 </fx:root>
