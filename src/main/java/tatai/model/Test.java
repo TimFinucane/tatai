@@ -27,7 +27,7 @@ public abstract class Test {
 	 * @return true if the answer is equal to the expected result.
 	 */
 	public boolean verify(String answer) {
-		if(answer.equalsIgnoreCase((Translator.convert(_testValue))) {
+		if(answer.equalsIgnoreCase(Translator.convert(_testValue))) {
 			_score++;
 			_hasMultipleTries = true;
 			return true;
