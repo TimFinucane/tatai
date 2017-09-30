@@ -3,7 +3,7 @@ package tatai;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import tatai.model.Test;
 
 import java.io.IOException;
@@ -11,7 +11,7 @@ import java.io.IOException;
 /**
  * A test window, to which you can pass specifications for the type of test
  */
-public class TestController extends Region {
+public class TestController extends VBox {
 
 	public TestController(Test model) {
 	    _model = model;
@@ -25,7 +25,7 @@ public class TestController extends Region {
 		try {
 			loader.load();
 		} catch(IOException e) {
-			throw new RuntimeException("Unable to load tatai.Test.fxml");
+			throw new RuntimeException("Unable to load tatai.Test.fxml: " + e.getMessage());
 		}
 	}
 
@@ -44,9 +44,13 @@ public class TestController extends Region {
     private void    endRound() {
     }
 
+	private Test    _model;
 
-
-	@FXML
-	private Label _label;
-	private Test _model;
+    // FXML controls
+    @FXML
+    private Label           numberLbl;
+    @FXML
+    private PlaybackControl playbackCntrl;
+    @FXML
+    private RecorderControl recorderCntrl;
 }
