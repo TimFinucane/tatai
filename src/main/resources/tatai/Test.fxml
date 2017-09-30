@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
-
-<?import tatai.RecorderControl?>
+<?import javafx.scene.text.Font?>
 <?import tatai.PlaybackControl?>
+<?import tatai.RecorderControl?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Region prefHeight="200.0" prefWidth="200.0" />
-      <Label fx:id="_label" text="Label" />
-      <Region prefHeight="200.0" prefWidth="200.0" />
-      <RecorderControl>
+      <Region VBox.vgrow="SOMETIMES" />
+      <Label fx:id="_label" text="Label">
+         <font>
+            <Font size="72.0" />
+         </font></Label>
+      <Region VBox.vgrow="SOMETIMES" />
+      <HBox spacing="20.0">
+         <children>
+            <Region HBox.hgrow="SOMETIMES" />
+            <RecorderControl>
       </RecorderControl>
-      <Region prefHeight="200.0" prefWidth="200.0" />
-      <PlaybackControl>
+            <PlaybackControl>
       </PlaybackControl>
-      <Region prefHeight="200.0" prefWidth="200.0" />
+            <Region HBox.hgrow="SOMETIMES" />
+         </children>
+      </HBox>
+      <Region VBox.vgrow="SOMETIMES" />
    </children>
 </VBox>
