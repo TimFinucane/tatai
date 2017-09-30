@@ -1,11 +1,3 @@
-.root
-{
-    -fx-background-image: url("background.png");
-
-    -fx-font-family: "Lucida Unicode";
-    -fx-font-weight: bold;
-}
-
 .button
 {
     -fx-border-width: 2px;

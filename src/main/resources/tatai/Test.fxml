@@ -27,6 +27,6 @@
       <Region VBox.vgrow="SOMETIMES" />
    </children>
    <stylesheets>
-      <URL value="@stylesheet.css" />
+      <URL value="@stylesheets/Background.css" />
    </stylesheets>
 </fx:root>

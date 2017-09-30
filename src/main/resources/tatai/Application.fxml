@@ -23,6 +23,7 @@
       <Region VBox.vgrow="ALWAYS" />
    </children>
    <stylesheets>
-      <URL value="@stylesheet.css" />
+      <URL value="@stylesheets/Background.css" />
+      <URL value="@stylesheets/Application.css" />
    </stylesheets>
 </VBox>
