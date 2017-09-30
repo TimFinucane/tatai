@@ -39,7 +39,7 @@ public class PlaybackControl extends Region {
 
     /**
      * A special resize function which only takes one parameter that determines both the width and height
-     *  of the playback control.
+     *  of the icons control.
      */
     public void     resize(double size) {
         _imageView.setFitHeight(size);
@@ -62,7 +62,7 @@ public class PlaybackControl extends Region {
     private MediaPlayer _player;
     private Button      _playbackBtn;
 
-    private Image       _playImage = new Image(getClass().getResourceAsStream("/tatai/playback/play.png"));
-    private Image       _stopImage = new Image(getClass().getResourceAsStream("/tatai/playback/stop.png"));
+    private Image       _playImage = new Image(getClass().getResourceAsStream("/tatai/icons/play.png"));
+    private Image       _stopImage = new Image(getClass().getResourceAsStream("/tatai/icons/stop.png"));
     private ImageView   _imageView = new ImageView(_playImage);
 }
