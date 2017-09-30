@@ -1,5 +1,6 @@
 package tatai;
 
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -16,6 +17,13 @@ import java.io.IOException;
  */
 public class Application extends javafx.application.Application {
     private static String APP_NAME = "T\u0101tai";
+
+    private static String EASY_ENGLISH = "  Simple  ";
+    private static String EASY_MAORI = "Ng\u0101wari";
+    private static String HARD_ENGLISH = "  Difficult  ";
+    private static String HARD_MAORI = "Wh\u0113uaua";
+    private static String INFO_ENGLISH = "    Info    ";
+    private static String INFO_MAORI = "P\u0101rongo";
 
     // Determines ratio of window size to text size
     private static double TEXT_WIDTH_DIV = 24;
@@ -42,10 +50,14 @@ public class Application extends javafx.application.Application {
         _stage.setTitle(APP_NAME);
         _stage.setScene(_mainScreen);
 
-        _mainScreen.getStylesheets().add(getClass().getResource("/tatai/stylesheet.css").toExternalForm());
-
+        // Ensure buttons are right size compared to window
         _mainScreen.widthProperty().addListener( e -> onResize() );
         _mainScreen.heightProperty().addListener( e -> onResize() );
+
+        // Go from english to maori when buttons are hovered
+        easyBtn.textProperty().bind(Bindings.when(easyBtn.hoverProperty()).then(EASY_ENGLISH).otherwise(EASY_MAORI));
+        hardBtn.textProperty().bind(Bindings.when(hardBtn.hoverProperty()).then(HARD_ENGLISH).otherwise(HARD_MAORI));
+        infoBtn.textProperty().bind(Bindings.when(infoBtn.hoverProperty()).then(INFO_ENGLISH).otherwise(INFO_MAORI));
 
         easyBtn.setOnAction((ignored) -> easyTest());
         hardBtn.setOnAction((ignored) -> hardTest());
