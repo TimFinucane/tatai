@@ -112,6 +112,7 @@ public abstract class Test {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(FILENAME, true));
 			
 			writer.write(String.valueOf(_score));
+			writer.newLine();
 
 			writer.close();
 		} catch(IOException e) {
