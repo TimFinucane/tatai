@@ -34,6 +34,8 @@ public class TestController extends VBox {
 			throw new RuntimeException("Unable to load tatai.Test.fxml: " + e.getMessage());
 		}
 
+		testBox.setVisible(false);
+
 		recorderCntrl.setDisable(true);
 		playbackCntrl.setDisable(true);
 		submitBtn.setOnAction(e -> nextRound());
@@ -95,6 +97,8 @@ public class TestController extends VBox {
 	 * Sets up the screen for the next round
 	 */
 	private void	nextRound() {
+		testBox.setVisible(true);
+
 		recorderCntrl.setDisable(false);
 		recognitionLbl.setText("");
 		playbackCntrl.dispose();
@@ -107,12 +111,25 @@ public class TestController extends VBox {
 	 * Sets up the screen when complete
 	 */
 	private void	finish() {
-		// TODO:
+		testBox.setVisible(false);
+
+		recognitionLbl.setTextFill(Color.BLACK);
+
+		if( _model.getScore() >= 8 ) {
+			recognitionLbl.setText("Well done! You got " + _model.getScore() + "/10");
+		} else {
+			recognitionLbl.setText("Your score was " + _model.getScore() + "/10");
+		}
+
+		submitBtn.setText("Main Menu");
+		// TODO: Exit back to main screen
 	}
 
 	private Test    _model;
-
+	
     // FXML controls
+	@FXML
+	private VBox			testBox;
     @FXML
     private Label           numberLbl;
     @FXML
