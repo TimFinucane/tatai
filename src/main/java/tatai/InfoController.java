@@ -8,7 +8,6 @@ import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Shows statistics about the session score
