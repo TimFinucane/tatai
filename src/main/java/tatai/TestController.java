@@ -101,6 +101,7 @@ public class TestController extends VBox {
 	 */
     private void	recognize(String text) {
 		retryLbl.setVisible(false);
+		playbackCntrl.setDisable(false);
 
     	if(text.equals("")) {
     		recognitionLbl.setText("Nothing was recognized");
@@ -114,6 +115,7 @@ public class TestController extends VBox {
 			if(_model.hasMoreTries()) {
 				retryLbl.setVisible(true);
 			} else {
+				// No more tries for you
 				recorderCntrl.setDisable(true);
 			}
 
