@@ -3,6 +3,7 @@ package tatai.model;
 import javafx.application.Platform;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.function.Consumer;
@@ -13,7 +14,7 @@ import java.util.function.Consumer;
 public class Recognizer {
     private static String TEMP = ".tmp/";
 
-    private static String HTK = "~/Documents/HTK/MaoriNumbers/";
+    private static String HTK = System.getProperty("user.home") + "/Documents/HTK/MaoriNumbers/";
     private static String[] HMMS = { HTK + "HMMs/hmm15/macros -H ", HTK + "HMMs/hmm15/hmmdefs" };
     private static String CONFIG = HTK + "user/configLR";
     private static String NETWORK = HTK + "user/wordNetworkNum";
@@ -24,6 +25,7 @@ public class Recognizer {
     private static String COMMAND_NAME = "HVite";
     private static String COMMAND_OPTIONS = "-o SWT";
 
+    private static String LOG_FILE = TEMP + "recognition.log";
     /**
      * Produces a string output of the words recognized in the
      * file given by the filename input, and gives this result to
@@ -35,8 +37,8 @@ public class Recognizer {
         ProcessBuilder pb = new ProcessBuilder( command.split(" ") );
 
         // Forget output for now
-        pb.redirectError();
-        pb.redirectOutput();
+        pb.redirectError(new File(LOG_FILE));
+        pb.redirectOutput(new File(LOG_FILE));
 
         Process process;
         try {
