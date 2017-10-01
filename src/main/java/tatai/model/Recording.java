@@ -13,7 +13,7 @@ public class Recording {
     private static String SOUND_LOG = TEMP_FOLDER + "sound.log";
     private static String SOUND_FILE = TEMP_FOLDER + "sound.mp3";
 
-    private static String COMMAND = "ffmpeg -y -f alsa -ac 1 -i default " + SOUND_FILE;
+    private static String COMMAND = "ffmpeg -y -f alsa -acodec pcm_s16le -ac 1 -ar 22050 -i default " + SOUND_FILE;
 
     private Recording() {
         try {
