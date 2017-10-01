@@ -49,10 +49,10 @@ public class TestController extends VBox {
 			throw new RuntimeException("Unable to load tatai.Test.fxml: " + e.getMessage());
 		}
 
-		testBox.setVisible(false);
+		playbackCntrl.setVisible(false);
+		recorderCntrl.setVisible(false);
 
-		recorderCntrl.setDisable(true);
-		playbackCntrl.setDisable(true);
+		submitBtn.setText("Start");
 		submitBtn.setOnAction(e -> nextRound());
 
 		recorderCntrl.onMediaAvailable(this::mediaAvailable);
@@ -88,19 +88,19 @@ public class TestController extends VBox {
     	recognitionLbl.setText(text);
     	if(_model.verify(text)) {
     		recognitionLbl.setTextFill(Color.GREEN);
-    		if(_model.hasMultipleTries()) {
-				// TODO: Inform them they can have a retry
-			} else {
-    			// TODO: Inform them they have run out of retries
-    			recorderCntrl.setDisable(true);
-			}
 		} else {
+			if(_model.hasMultipleTries()) {
+				retryLbl.setVisible(true);
+			} else {
+				recorderCntrl.setDisable(true);
+			}
+
     		recognitionLbl.setTextFill(Color.RED);
 		}
 
 		submitBtn.setDisable(false);
 		if(_model.hasNextRound()) {
-			submitBtn.setText("Continue");
+			submitBtn.setText("Next");
 			submitBtn.setOnAction(e -> nextRound());
 		} else {
 			submitBtn.setText("Finish");
@@ -112,9 +112,12 @@ public class TestController extends VBox {
 	 * Sets up the screen for the next round
 	 */
 	private void	nextRound() {
-		testBox.setVisible(true);
+		retryLbl.setVisible(false);
 
+		playbackCntrl.setVisible(true);
+		recorderCntrl.setVisible(true);
 		recorderCntrl.setDisable(false);
+
 		recognitionLbl.setText("");
 		playbackCntrl.dispose();
 		submitBtn.setDisable(true);
@@ -126,12 +129,15 @@ public class TestController extends VBox {
 	 * Sets up the screen when complete
 	 */
 	private void	finish() {
-		testBox.setVisible(false);
+		numberLbl.setText(_model.getScore() + "/10");
+		retryLbl.setVisible(false);
+		playbackCntrl.setVisible(false);
+		recorderCntrl.setVisible(false);
 
 		recognitionLbl.setTextFill(Color.BLACK);
 
 		if(_model.getScore() >= 8) {
-			recognitionLbl.setText("Well done! You got " + _model.getScore() + "/10");
+			recognitionLbl.setText("Well done!");
 
 			// TODO: If there are more tests, determine whether this test model has a harder version through test
 			//  interface, instead of this abomination.
@@ -140,7 +146,7 @@ public class TestController extends VBox {
 				harderBtn.setOnAction((e) -> _notifyReturn.accept(ReturnState.RETRY_HARDER));
 			}
 		} else {
-			recognitionLbl.setText("Your score was " + _model.getScore() + "/10");
+			recognitionLbl.setText("Good try!");
 		}
 
 		retryBtn.setVisible(true);
@@ -154,8 +160,6 @@ public class TestController extends VBox {
 	private Consumer<ReturnState>	_notifyReturn;
 
     // FXML controls
-	@FXML
-	private VBox			testBox;
     @FXML
     private Label           numberLbl;
     @FXML
@@ -164,6 +168,8 @@ public class TestController extends VBox {
     private RecorderControl recorderCntrl;
     @FXML
 	private Label			recognitionLbl;
+    @FXML
+	private Label			retryLbl;
     @FXML
 	private Button			submitBtn;
     @FXML

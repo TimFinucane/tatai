@@ -35,6 +35,10 @@
       <VBox alignment="CENTER" VBox.vgrow="SOMETIMES">
          <children>
             <Label fx:id="recognitionLbl" />
+            <Label fx:id="retryLbl" text="You can try again by re-recording">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font></Label>
             <Region prefHeight="20.0" VBox.vgrow="NEVER" />
             <HBox alignment="TOP_CENTER" spacing="30.0">
                <children>
