@@ -1,6 +1,7 @@
 package tatai;
 
 import javafx.beans.binding.Bindings;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -68,14 +69,18 @@ public class Application extends javafx.application.Application {
 
     // Called when the easy button has been pressed
     private void easyTest() {
-    	TestController test = new TestController(new EasyTest());
+    	TestController test = new TestController(new EasyTest(), (state) ->
+                Platform.runLater(() -> testComplete(state, true))
+        );
 
         _stage.setScene(new Scene(test));
         _stage.show();
     }
     // Called when the hard button has been pressed
     private void hardTest() {
-        TestController test = new TestController(new HardTest());
+        TestController test = new TestController(new HardTest(), (state) ->
+                Platform.runLater(() -> testComplete(state, false))
+        );
 
         _stage.setScene(new Scene(test));
         _stage.show();
@@ -91,11 +96,33 @@ public class Application extends javafx.application.Application {
     private void onResize() {
         // Adjust children to be approx. the right size based on window size
         // These numbers are pretty good as they are
-        double size = Math.min(_mainScreen.getHeight()/TEXT_HEIGHT_DIV, _mainScreen.getWidth()/TEXT_WIDTH_DIV);
+        double size = Math.min(_mainScreen.getHeight() / TEXT_HEIGHT_DIV, _mainScreen.getWidth() / TEXT_WIDTH_DIV);
 
         easyBtn.setStyle("-fx-font-size: " + size);
         hardBtn.setStyle("-fx-font-size: " + size);
         infoBtn.setStyle("-fx-font-size: " + size);
+    }
+
+    /**
+     * Run (on EDT) when a test is finished and control is relinquished to the application.
+     */
+    private void testComplete(TestController.ReturnState state, boolean easy) {
+        switch(state) {
+            case QUIT:
+            case FINISHED:
+                _stage.setScene(_mainScreen);
+                _stage.show();
+                break;
+            case RETRY:
+                if(easy) {
+                    easyTest();
+                } else {
+                    hardTest();
+                }
+                break;
+            case RETRY_HARDER:
+                hardTest();
+        }
     }
 
     private Scene   _mainScreen;
