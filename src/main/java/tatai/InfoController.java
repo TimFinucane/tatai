@@ -35,7 +35,7 @@ public class InfoController extends Region {
         highHardLbl.setTextFill(Color.BLUE);
         avgHardLbl.setTextFill(Color.BLUE);
 
-        mainMenuBtn.setOnAction(() -> _notifyFinished.run());
+        mainMenuBtn.setOnAction((e) -> _notifyFinished.run());
 
         loadData();
     }
