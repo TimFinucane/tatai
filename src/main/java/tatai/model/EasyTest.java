@@ -12,7 +12,7 @@ public class EasyTest extends Test {
 	private static final int MAXTESTVALUE = 9;
 
 	public String name() {
-		return "Hard Test";
+		return "Easy Test";
 	}
 
 	// Returns a random number between the minumum test value and the maximum test value.
