@@ -9,18 +9,32 @@ import javafx.scene.paint.Color;
 import tatai.model.Test;
 
 import java.io.IOException;
+import java.util.function.Consumer;
 
 /**
  * A test window, to which you can pass specifications for the type of test
  */
 public class TestController extends VBox {
-    private static double NUMBER_HEIGHT_DIV = 5;
+	enum ReturnState {
+		QUIT,
+		FINISHED,
+		RETRY,
+		RETRY_HARDER
+	}
+
+	private static double NUMBER_HEIGHT_DIV = 5;
     private static double NUMBER_WIDTH_DIV = 3;
     private static double CONTROL_HEIGHT_DIV = 15;
     private static double CONTROL_WIDTH_DIV = 12;
 
-	public TestController(Test model) {
+    /**
+     * Creates and starts a test.
+	 * When the user is ready to finish the test, notifyReturn is called
+	 * with the appropriate ReturnState.
+     */
+	public TestController(Test model, Consumer<ReturnState> notifyReturn) {
 	    _model = model;
+	    _notifyReturn = notifyReturn;
 
 	    // Load fxml, set self to act as controller and root
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/tatai/Test.fxml"));
@@ -122,11 +136,14 @@ public class TestController extends VBox {
 		}
 
 		submitBtn.setText("Main Menu");
-		// TODO: Exit back to main screen
+
+		// Tell system we are ready to exit
+		_notifyReturn.accept(ReturnState.QUIT);
 	}
 
-	private Test    _model;
-	
+	private Test    				_model;
+	private Consumer<ReturnState>	_notifyReturn;
+
     // FXML controls
 	@FXML
 	private VBox			testBox;
