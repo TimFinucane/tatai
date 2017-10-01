@@ -11,7 +11,6 @@ import java.util.Scanner;
 /**
  * Base model class for testing.
  */
-
 public abstract class Test {
 
 	private static final String FILENAME = "scores.txt";
@@ -20,10 +19,10 @@ public abstract class Test {
 	private int _testValue;
 	private int _roundsRemaining = 10;
 	private int _triesRemaining = 2;
-	
-	
-	public abstract int getRandom();
-	
+
+	public abstract String name();
+	protected abstract int getRandom();
+
 	/**
 	 * Generates a random number for the question.
 	 * @return the number generated for that round.
@@ -128,5 +127,5 @@ public abstract class Test {
 		}
 		return scores;
 	}
-	
+
 }
