@@ -11,7 +11,7 @@ import java.io.IOException;
 public class Recording {
     private static String TEMP_FOLDER = ".tmp/";
     private static String SOUND_LOG = TEMP_FOLDER + "sound.log";
-    private static String SOUND_FILE = TEMP_FOLDER + "sound.mp3";
+    private static String SOUND_FILE = TEMP_FOLDER + "sound.wav";
 
     private static String COMMAND = "ffmpeg -y -f alsa -acodec pcm_s16le -ac 1 -ar 22050 -i default " + SOUND_FILE;
 
