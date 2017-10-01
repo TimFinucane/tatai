@@ -9,7 +9,7 @@ public abstract class Test {
 	private int _score = 0;
 	private int _testValue;
 	private int _roundsRemaining = 10;
-	private boolean _hasMultipleTries = true;	
+	private int _triesRemaining = 2;
 	
 	
 	public abstract int getRandom();
@@ -20,6 +20,7 @@ public abstract class Test {
 	 */
 	public int getNextRound() {
 		_testValue = getRandom();
+		_triesRemaining = 2;
 		_roundsRemaining--;
 		return _testValue;
 	}
@@ -53,21 +54,25 @@ public abstract class Test {
 	public boolean verify(String answer) {
 		if(answer.equalsIgnoreCase(Translator.convert(_testValue))) {
 			_score++;
-			_hasMultipleTries = true;
 			return true;
 		}
 		else {
-			_hasMultipleTries = false;
+			_triesRemaining--;
 			return false;
 		}
 	}
 	
 	/**
-	 * Method which returns whether or not the user is on their first or second try.
-	 * @return true if they are on their first true or false if they are on their second try.
+	 * Method which returns whether or not the user has more tries
+	 * @return true if they have more tries, false if they don't
 	 */
-	public boolean hasMultipleTries() {
-		return _hasMultipleTries;
+	public boolean hasMoreTries() {
+		if(_triesRemaining > 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 }
