@@ -35,7 +35,7 @@
       <VBox alignment="CENTER" VBox.vgrow="SOMETIMES">
          <children>
             <Label fx:id="recognitionLbl" />
-            <Label fx:id="retryLbl" text="You can try again by re-recording">
+            <Label fx:id="retryLbl" text="You can try again by re-recording" visible="false">
                <font>
                   <Font name="System Italic" size="12.0" />
                </font></Label>

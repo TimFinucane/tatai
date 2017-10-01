@@ -86,6 +86,7 @@ public class TestController extends VBox {
 	 */
     private void	recognize(String text) {
     	recognitionLbl.setText(text);
+
     	if(_model.verify(text)) {
     		recognitionLbl.setTextFill(Color.GREEN);
 		} else {
@@ -120,6 +121,8 @@ public class TestController extends VBox {
 
 		recognitionLbl.setText("");
 		playbackCntrl.dispose();
+
+		submitBtn.setText("Next");
 		submitBtn.setDisable(true);
 
 		numberLbl.setText(Integer.toString(_model.getNextRound()));
