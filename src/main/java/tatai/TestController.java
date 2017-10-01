@@ -85,7 +85,11 @@ public class TestController extends VBox {
 	 * the state
 	 */
     private void	recognize(String text) {
-    	recognitionLbl.setText(text);
+    	if(text.equals("")) {
+    		recognitionLbl.setText("Nothing was recognized");
+		} else {
+			recognitionLbl.setText(text);
+		}
 
     	if(_model.verify(text)) {
     		recognitionLbl.setTextFill(Color.GREEN);
