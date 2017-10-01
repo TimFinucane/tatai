@@ -34,6 +34,10 @@ public class TestController extends VBox {
 			throw new RuntimeException("Unable to load tatai.Test.fxml: " + e.getMessage());
 		}
 
+		recorderCntrl.setDisable(true);
+		playbackCntrl.setDisable(true);
+		submitBtn.setOnAction(e -> nextRound());
+
 		recorderCntrl.onMediaAvailable(this::mediaAvailable);
 		recorderCntrl.onRecognitionComplete(this::recognize);
 	}
@@ -77,6 +81,7 @@ public class TestController extends VBox {
     		recognitionLbl.setTextFill(Color.RED);
 		}
 
+		submitBtn.setDisable(false);
 		if(_model.hasNextRound()) {
 			submitBtn.setText("Continue");
 			submitBtn.setOnAction(e -> nextRound());
@@ -93,6 +98,7 @@ public class TestController extends VBox {
 		recorderCntrl.setDisable(false);
 		recognitionLbl.setText("");
 		playbackCntrl.dispose();
+		submitBtn.setDisable(true);
 
 		numberLbl.setText(Integer.toString(_model.getNextRound()));
 	}
