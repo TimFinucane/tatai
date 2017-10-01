@@ -15,7 +15,7 @@ public class Recognizer {
     private static String TEMP = ".tmp/";
 
     private static String HTK = System.getProperty("user.home") + "/Documents/HTK/MaoriNumbers/";
-    private static String[] HMMS = { HTK + "HMMs/hmm15/macros -H ", HTK + "HMMs/hmm15/hmmdefs" };
+    private static String[] HMMS = { HTK + "HMMs/hmm15/macros", HTK + "HMMs/hmm15/hmmdefs" };
     private static String CONFIG = HTK + "user/configLR";
     private static String NETWORK = HTK + "user/wordNetworkNum";
     private static String OUTPUT = TEMP + "output.mlf";
@@ -34,7 +34,7 @@ public class Recognizer {
     public static void recognize(String filename, Consumer<String> onComplete) {
         String command = buildCommand(filename);
 
-        ProcessBuilder pb = new ProcessBuilder( command.split(" ") );
+        ProcessBuilder pb = new ProcessBuilder( "bash", "-c", command );
 
         // Forget output for now
         pb.redirectError(new File(LOG_FILE));
@@ -72,7 +72,7 @@ public class Recognizer {
         command.append(" -C ");
         command.append(CONFIG);
 
-        command.append(" -w ");
+        command.append("  -w ");
         command.append(NETWORK);
 
         command.append(" ");
@@ -81,7 +81,7 @@ public class Recognizer {
         command.append(" -i ");
         command.append(OUTPUT);
 
-        command.append(" ");
+        command.append("  ");
         command.append(DICTIONARY);
         command.append(" ");
         command.append(TIED_LIST);
@@ -111,13 +111,13 @@ public class Recognizer {
             String line = reader.readLine();
             // Go through, remove occurrences of 'sil' or '.'
             while(line != null) {
-                if(line.equals("sil") || line.equals(".")) {
-                    continue;
+                if(!line.equals("sil") && !line.equals(".")) {
+                    // Occurrences of aa should be replaced with \u0101
+                    output.append(line.replace("aa", "\u0101"));
+                    output.append(" ");
                 }
 
-                // Occurrences of aa should be replaced with \u0101
-                output.append(line.replace("aa", "\u0101"));
-                output.append(" ");
+                line = reader.readLine();
             }
 
             output.deleteCharAt(output.length() - 1);
