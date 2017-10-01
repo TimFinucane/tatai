@@ -37,8 +37,10 @@ public class PlaybackControl extends Region {
      * Disposes of any media currently used. Must be done if you want to delete the media
      */
     public void     dispose() {
-        _player.dispose();
-        _playbackBtn.setDisable(true);
+        if(_player != null) {
+            _player.dispose();
+            _playbackBtn.setDisable(true);
+        }
     }
 
     // Called when the play button is pressed
@@ -55,6 +57,6 @@ public class PlaybackControl extends Region {
     }
 
     private boolean     _playing = false;
-    private MediaPlayer _player;
+    private MediaPlayer _player = null;
     private Button      _playbackBtn;
 }
