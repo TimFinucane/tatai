@@ -101,7 +101,7 @@ public class TestController extends VBox {
 	 */
     private void	recognize(String text) {
 		retryLbl.setVisible(false);
-		
+
     	if(text.equals("")) {
     		recognitionLbl.setText("Nothing was recognized");
 		} else {
@@ -146,7 +146,7 @@ public class TestController extends VBox {
 		submitBtn.setText("Next");
 		submitBtn.setDisable(true);
 
-		numberLbl.setText(Integer.toString(_model.getNextRound()));
+		numberLbl.setText(Integer.toString(_model.nextRound()));
 	}
 
 	/**

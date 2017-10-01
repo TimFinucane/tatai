@@ -1,18 +1,12 @@
 package tatai.model;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * Base model class for testing.
  */
 public abstract class Test {
-
 	private static final String FILENAME = "scores.txt";
 	
 	private int _score = 0;
@@ -24,10 +18,34 @@ public abstract class Test {
 	protected abstract int getRandom();
 
 	/**
+	 * Gets the list of recent scores
+	 */
+	public static ArrayList<Integer> retrieveScores() {
+		ArrayList<Integer> scores = new ArrayList<>();
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(FILENAME));
+
+			int readScore = reader.read();
+			while(readScore != -1) {
+				scores.add(readScore);
+				readScore = reader.read();
+			}
+
+			reader.close();
+		} catch (FileNotFoundException e) {
+			// Do nothing. If the file doesnt exist the intended behaviour is that
+			//  no scores have been recorded
+		} catch (IOException e) {
+			throw new RuntimeException("Unable to read from file properly: " + e.getMessage());
+		}
+		return scores;
+	}
+
+	/**
 	 * Generates a random number for the question.
 	 * @return the number generated for that round.
 	 */
-	public int getNextRound() {
+	public int nextRound() {
 		_testValue = getRandom();
 		_triesRemaining = 2;
 		_roundsRemaining--;
@@ -84,48 +102,20 @@ public abstract class Test {
 			return false;
 		}
 	}
-	
-	public void store() {
+
+	/**
+	 * Stores the current round score
+	 */
+	private void store() {
 		try {
-			File file = new File(FILENAME);
-			
-			//if file doesn't exist, create it
-			if(!file.exists()) {
-				file.createNewFile();
-			}
-			
 			//append to file
-			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
-			BufferedWriter bw = new BufferedWriter(fw);
+			BufferedWriter writer = new BufferedWriter(new FileWriter(FILENAME, true));
 			
-			bw.write(_score);
-			
-			bw.close();
-			fw.close();
-			
+			writer.write(String.valueOf(_score));
+
+			writer.close();
 		} catch(IOException e) {
 			throw new RuntimeException("Unable to store the final score" + e.getMessage());
 		}
-		
 	}
-	
-	public static ArrayList<Integer> retrieveScores() {
-		ArrayList<Integer> scores = new ArrayList<Integer>();
-		try {
-			Scanner sc = new Scanner(new File(FILENAME));
-			
-			while(sc.hasNext()) {
-				if(sc.hasNextInt()) {
-					scores.add(sc.nextInt());
-				}
-			}
-			sc.close();
-			
-			
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		return scores;
-	}
-
 }
