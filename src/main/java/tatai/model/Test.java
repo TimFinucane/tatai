@@ -1,11 +1,21 @@
 package tatai.model;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 /**
  * Base model class for testing.
  */
 
 public abstract class Test {
 
+	private static final String FILENAME = "scores.txt";
+	
 	private int _score = 0;
 	private int _testValue;
 	private int _roundsRemaining = 10;
@@ -34,6 +44,7 @@ public abstract class Test {
 			return true;
 		}
 		else {
+			store();
 			return false;
 		}
 	}
@@ -73,6 +84,49 @@ public abstract class Test {
 		else {
 			return false;
 		}
+	}
+	
+	public void store() {
+		try {
+			File file = new File(FILENAME);
+			
+			//if file doesn't exist, create it
+			if(!file.exists()) {
+				file.createNewFile();
+			}
+			
+			//append to file
+			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
+			BufferedWriter bw = new BufferedWriter(fw);
+			
+			bw.write(_score);
+			
+			bw.close();
+			fw.close();
+			
+		} catch(IOException e) {
+			throw new RuntimeException("Unable to store the final score" + e.getMessage());
+		}
+		
+	}
+	
+	public static ArrayList<Integer> retrieveScores() {
+		ArrayList<Integer> scores = new ArrayList<Integer>();
+		try {
+			Scanner sc = new Scanner(new File(FILENAME));
+			
+			while(sc.hasNext()) {
+				if(sc.hasNextInt()) {
+					scores.add(sc.nextInt());
+				}
+			}
+			sc.close();
+			
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return scores;
 	}
 	
 }
