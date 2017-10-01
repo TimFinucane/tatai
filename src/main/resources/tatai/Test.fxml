@@ -36,7 +36,13 @@
          <children>
             <Label fx:id="recognitionLbl" />
             <Region prefHeight="20.0" VBox.vgrow="NEVER" />
-            <Button fx:id="submitBtn" mnemonicParsing="false" text="Start" />
+            <HBox alignment="TOP_CENTER" spacing="30.0">
+               <children>
+                  <Button fx:id="retryBtn" mnemonicParsing="false" text="Go Again" visible="false" />
+                  <Button fx:id="submitBtn" mnemonicParsing="false" text="Start" />
+                  <Button fx:id="harderBtn" mnemonicParsing="false" text="Harder!" visible="false" />
+               </children>
+            </HBox>
             <Region VBox.vgrow="SOMETIMES" />
          </children>
       </VBox>

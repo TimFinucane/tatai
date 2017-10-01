@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import tatai.model.EasyTest;
 import tatai.model.Test;
 
 import java.io.IOException;
@@ -16,7 +17,7 @@ import java.util.function.Consumer;
  */
 public class TestController extends VBox {
 	enum ReturnState {
-		QUIT,
+		QUIT, // TODO: Use this to notify early exit if ever needed
 		FINISHED,
 		RETRY,
 		RETRY_HARDER
@@ -129,16 +130,24 @@ public class TestController extends VBox {
 
 		recognitionLbl.setTextFill(Color.BLACK);
 
-		if( _model.getScore() >= 8 ) {
+		if(_model.getScore() >= 8) {
 			recognitionLbl.setText("Well done! You got " + _model.getScore() + "/10");
+
+			// TODO: If there are more tests, determine whether this test model has a harder version through test
+			//  interface, instead of this abomination.
+			if(_model instanceof EasyTest) {
+				harderBtn.setVisible(true);
+				harderBtn.setOnAction((e) -> _notifyReturn.accept(ReturnState.RETRY_HARDER));
+			}
 		} else {
 			recognitionLbl.setText("Your score was " + _model.getScore() + "/10");
 		}
 
-		submitBtn.setText("Main Menu");
+		retryBtn.setVisible(true);
+		retryBtn.setOnAction((e) -> _notifyReturn.accept(ReturnState.RETRY));
 
-		// Tell system we are ready to exit
-		_notifyReturn.accept(ReturnState.QUIT);
+		submitBtn.setText("Finish");
+		submitBtn.setOnAction((e) -> _notifyReturn.accept(ReturnState.FINISHED));
 	}
 
 	private Test    				_model;
@@ -157,4 +166,8 @@ public class TestController extends VBox {
 	private Label			recognitionLbl;
     @FXML
 	private Button			submitBtn;
+    @FXML
+	private Button			retryBtn;
+    @FXML
+	private Button			harderBtn;
 }
