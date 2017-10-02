@@ -60,6 +60,9 @@ public class TestController extends VBox {
 		recorderCntrl.setManaged(false);
 		playbackCntrl.setManaged(false);
 
+		retryBtn.setManaged(false);
+		harderBtn.setManaged(false);
+
 		submitBtn.setText("Start");
 		submitBtn.setOnAction(e -> {
 			numberLbl.setManaged(true);
@@ -183,6 +186,7 @@ public class TestController extends VBox {
 			// TODO: If there are more tests, determine whether this test model has a harder version through test
 			//  interface, instead of this abomination.
 			if(_model instanceof EasyTest) {
+				harderBtn.setManaged(true);
 				harderBtn.setVisible(true);
 				harderBtn.setOnAction((e) -> _notifyReturn.accept(ReturnState.RETRY_HARDER));
 			}
@@ -190,6 +194,7 @@ public class TestController extends VBox {
 			recognitionLbl.setText("Good try!");
 		}
 
+		retryBtn.setManaged(true);
 		retryBtn.setVisible(true);
 		retryBtn.setOnAction((e) -> _notifyReturn.accept(ReturnState.RETRY));
 
