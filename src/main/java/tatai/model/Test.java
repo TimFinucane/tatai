@@ -32,7 +32,7 @@ public abstract class Test {
 			BufferedReader reader = new BufferedReader(new FileReader(FILENAME));
 
 			String line = reader.readLine();
-			while(!line.equals("")) {
+			while(line != null) {
 				String items[] = line.split(",");
 				Stat stat = new Stat();
 
