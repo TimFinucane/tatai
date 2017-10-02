@@ -1,0 +1,6 @@
+.playback .button, .recorder .button
+{
+    -fx-border-width: 0px;
+    -fx-background-radius: 0px;
+    -fx-background-color: transparent;
+}

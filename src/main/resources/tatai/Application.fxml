@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
@@ -11,14 +12,18 @@
       <HBox>
          <children>
             <Region HBox.hgrow="SOMETIMES" />
-            <Button fx:id="easyBtn" mnemonicParsing="false" text="Easy" />
+            <Button fx:id="easyBtn" mnemonicParsing="false" text="Ngāwari" />
             <Region HBox.hgrow="SOMETIMES" />
-            <Button fx:id="hardBtn" mnemonicParsing="false" text="Hard" />
+            <Button fx:id="hardBtn" mnemonicParsing="false" text="Whēuaua" />
             <Region HBox.hgrow="SOMETIMES" />
-            <Button fx:id="infoBtn" mnemonicParsing="false" text="Info" />
+            <Button fx:id="infoBtn" mnemonicParsing="false" text="Pārongo" />
             <Region HBox.hgrow="SOMETIMES" />
          </children>
       </HBox>
       <Region VBox.vgrow="ALWAYS" />
    </children>
+   <stylesheets>
+      <URL value="@stylesheets/Background.css" />
+      <URL value="@stylesheets/Buttons.css" />
+   </stylesheets>
 </VBox>
