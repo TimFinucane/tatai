@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import tatai.model.Test;
 
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Shows statistics about the session score
  */
-public class InfoController extends Region {
+public class InfoController extends VBox {
     /**
      * Creates an Info screen. Once the user is done, notifyFinished will be called
      */
