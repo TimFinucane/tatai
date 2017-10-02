@@ -83,13 +83,13 @@ public class InfoController extends Region {
     private Runnable _notifyFinished;
 
     @FXML
-    Label   highEasyLbl;
+    private Label   highEasyLbl;
     @FXML
-    Label   highHardLbl;
+    private Label   highHardLbl;
     @FXML
-    Label   avgEasyLbl;
+    private Label   avgEasyLbl;
     @FXML
-    Label   avgHardLbl;
+    private Label   avgHardLbl;
     @FXML
-    Button  mainMenuBtn;
+    private Button  mainMenuBtn;
 }

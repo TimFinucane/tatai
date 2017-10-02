@@ -6,7 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import tatai.model.EasyTest;
 import tatai.model.HardTest;
 
@@ -66,7 +65,12 @@ public class Application extends javafx.application.Application {
     }
     // Called when the info button has been pressed
     private void info() {
-        throw new NotImplementedException();
+        InfoController info = new InfoController(() ->
+            Platform.runLater(() -> {
+            _stage.setScene(_mainScreen);
+            _stage.show();
+        }));
+
     }
 
     /**
