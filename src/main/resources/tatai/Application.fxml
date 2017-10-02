@@ -24,6 +24,6 @@
    </children>
    <stylesheets>
       <URL value="@stylesheets/Background.css" />
-      <URL value="@stylesheets/Application.css" />
+      <URL value="@stylesheets/Buttons.css" />
    </stylesheets>
 </VBox>

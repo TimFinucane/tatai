@@ -9,3 +9,8 @@
 
     -fx-text-fill: black;
 }
+.button:pressed
+{
+    -fx-background-color: rgba(255, 255, 255, 0.3);
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.18), 5, 0.8, 3, 3);
+}
