@@ -6,8 +6,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import tatai.model.Test;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Shows statistics about the session score
@@ -40,7 +42,42 @@ public class InfoController extends Region {
     }
 
     private void loadData() {
-        // TODO:
+        List<Test.Stat> data = Test.retrieveScores();
+
+        int easyHigh = 0;
+        int easyCount = 0;
+        double easySum = 0;
+
+        int hardHigh = 0;
+        int hardCount = 0;
+        double hardSum = 0;
+
+        for(Test.Stat stat : data) {
+            if(stat.type.equals("Easy Test")) {
+                easyCount++;
+                easySum += stat.score;
+                easyHigh = stat.score > easyHigh ? stat.score : easyHigh;
+            } else {
+                hardCount++;
+                hardSum += stat.score;
+                hardHigh = stat.score > hardHigh ? stat.score : hardHigh;
+            }
+        }
+
+        highEasyLbl.setText(String.valueOf(easyHigh));
+        highHardLbl.setText(String.valueOf(hardHigh));
+
+        if(easyCount != 0) {
+            avgEasyLbl.setText(String.valueOf(easySum/easyCount));
+        } else {
+            avgEasyLbl.setText("0");
+        }
+        if(hardCount != 0) {
+            avgHardLbl.setText(String.valueOf(hardSum/hardCount));
+        } else {
+            avgHardLbl.setText("0");
+        }
+
     }
 
     private Runnable _notifyFinished;

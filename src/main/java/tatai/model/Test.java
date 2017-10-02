@@ -9,8 +9,8 @@ import java.util.List;
  */
 public abstract class Test {
 	public static class Stat {
-		String 	type;
-		int 	score;
+		public String 	type;
+		public int 		score;
 	}
 
 	private static final String FILENAME = "scores.txt";
