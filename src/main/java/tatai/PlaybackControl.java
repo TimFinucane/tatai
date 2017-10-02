@@ -25,7 +25,7 @@ public class PlaybackControl extends Region {
      * Sets the media to be played
      */
     public void     setMedia(Media media) {
-        _player.dispose();
+        dispose();
         _player = new MediaPlayer(media);
         _playbackBtn.setDisable(false);
     }

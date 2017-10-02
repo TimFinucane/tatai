@@ -1,0 +1,6 @@
+This project is designed to run on a specific VM which already contains:
+ - OpenJDK (JRE) 8
+ - HTK
+ - Certain HTK configuration files for Maori Numbers (Located in ~/Documents/HTK/MaoriNumbers), including HMMs, a config, dictionary, and a tied list.
+ 
+This project also needs JavaFX 8 (min) to run, and to that effect install.sh exists to install that one component only.

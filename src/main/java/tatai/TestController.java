@@ -51,8 +51,23 @@ public class TestController extends VBox {
 		playbackCntrl.setVisible(false);
 		recorderCntrl.setVisible(false);
 
+		numberLbl.setManaged(false);
+		recorderCntrl.setManaged(false);
+		playbackCntrl.setManaged(false);
+
 		submitBtn.setText("Start");
-		submitBtn.setOnAction(e -> nextRound());
+		submitBtn.setOnAction(e -> {
+			numberLbl.setManaged(true);
+			recorderCntrl.setManaged(true);
+			playbackCntrl.setManaged(true);
+
+			playbackCntrl.setVisible(true);
+			recorderCntrl.setVisible(true);
+
+			nextRound();
+		});
+
+		recognitionLbl.setText("Welcome to the " + model.name());
 
 		recorderCntrl.onMediaAvailable(this::mediaAvailable);
 		recorderCntrl.onRecognitionComplete(this::recognize);
@@ -80,11 +95,18 @@ public class TestController extends VBox {
 	}
 
 	/**
-	 * Called when the recorder  has finished recognizing the text. Handles all
+	 * Called when the recorder has finished recognizing the text. Handles all
 	 * the state
 	 */
     private void	recognize(String text) {
-    	recognitionLbl.setText(text);
+		retryLbl.setVisible(false);
+		playbackCntrl.setDisable(false);
+
+    	if(text.equals("")) {
+    		recognitionLbl.setText("Nothing was recognized");
+		} else {
+			recognitionLbl.setText(text);
+		}
 
     	if(_model.verify(text)) {
     		recognitionLbl.setTextFill(Color.GREEN);
@@ -92,12 +114,14 @@ public class TestController extends VBox {
 			if(_model.hasMoreTries()) {
 				retryLbl.setVisible(true);
 			} else {
+				// No more tries for you
 				recorderCntrl.setDisable(true);
 			}
 
     		recognitionLbl.setTextFill(Color.RED);
 		}
 
+		// Prepare user submit options
 		submitBtn.setDisable(false);
 		if(_model.hasNextRound()) {
 			submitBtn.setText("Next");
@@ -114,8 +138,7 @@ public class TestController extends VBox {
 	private void	nextRound() {
 		retryLbl.setVisible(false);
 
-		playbackCntrl.setVisible(true);
-		recorderCntrl.setVisible(true);
+		playbackCntrl.setDisable(true);
 		recorderCntrl.setDisable(false);
 
 		recognitionLbl.setText("");
@@ -124,7 +147,7 @@ public class TestController extends VBox {
 		submitBtn.setText("Next");
 		submitBtn.setDisable(true);
 
-		numberLbl.setText(Integer.toString(_model.getNextRound()));
+		numberLbl.setText(Integer.toString(_model.nextRound()));
 	}
 
 	/**
@@ -133,6 +156,7 @@ public class TestController extends VBox {
 	private void	finish() {
 		numberLbl.setText(_model.getScore() + "/10");
 		retryLbl.setVisible(false);
+
 		playbackCntrl.setVisible(false);
 		recorderCntrl.setVisible(false);
 
@@ -162,6 +186,8 @@ public class TestController extends VBox {
 	private Consumer<ReturnState>	_notifyReturn;
 
     // FXML controls
+	@FXML
+	private VBox			testBox;
     @FXML
     private Label           numberLbl;
     @FXML
