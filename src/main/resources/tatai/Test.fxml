@@ -53,6 +53,7 @@
    </children>
    <stylesheets>
       <URL value="@stylesheets/Background.css" />
+      <URL value="@stylesheets/Buttons.css" />
       <URL value="@stylesheets/Test.css" />
    </stylesheets>
 </fx:root>
