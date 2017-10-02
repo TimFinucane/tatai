@@ -26,8 +26,13 @@ public class TestController extends VBox {
 	private static double NUMBER_HEIGHT_DIV = 5;
     private static double NUMBER_WIDTH_DIV = 3;
     private static double CONTROL_SIZE_DIV = 8;
+    private static double BUTTON_SIZE_DIV = 24;
+    private static double LABEL_HEIGHT_DIV = 20;
+	private static double RECOGNITION_WIDTH_DIV = 12;
+	private static double RETRY_WIDTH_DIV = 30;
 
-    /**
+
+	/**
      * Creates and starts a test.
 	 * When the user is ready to finish the test, notifyReturn is called
 	 * with the appropriate ReturnState.
@@ -81,10 +86,20 @@ public class TestController extends VBox {
         // These numbers are pretty good as they are
         double numberSize = Math.min(getHeight()/NUMBER_HEIGHT_DIV, getWidth()/NUMBER_WIDTH_DIV);
         double controlSize = Math.min(getHeight()/CONTROL_SIZE_DIV, getWidth()/CONTROL_SIZE_DIV);
+		double buttonSize = Math.min(getHeight()/BUTTON_SIZE_DIV, getWidth()/BUTTON_SIZE_DIV);
+		double recognitionSize = Math.min(getHeight()/LABEL_HEIGHT_DIV, getWidth()/RECOGNITION_WIDTH_DIV);
+		double retrySize = Math.min(getHeight()/LABEL_HEIGHT_DIV, getWidth()/RETRY_WIDTH_DIV);
 
         numberLbl.setStyle("-fx-font-size: " + numberSize);
         playbackCntrl.resize(controlSize);
         recorderCntrl.resize(controlSize);
+
+        submitBtn.setStyle("-fx-font-size: " + buttonSize);
+		retryBtn.setStyle("-fx-font-size: " + buttonSize);
+		harderBtn.setStyle("-fx-font-size: " + buttonSize);
+
+		recognitionLbl.setStyle("-fx-font-size: " + recognitionSize);
+		retryLbl.setStyle("-fx-font-size: " + retrySize);
     }
 
 	/**
