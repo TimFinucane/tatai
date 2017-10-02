@@ -71,6 +71,8 @@ public class Application extends javafx.application.Application {
             _stage.show();
         }));
 
+        _stage.setScene(new Scene(info));
+        _stage.show();
     }
 
     /**

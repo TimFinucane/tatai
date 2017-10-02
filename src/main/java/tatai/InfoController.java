@@ -19,6 +19,8 @@ public class InfoController extends VBox {
      * Creates an Info screen. Once the user is done, notifyFinished will be called
      */
     public InfoController(Runnable notifyFinished) {
+        _notifyFinished = notifyFinished;
+
         // Load fxml, set self to act as controller and root
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/tatai/Info.fxml"));
 
