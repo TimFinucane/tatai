@@ -1,7 +1,7 @@
 package tatai;
 
-import javafx.beans.binding.Bindings;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import tatai.model.EasyTest;
 import tatai.model.HardTest;
+import tatai.model.Test;
 
 import java.io.IOException;
 
@@ -18,6 +19,7 @@ import java.io.IOException;
 public class Application extends javafx.application.Application {
     private static String APP_NAME = "T\u0101tai";
 
+    // Do this as cheap hack so that buttons are same size
     private static String EASY_ENGLISH = "  Simple  ";
     private static String EASY_MAORI = "Ng\u0101wari";
     private static String HARD_ENGLISH = "  Difficult  ";
@@ -62,6 +64,9 @@ public class Application extends javafx.application.Application {
         easyBtn.setOnAction((ignored) -> easyTest());
         hardBtn.setOnAction((ignored) -> hardTest());
         infoBtn.setOnAction((ignored) -> info());
+
+        // Clear scores on shutdown, so only most recent session is shown
+        Runtime.getRuntime().addShutdownHook(new Thread(Test::clearScores));
 
         _stage.show();
     }

@@ -54,6 +54,10 @@ public abstract class Test {
 		return scores;
 	}
 
+	public static void	clearScores() {
+		new File(FILENAME).delete();
+	}
+
 	/**
 	 * Generates a random number for the question.
 	 * @return the number generated for that round.
