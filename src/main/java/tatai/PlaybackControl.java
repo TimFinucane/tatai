@@ -30,6 +30,8 @@ public class PlaybackControl extends Region {
     public void     setMedia(Media media) {
         dispose();
         _player = new MediaPlayer(media);
+        _player.setOnEndOfMedia(this::stopped);
+
         _playbackBtn.setDisable(false);
     }
 
@@ -41,6 +43,13 @@ public class PlaybackControl extends Region {
             _player.dispose();
             _playbackBtn.setDisable(true);
         }
+    }
+
+    /**
+     * Called when the media has automatically stopped
+     */
+    private void stopped() {
+        stop();
     }
 
     // Called when the play button is pressed
