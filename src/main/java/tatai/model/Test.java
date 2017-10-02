@@ -2,11 +2,17 @@ package tatai.model;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Base model class for testing.
  */
 public abstract class Test {
+	public static class Stat {
+		public String 	type;
+		public int 		score;
+	}
+
 	private static final String FILENAME = "scores.txt";
 	
 	private int _score = 0;
@@ -20,15 +26,22 @@ public abstract class Test {
 	/**
 	 * Gets the list of recent scores
 	 */
-	public static ArrayList<Integer> retrieveScores() {
-		ArrayList<Integer> scores = new ArrayList<>();
+	public static List<Stat> retrieveScores() {
+		ArrayList<Stat> scores = new ArrayList<>();
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(FILENAME));
 
-			int readScore = reader.read();
-			while(readScore != -1) {
-				scores.add(readScore);
-				readScore = reader.read();
+			String line = reader.readLine();
+			while(line != null) {
+				String items[] = line.split(",");
+				Stat stat = new Stat();
+
+				stat.type = items[0];
+				stat.score = Integer.parseInt(items[1]);
+
+				scores.add(stat);
+
+				line = reader.readLine();
 			}
 
 			reader.close();
@@ -110,7 +123,9 @@ public abstract class Test {
 		try {
 			//append to file
 			BufferedWriter writer = new BufferedWriter(new FileWriter(FILENAME, true));
-			
+
+			writer.write(name());
+			writer.write(",");
 			writer.write(String.valueOf(_score));
 			writer.newLine();
 
