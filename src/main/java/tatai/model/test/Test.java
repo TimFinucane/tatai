@@ -6,14 +6,13 @@ package tatai.model.test;
 public class Test {
 	private int 	    _score = 0;
 	private int 	    _roundsRemaining = 10;
-	private int 	    _triesRemaining = 2;
 
 	private Question    _question;
 	private String	    _name;
 
 	public Test(String name, int minValue, int maxValue) {
 	    _name = name;
-	    _question = new Question(new Question.Range(minValue, maxValue));
+	    _question = new Question(new Question.Range(minValue, maxValue), 2);
     }
 
     public String   name() {
@@ -28,7 +27,6 @@ public class Test {
 	 * @return the question generated for that round.
 	 */
 	public String	nextRound() {
-		_triesRemaining = 2;
 		_roundsRemaining--;
 		return _question.generate();
 	}
@@ -57,7 +55,6 @@ public class Test {
 			_score++;
 			return true;
 		} else {
-			_triesRemaining--;
 			return false;
 		}
 	}
@@ -66,7 +63,7 @@ public class Test {
 	 * Method which returns whether or not the user has more tries
 	 * @return true if they have more tries, false if they don't
 	 */
-	public boolean 	hasTryRemaining() {
-		return _triesRemaining > 0;
+	public boolean 	hasAnotherTry() {
+		return _question.hasAnotherTry();
 	}
 }

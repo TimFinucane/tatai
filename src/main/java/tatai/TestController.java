@@ -127,7 +127,7 @@ public class TestController extends VBox {
     	if(_model.tryAnswer(text))
     		recognitionLbl.setTextFill(Color.GREEN);
 		else {
-			if(_model.hasTryRemaining())
+			if(_model.hasAnotherTry())
 				retryLbl.setVisible(true);
 			else
 				recorderCntrl.setDisable(true);

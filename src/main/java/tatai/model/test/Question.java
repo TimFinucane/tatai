@@ -28,7 +28,8 @@ class Question {
     /**
      * Should only be created by a Test
      */
-    Question(Range range) {
+    Question(Range range, int maxTries) {
+        _maxTries = maxTries;
         this._range = range;
     }
 
@@ -36,6 +37,8 @@ class Question {
      * Generates a question
      */
     String   generate() {
+        _tries = _maxTries;
+
         _curAnswer = _range.random();
         return Integer.toString(_curAnswer);
     }
@@ -44,10 +47,23 @@ class Question {
      * Checks whether submission is correct
      */
     boolean 	verify(String submission) {
+        // TODO: Throw if tries < 0? Doesn't seem important atm
+        _tries--;
+
         return submission.equalsIgnoreCase(Translator.convert(_curAnswer));
     }
 
+    /**
+     * Whether or not the question can be re-attempted
+     */
+    boolean     hasAnotherTry() {
+        return _tries > 0;
+    }
+
     private int     _curAnswer;
+
+    private int     _tries;
+    private int     _maxTries;
 
     private Range   _range;
 }
