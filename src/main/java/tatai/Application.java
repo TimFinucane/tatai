@@ -9,7 +9,7 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import tatai.model.EasyTest;
 import tatai.model.HardTest;
-import tatai.model.Test;
+import tatai.model.Scores;
 
 import java.io.IOException;
 
@@ -66,7 +66,7 @@ public class Application extends javafx.application.Application {
         infoBtn.setOnAction((ignored) -> info());
 
         // Clear scores on shutdown, so only most recent session is shown
-        Runtime.getRuntime().addShutdownHook(new Thread(Test::clearScores));
+        Runtime.getRuntime().addShutdownHook(new Thread(Scores::clear));
 
         _stage.show();
     }

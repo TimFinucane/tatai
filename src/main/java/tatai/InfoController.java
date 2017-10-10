@@ -6,10 +6,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import tatai.model.Test;
+import tatai.model.Scores;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Shows statistics about the session score
@@ -70,7 +71,7 @@ public class InfoController extends VBox {
     }
 
     private void loadData() {
-        List<Test.Stat> data = Test.retrieveScores();
+        Map<String, ArrayList<Integer>> data = Scores.retrieve();
 
         int easyHigh = 0;
         int easyCount = 0;
@@ -80,15 +81,13 @@ public class InfoController extends VBox {
         int hardCount = 0;
         double hardSum = 0;
 
-        for(Test.Stat stat : data) {
-            if(stat.type.equals("Easy Test")) {
-                easyCount++;
-                easySum += stat.score;
-                easyHigh = stat.score > easyHigh ? stat.score : easyHigh;
-            } else {
-                hardCount++;
-                hardSum += stat.score;
-                hardHigh = stat.score > hardHigh ? stat.score : hardHigh;
+        for(Map.Entry<String, ArrayList<Integer>> entry : data.entrySet()) {
+            if(entry.getKey().equals("Easy Test")) {
+                easySum = entry.getValue().stream().mapToInt(Integer::valueOf).sum();
+                easyHigh = entry.getValue().stream().mapToInt(Integer::valueOf).max().getAsInt();
+            } else if(entry.getKey().equals("Hard Test")) {
+                hardSum = entry.getValue().stream().mapToInt(Integer::valueOf).sum();
+                hardHigh = entry.getValue().stream().mapToInt(Integer::valueOf).max().getAsInt();
             }
         }
 
