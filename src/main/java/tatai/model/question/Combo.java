@@ -1,6 +1,7 @@
 package tatai.model.question;
 
 import javafx.util.Pair;
+import util.NumberGenerator;
 
 class Combo extends Generator {
     enum Operator {
@@ -60,28 +61,26 @@ class Combo extends Generator {
         _second = second;
     }
 
-    public Pair<String, Integer>    generate() {
-        Pair<String, Integer> left = _first.generate();
-        Pair<String, Integer> right = _second.generate();
+    @Override
+    Pair<String, Integer>    generate(NumberGenerator number) {
+        Pair<String, Integer> left = _first.generate(number);
+        Pair<String, Integer> right = _second.generate(number);
 
-        _chosenOp = _operators[_random.nextInt(_operators.length)];
+        _chosenOp = _operators[(int)(Math.random() * _operators.length)];
 
-        StringBuilder output = new StringBuilder();
+        String question = tryEnclose(_first, left.getKey()) + _chosenOp.symbol + tryEnclose(_second, right.getKey());
 
-        // If either operation has a lower precedence, surround it in brackets
-        if(_first instanceof Combo && ((Combo) _first)._chosenOp.importance < _chosenOp.importance)
-            output.append("(").append(left.getKey()).append(")");
+        return new Pair<>(question, _chosenOp.apply(left.getValue(), right.getValue()));
+    }
+
+    /**
+     * Encloses the op string in brackets if the operation generating it has lower precedence than this one
+     */
+    private String                  tryEnclose(Generator generator, String op) {
+        if(generator instanceof Combo && ((Combo) generator)._chosenOp.importance < _chosenOp.importance)
+            return "(" + op + ")";
         else
-            output.append(left.getKey());
-
-        output.append(" ").append(_chosenOp.symbol).append(" ");
-
-        if(_second instanceof Combo && ((Combo) _second)._chosenOp.importance < _chosenOp.importance)
-            output.append("(").append(right.getKey()).append(")");
-        else
-            output.append(right.getKey());
-
-        return new Pair<>(output.toString(), _chosenOp.apply(left.getValue(), right.getValue()));
+            return op;
     }
 
     private Generator   _first;

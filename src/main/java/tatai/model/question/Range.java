@@ -1,6 +1,7 @@
 package tatai.model.question;
 
 import javafx.util.Pair;
+import util.NumberGenerator;
 
 class Range extends Generator {
     Range(int min, int max) {
@@ -11,8 +12,11 @@ class Range extends Generator {
     /**
      * Produces a _random number between the minimum and maximum
      */
-    public Pair<String, Integer> generate() {
-        int answer = _random.nextInt(max + 1 - min) + min;
+    @Override
+    public Pair<String, Integer> generate(NumberGenerator number) {
+        number.greaterThanOrEqualTo(min).lessThanOrEqualTo(max);
+
+        int answer = number.generate();
         return new Pair<>(Integer.toString(answer), answer);
     }
 

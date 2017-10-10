@@ -2,21 +2,21 @@ package util;
 
 import java.util.Random;
 
-public class Number {
-    public Number   lessThanOrEqualTo(int max) {
+public class NumberGenerator {
+    public NumberGenerator  lessThanOrEqualTo(int max) {
         _max = Math.min(_max, max);
         return this;
     }
-    public Number   greaterThanOrEqualTo(int min) {
+    public NumberGenerator  greaterThanOrEqualTo(int min) {
         _min = Math.max(_min, min);
         return this;
     }
-    public Number   divisibleBy(int lcm) {
+    public NumberGenerator  divisibleBy(int lcm) {
         _lcm *= lcm;
         return this;
     }
 
-    public int      generate() {
+    public int              generate() {
         return _min + _random.nextInt((_max - _min)/_lcm) * _lcm;
     }
 
