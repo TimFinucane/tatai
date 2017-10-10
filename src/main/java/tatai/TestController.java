@@ -6,7 +6,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import tatai.model.test.EasyTest;
 import tatai.model.test.Test;
 
 import java.io.IOException;
@@ -185,7 +184,7 @@ public class TestController extends VBox {
 
 			// TODO: If there are more tests, determine whether this test model has a harder version through test
 			//  interface, instead of this abomination.
-			if(_model instanceof EasyTest) {
+			if(_model.name().equals("EasyTest")) {
 				harderBtn.setManaged(true);
 				harderBtn.setVisible(true);
 				harderBtn.setOnAction((e) -> _notifyReturn.accept(ReturnState.RETRY_HARDER));

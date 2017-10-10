@@ -7,9 +7,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
-import tatai.model.test.EasyTest;
-import tatai.model.test.HardTest;
 import tatai.model.test.Scores;
+import tatai.model.test.Test;
 
 import java.io.IOException;
 
@@ -73,7 +72,7 @@ public class Application extends javafx.application.Application {
 
     // Called when the easy button has been pressed
     private void easyTest() {
-    	TestController test = new TestController(new EasyTest(), (state) ->
+    	TestController test = new TestController(new Test("EasyTest", 1, 9), (state) ->
                 Platform.runLater(() -> testComplete(state, true))
         );
 
@@ -82,7 +81,7 @@ public class Application extends javafx.application.Application {
     }
     // Called when the hard button has been pressed
     private void hardTest() {
-        TestController test = new TestController(new HardTest(), (state) ->
+        TestController test = new TestController(new Test("HardTest", 1, 99), (state) ->
                 Platform.runLater(() -> testComplete(state, false))
         );
 

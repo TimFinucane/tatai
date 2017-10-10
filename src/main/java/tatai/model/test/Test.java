@@ -2,24 +2,37 @@ package tatai.model.test;
 
 import tatai.model.Translator;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 /**
  * Base model class for testing.
  */
-public abstract class Test {
-	private int _score = 0;
-	private int _testValue;
-	private int _roundsRemaining = 10;
-	private int _triesRemaining = 2;
+public class Test {
+	private int 	_score = 0;
+	private int 	_testValue;
+	private int 	_roundsRemaining = 10;
+	private int 	_triesRemaining = 2;
 
-	public abstract String name();
-	protected abstract int getRandom();
+	private int     _minValue;
+	private int     _maxValue;
+	private String	_name;
+
+	public Test(String name, int minValue, int maxValue) {
+	    _name = name;
+	    _minValue = minValue;
+	    _maxValue = maxValue;
+    }
+
+    public String   name() {
+	    return _name;
+    }
 
 	/**
 	 * Generates a random number for the question.
 	 * @return the number generated for that round.
 	 */
 	public int 		nextRound() {
-		_testValue = getRandom();
+		_testValue = random();
 		_triesRemaining = 2;
 		_roundsRemaining--;
 		return _testValue;
@@ -34,7 +47,7 @@ public abstract class Test {
 			return true;
 		}
 		else {
-			Scores.save(name(), _score);
+			Scores.save(_name, _score);
 			return false;
 		}
 	}
@@ -70,4 +83,8 @@ public abstract class Test {
 	public boolean 	hasMoreTries() {
 		return _triesRemaining > 0;
 	}
+
+	private int     random() {
+        return ThreadLocalRandom.current().nextInt(_minValue, _maxValue + 1);
+    }
 }
