@@ -62,11 +62,21 @@ class Combo extends Generator {
     }
 
     @Override
-    Pair<String, Integer>    generate(NumberGenerator number) {
-        Pair<String, Integer> left = _first.generate(number);
-        Pair<String, Integer> right = _second.generate(number);
-
+    Pair<String, Integer>   generate(NumberGenerator number) {
+        // Choose op to use
         _chosenOp = _operators[(int)(Math.random() * _operators.length)];
+
+        // Start generation
+        Pair<String, Integer> left;
+        Pair<String, Integer> right;
+
+        if(_chosenOp == Operator.DIVIDE) {
+            right = _second.generate(number);
+            left = _first.generate(number.divisibleBy(right.getValue())); // Ensure an integer is produced
+        } else {
+            left = _first.generate(number);
+            right = _second.generate(number);
+        }
 
         String question = tryEnclose(_first, left.getKey()) + _chosenOp.symbol + tryEnclose(_second, right.getKey());
 
@@ -76,7 +86,7 @@ class Combo extends Generator {
     /**
      * Encloses the op string in brackets if the operation generating it has lower precedence than this one
      */
-    private String                  tryEnclose(Generator generator, String op) {
+    private String          tryEnclose(Generator generator, String op) {
         if(generator instanceof Combo && ((Combo) generator)._chosenOp.importance < _chosenOp.importance)
             return "(" + op + ")";
         else
