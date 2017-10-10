@@ -19,10 +19,13 @@ public class Test {
     public String   name() {
 	    return _name;
     }
+    public int 		score() {
+        return _score;
+    }
 
 	/**
-	 * Generates a random number for the question.
-	 * @return the number generated for that round.
+	 * Generates a random question.
+	 * @return the question generated for that round.
 	 */
 	public String	nextRound() {
 		_triesRemaining = 2;
@@ -43,26 +46,17 @@ public class Test {
 			return false;
 		}
 	}
-	
-	/**
-	 * Method that returns the user's score.
-	 * @return the user's score.
-	 */
-	public int 		getScore() {
-		return _score;
-	}
-	
+
 	/**
 	 * Method which compares the users answer to the expected result.
 	 * @param answer the user's response 
 	 * @return true if the answer is equal to the expected result.
 	 */
-	public boolean 	verify(String answer) {
+	public boolean 	tryAnswer(String answer) {
 		if(_question.verify(answer)) {
 			_score++;
 			return true;
-		}
-		else {
+		} else {
 			_triesRemaining--;
 			return false;
 		}
@@ -72,7 +66,7 @@ public class Test {
 	 * Method which returns whether or not the user has more tries
 	 * @return true if they have more tries, false if they don't
 	 */
-	public boolean 	hasMoreTries() {
+	public boolean 	hasTryRemaining() {
 		return _triesRemaining > 0;
 	}
 }

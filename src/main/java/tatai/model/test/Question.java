@@ -9,7 +9,7 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 class Question {
     static class Range {
-        public Range(int min, int max) {
+        Range(int min, int max) {
             this.min = min;
             this.max = max;
         }
@@ -17,34 +17,37 @@ class Question {
         /**
          * Produces a random number between the minimum and maximum
          */
-        public int     random() {
+        int     random() {
             return ThreadLocalRandom.current().nextInt(min, max + 1);
         }
 
         private int min;
-        private int max;
+        private int max; // inclusive
     }
 
     /**
      * Should only be created by a Test
      */
     Question(Range range) {
-        this.range = range;
+        this._range = range;
     }
 
     /**
      * Generates a question
      */
-    public String   generate() {
-        curAnswer = range.random();
-        return Integer.toString(curAnswer);
+    String   generate() {
+        _curAnswer = _range.random();
+        return Integer.toString(_curAnswer);
     }
 
-    public boolean 	verify(String submission) {
-        return submission.equalsIgnoreCase(Translator.convert(curAnswer));
+    /**
+     * Checks whether submission is correct
+     */
+    boolean 	verify(String submission) {
+        return submission.equalsIgnoreCase(Translator.convert(_curAnswer));
     }
 
-    private int     curAnswer;
+    private int     _curAnswer;
 
-    private Range   range;
+    private Range   _range;
 }
