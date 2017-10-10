@@ -6,7 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import tatai.model.Scores;
+import tatai.model.test.Scores;
 
 import java.io.IOException;
 import java.util.ArrayList;

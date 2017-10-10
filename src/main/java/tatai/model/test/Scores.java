@@ -1,4 +1,4 @@
-package tatai.model;
+package tatai.model.test;
 
 import com.sun.media.jfxmedia.logging.Logger;
 

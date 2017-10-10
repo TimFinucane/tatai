@@ -1,4 +1,6 @@
-package tatai.model;
+package tatai.model.test;
+
+import tatai.model.Translator;
 
 /**
  * Base model class for testing.

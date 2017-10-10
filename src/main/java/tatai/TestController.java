@@ -6,8 +6,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import tatai.model.EasyTest;
-import tatai.model.Test;
+import tatai.model.test.EasyTest;
+import tatai.model.test.Test;
 
 import java.io.IOException;
 import java.util.function.Consumer;

@@ -1,4 +1,4 @@
-package tatai.model;
+package tatai.model.test;
 
 import java.util.concurrent.ThreadLocalRandom;
 

@@ -7,9 +7,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
-import tatai.model.EasyTest;
-import tatai.model.HardTest;
-import tatai.model.Scores;
+import tatai.model.test.EasyTest;
+import tatai.model.test.HardTest;
+import tatai.model.test.Scores;
 
 import java.io.IOException;
 
