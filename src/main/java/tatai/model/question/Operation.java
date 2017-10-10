@@ -3,7 +3,7 @@ package tatai.model.question;
 import javafx.util.Pair;
 import util.NumberGenerator;
 
-class Combo extends Generator {
+class Operation extends Generator {
     enum Operator {
         PLUS("+", 1),
         MINUS("-", 1),
@@ -55,7 +55,7 @@ class Combo extends Generator {
         int     importance;
     }
 
-    Combo(Generator first, Generator second, Operator[] ops) {
+    Operation(Generator first, Generator second, Operator[] ops) {
         _first = first;
         _operators = ops;
         _second = second;
@@ -87,7 +87,7 @@ class Combo extends Generator {
      * Encloses the op string in brackets if the operation generating it has lower precedence than this one
      */
     private String          tryEnclose(Generator generator, String op) {
-        if(generator instanceof Combo && ((Combo) generator)._chosenOp.importance < _chosenOp.importance)
+        if(generator instanceof Operation && ((Operation) generator)._chosenOp.importance < _chosenOp.importance)
             return "(" + op + ")";
         else
             return op;
