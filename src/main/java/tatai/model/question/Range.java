@@ -3,8 +3,8 @@ package tatai.model.question;
 import javafx.util.Pair;
 import util.NumberGenerator;
 
-class Range extends Generator {
-    Range(int min, int max) {
+class Range implements Generatable {
+    public Range(int min, int max) {
         this.min = min;
         this.max = max;
     }
@@ -18,6 +18,11 @@ class Range extends Generator {
 
         int answer = number.generate();
         return new Pair<>(Integer.toString(answer), answer);
+    }
+
+    @Override
+    public String toString() {
+        return "(" + min + " to " + max + ")";
     }
 
     private int min;

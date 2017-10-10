@@ -3,12 +3,14 @@ package tatai.model.question;
 import javafx.util.Pair;
 import util.NumberGenerator;
 
-class Operation extends Generator {
+import java.util.Arrays;
+
+class Operation implements Generatable {
     enum Operator {
         PLUS("+", 1),
-        MINUS("-", 1),
-        MULTIPLY("*", 2),
-        DIVIDE("/", 2);
+        MINUS("\u2212", 1),
+        MULTIPLY("\u00D7", 2),
+        DIVIDE("\u00F7", 2);
 
         Operator(String symbol, int importance) {
             this.symbol = symbol;
@@ -55,14 +57,14 @@ class Operation extends Generator {
         int     importance;
     }
 
-    Operation(Generator first, Generator second, Operator[] ops) {
+    Operation(Generatable first, Generatable second, Operator[] ops) {
         _first = first;
         _operators = ops;
         _second = second;
     }
 
     @Override
-    Pair<String, Integer>   generate(NumberGenerator number) {
+    public Pair<String, Integer>    generate(NumberGenerator number) {
         // Choose op to use
         _chosenOp = _operators[(int)(Math.random() * _operators.length)];
 
@@ -83,18 +85,23 @@ class Operation extends Generator {
         return new Pair<>(question, _chosenOp.apply(left.getValue(), right.getValue()));
     }
 
+    @Override
+    public String                   toString() {
+        return "(" + _first.toString() + " " + Arrays.toString(_operators) + " " + _second.toString() + ")";
+    }
+
     /**
      * Encloses the op string in brackets if the operation generating it has lower precedence than this one
      */
-    private String          tryEnclose(Generator generator, String op) {
-        if(generator instanceof Operation && ((Operation) generator)._chosenOp.importance < _chosenOp.importance)
+    private String                  tryEnclose(Generatable generatable, String op) {
+        if( generatable instanceof Operation && ((Operation) generatable)._chosenOp.importance < _chosenOp.importance)
             return "(" + op + ")";
         else
             return op;
     }
 
-    private Generator   _first;
-    private Generator   _second;
+    private Generatable _first;
+    private Generatable _second;
 
     private Operator    _chosenOp;
     private Operator[]  _operators;

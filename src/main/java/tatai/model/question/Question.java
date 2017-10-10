@@ -8,8 +8,8 @@ import util.NumberGenerator;
  * A question uses a specification to generate a specific string for the user to answer
  */
 public class Question {
-    public Question(int min, int max) {
-        _question = new Range(min, max);
+    public Question(Generatable question) {
+        _question = question;
         _maxTries = 2;
     }
 
@@ -41,10 +41,14 @@ public class Question {
         return _tries > 0;
     }
 
+    public String   toString() {
+        return _question.toString() + " x" + _maxTries;
+    }
+
     private int     _curAnswer;
 
     private int     _tries;
     private int     _maxTries;
 
-    private Generator   _question;
+    private Generatable _question;
 }

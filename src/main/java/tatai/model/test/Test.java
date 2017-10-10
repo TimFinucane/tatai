@@ -1,6 +1,7 @@
 package tatai.model.test;
 
 import tatai.model.question.Question;
+import tatai.model.question.QuestionReader;
 
 /**
  * Base model class for testing.
@@ -8,7 +9,7 @@ import tatai.model.question.Question;
 public class Test {
 	public Test(String name, int minValue, int maxValue) {
 	    _name = name;
-	    _question = new Question(minValue, maxValue);
+	    _question = QuestionReader.read("(" + minValue + " to " + maxValue + ")");
     }
 
     public String   name() {
