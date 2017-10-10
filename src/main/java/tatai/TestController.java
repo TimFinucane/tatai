@@ -164,7 +164,7 @@ public class TestController extends VBox {
 		submitBtn.setText("Next");
 		submitBtn.setDisable(true);
 
-		numberLbl.setText(Integer.toString(_model.nextRound()));
+		numberLbl.setText(_model.nextRound());
 	}
 
 	/**

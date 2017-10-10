@@ -1,26 +1,19 @@
 package tatai.model.test;
 
-import tatai.model.Translator;
-
-import java.util.concurrent.ThreadLocalRandom;
-
 /**
  * Base model class for testing.
  */
 public class Test {
-	private int 	_score = 0;
-	private int 	_testValue;
-	private int 	_roundsRemaining = 10;
-	private int 	_triesRemaining = 2;
+	private int 	    _score = 0;
+	private int 	    _roundsRemaining = 10;
+	private int 	    _triesRemaining = 2;
 
-	private int     _minValue;
-	private int     _maxValue;
-	private String	_name;
+	private Question    _question;
+	private String	    _name;
 
 	public Test(String name, int minValue, int maxValue) {
 	    _name = name;
-	    _minValue = minValue;
-	    _maxValue = maxValue;
+	    _question = new Question(new Question.Range(minValue, maxValue));
     }
 
     public String   name() {
@@ -31,11 +24,10 @@ public class Test {
 	 * Generates a random number for the question.
 	 * @return the number generated for that round.
 	 */
-	public int 		nextRound() {
-		_testValue = random();
+	public String	nextRound() {
 		_triesRemaining = 2;
 		_roundsRemaining--;
-		return _testValue;
+		return _question.generate();
 	}
 	
 	/**
@@ -66,7 +58,7 @@ public class Test {
 	 * @return true if the answer is equal to the expected result.
 	 */
 	public boolean 	verify(String answer) {
-		if(answer.equalsIgnoreCase(Translator.convert(_testValue))) {
+		if(_question.verify(answer)) {
 			_score++;
 			return true;
 		}
@@ -83,8 +75,4 @@ public class Test {
 	public boolean 	hasMoreTries() {
 		return _triesRemaining > 0;
 	}
-
-	private int     random() {
-        return ThreadLocalRandom.current().nextInt(_minValue, _maxValue + 1);
-    }
 }
