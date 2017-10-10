@@ -1,18 +1,14 @@
 package tatai.model.test;
 
+import tatai.model.question.Question;
+
 /**
  * Base model class for testing.
  */
 public class Test {
-	private int 	    _score = 0;
-	private int 	    _roundsRemaining = 10;
-
-	private Question    _question;
-	private String	    _name;
-
 	public Test(String name, int minValue, int maxValue) {
 	    _name = name;
-	    _question = new Question(new Question.Range(minValue, maxValue), 2);
+	    _question = new Question(minValue, maxValue);
     }
 
     public String   name() {
@@ -23,7 +19,7 @@ public class Test {
     }
 
 	/**
-	 * Generates a random question.
+	 * Generates a _random question.
 	 * @return the question generated for that round.
 	 */
 	public String	nextRound() {
@@ -66,4 +62,10 @@ public class Test {
 	public boolean 	hasAnotherTry() {
 		return _question.hasAnotherTry();
 	}
+
+    private int 	    _score = 0;
+    private int 	    _roundsRemaining = 10;
+
+    private Question    _question;
+    private String	    _name;
 }
