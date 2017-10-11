@@ -5,14 +5,14 @@ package tatai.model.test;
  */
 public class TestJson {
     public static class Question {
-        int     rounds;
-        int     tries = 0;
-        int     timelimit = 0;
-        String  question;
+        public int      rounds;
+        public int      tries = 0;
+        public int      timelimit = 0;
+        public String   question;
     }
 
-    String          name;
-    String          author = "";
+    public String       name;
+    public String       author = "";
 
-    Question[]      questions;
+    public Question[]   questions;
 }

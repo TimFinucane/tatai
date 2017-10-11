@@ -1,7 +1,5 @@
 package tatai.model.question;
 
-import com.sun.deploy.util.StringUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +32,7 @@ public class QuestionWriter {
      * and may or may not be enclosed in parentheses.
      */
     public static String    createOperation(String left, String right, List<String> operators, boolean enclosed) {
-        String ops = "[" + StringUtils.join(operators, ", ") + "]";
+        String ops = operators.toString();
         String result = left + " " + ops + " " + right;
 
         if(enclosed)

@@ -15,7 +15,7 @@ public class TestParser {
     public static List<String>  listTests() {
         ArrayList<String> list = new ArrayList<>();
 
-        File files[] = Files.TEST_FOLDER.listFiles();
+        File files[] = Files.testFolder().listFiles();
 
         if(files == null) {
             return list; // Nothing exists, thats ok
@@ -56,8 +56,8 @@ public class TestParser {
     /**
      * Writes the given test so that it can be retrievable later
      */
-    public static void          makeTest(String name, TestJson testInfo) throws IOException {
-        File file = Files.testFile(name);
+    public static void          makeTest(TestJson testInfo) throws IOException {
+        File file = Files.testFile(testInfo.name);
         file.createNewFile();
 
         try(Writer writer = new FileWriter(file)) {
@@ -67,5 +67,24 @@ public class TestParser {
             gson.toJson(testInfo, writer);
         }
 
+    }
+
+    /**
+     * Creates some basic tests. TODO: Move this to another area for checking and creating
+     */
+    public static void          main(String[] args) {
+        TestJson basic = new TestJson();
+        basic.name = "Easy Test";
+        basic.questions = new TestJson.Question[1];
+        basic.questions[0] = new TestJson.Question();
+        basic.questions[0].rounds = 10;
+        basic.questions[0].tries = 2;
+        basic.questions[0].question = "(1 to 9)";
+
+        try {
+            makeTest(basic);
+        } catch(IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }

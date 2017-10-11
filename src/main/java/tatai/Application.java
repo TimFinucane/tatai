@@ -8,7 +8,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import tatai.model.test.Scores;
+import tatai.model.test.TestJson;
+import tatai.model.test.TestParser;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -66,26 +69,39 @@ public class Application extends javafx.application.Application {
         // Clear scores on shutdown, so only most recent session is shown
         Runtime.getRuntime().addShutdownHook(new Thread(Scores::clear));
 
+        createBasicTests();
+
         _stage.show();
     }
 
     // Called when the easy button has been pressed
+    // TODO: Move this into test screen, make generic
     private void easyTest() {
-    	/*TestController test = new TestController(new Test("EasyTest", 1, 9), (state) ->
-                Platform.runLater(() -> testComplete(state, true))
-        );
+        try {
+            TestController test = new TestController(TestParser.read("Easy Test"), (state) ->
+                    Platform.runLater(() -> testComplete(state, true))
+            );
 
-        _stage.setScene(new Scene(test));
-        _stage.show();*/
+            _stage.setScene(new Scene(test));
+            _stage.show();
+        } catch(FileNotFoundException e) {
+            // TODO: File box
+            throw new RuntimeException("Easy test doesnt exist!");
+        }
     }
     // Called when the hard button has been pressed
     private void hardTest() {
-        /*TestController test = new TestController(new Test("HardTest",), (state) ->
-                Platform.runLater(() -> testComplete(state, false))
-        );
+        try {
+            TestController test = new TestController(TestParser.read("Hard Test"), (state) ->
+                    Platform.runLater(() -> testComplete(state, false))
+            );
 
-        _stage.setScene(new Scene(test));
-        _stage.show();*/
+            _stage.setScene(new Scene(test));
+            _stage.show();
+        } catch(FileNotFoundException e) {
+            // TODO: File box
+            throw new RuntimeException("Hard test doesnt exist!");
+        }
     }
     // Called when the info button has been pressed
     private void info() {
@@ -131,6 +147,41 @@ public class Application extends javafx.application.Application {
                 break;
             case RETRY_HARDER:
                 hardTest();
+        }
+    }
+
+    /**
+     * Temporary method for creating basic tests if they are not already made
+     */
+    private static void createBasicTests() {
+        if(TestParser.listTests().contains("Easy Test"))
+            return;
+
+        TestJson basic = new TestJson();
+        basic.name = "Easy Test";
+        basic.questions = new TestJson.Question[1];
+        basic.questions[0] = new TestJson.Question();
+        basic.questions[0].rounds = 10;
+        basic.questions[0].tries = 2;
+        basic.questions[0].question = "(1 to 9)";
+
+        try {
+            TestParser.makeTest(basic);
+        } catch(IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+        basic.name = "Hard Test";
+        basic.questions = new TestJson.Question[1];
+        basic.questions[0] = new TestJson.Question();
+        basic.questions[0].rounds = 10;
+        basic.questions[0].tries = 2;
+        basic.questions[0].question = "(1 to 99)";
+
+        try {
+            TestParser.makeTest(basic);
+        } catch(IOException e) {
+            throw new RuntimeException(e.getMessage());
         }
     }
 
