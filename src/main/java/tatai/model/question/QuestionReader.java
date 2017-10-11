@@ -52,7 +52,11 @@ public class QuestionReader {
         }
 
         // TODO: Read other info at this point, like tries=(int) and time=(double)...
-        return new Question(_elements.get(Integer.valueOf(sBuffer.toString())));
+        try {
+            return new Question(_elements.get(Integer.valueOf(sBuffer.toString())));
+        } catch(NumberFormatException e) {
+            throw new IllegalArgumentException("Could not read question, wrong format for string: " + sBuffer.toString());
+        }
     }
 
     /**
