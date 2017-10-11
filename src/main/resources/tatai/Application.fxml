@@ -1,29 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.VBox?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="500.0" prefWidth="755.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Region VBox.vgrow="ALWAYS" />
-      <HBox>
+      <AnchorPane prefHeight="500.0" prefWidth="755.0" style="-fx-background-color: #2c2C31;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Region HBox.hgrow="SOMETIMES" />
-            <Button fx:id="easyBtn" mnemonicParsing="false" text="Ngāwari" />
-            <Region HBox.hgrow="SOMETIMES" />
-            <Button fx:id="hardBtn" mnemonicParsing="false" text="Whēuaua" />
-            <Region HBox.hgrow="SOMETIMES" />
-            <Button fx:id="infoBtn" mnemonicParsing="false" text="Pārongo" />
-            <Region HBox.hgrow="SOMETIMES" />
-         </children>
-      </HBox>
-      <Region VBox.vgrow="ALWAYS" />
+            <JFXButton fx:id="_btnHome" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutY="50.0" prefHeight="55.0" prefWidth="55.0" ripplerFill="#dddddd">
+               <graphic>
+                  <MaterialDesignIconView fill="WHITE" glyphName="HOME" size="26" />
+               </graphic>
+            </JFXButton>
+            <JFXButton fx:id="_btnPractice" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutY="105.0" prefHeight="55.0" prefWidth="55.0" ripplerFill="#dddddd">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="SORT_NUMERIC_ASC" size="26" text="" />
+               </graphic>
+            </JFXButton>
+            <JFXButton fx:id="_btnTest" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutY="160.0" prefHeight="55.0" prefWidth="55.0" ripplerFill="#dddddd">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="CALCULATOR" size="26" />
+               </graphic>
+            </JFXButton>
+            <JFXButton fx:id="_btnStats" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutY="215.0" prefHeight="55.0" prefWidth="55.0" ripplerFill="#dddddd" AnchorPane.leftAnchor="0.0">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="LIST_OL" size="26" />
+               </graphic>
+            </JFXButton>
+         </children></AnchorPane>
+      <Pane prefHeight="55.0" prefWidth="55.0" style="-fx-background-color: #6622CC;" />
+      <AnchorPane fx:id="_viewWindow" layoutX="55.0" prefHeight="500.0" prefWidth="755.0" style="-fx-background-color: #29292D;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
    </children>
-   <stylesheets>
-      <URL value="@stylesheets/Background.css" />
-      <URL value="@stylesheets/Buttons.css" />
-   </stylesheets>
-</VBox>
+</AnchorPane>
