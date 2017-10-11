@@ -51,6 +51,7 @@ public class Application extends javafx.application.Application {
 
         try {
             _mainScene = new Scene(loader.load());
+
         } catch(IOException e) {
             throw new RuntimeException("Unable to load tatai.Application.fxml: " + e.getMessage());
         }
@@ -76,14 +77,12 @@ public class Application extends javafx.application.Application {
     private void Practice(){
         throw new NotImplementedException();
     }
+
 //    Called when test button pressed
     private void Test(){
-        try{
-           AnchorPane pane = FXMLLoader.load(getClass().getResource("/tatai/Test.fxml"));
-            _viewWindow.getChildren().add(pane);
-        } catch (IOException e) {
-            throw new RuntimeException("Unable to load tatat.Test.fxml: " + e.getMessage());
-        }
+        SelectTestController controller = new SelectTestController();
+        _viewWindow.getChildren().add(controller);
+
     }
 
 //    Called when stats button pressed
