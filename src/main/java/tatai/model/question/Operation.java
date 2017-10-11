@@ -3,8 +3,6 @@ package tatai.model.question;
 import javafx.util.Pair;
 import util.NumberConstraint;
 
-import java.util.Arrays;
-
 /**
  * A generatable part of a question that uses an operator on two input operands
  */
@@ -28,11 +26,6 @@ class Operation implements Generatable {
                           tryEnclose(_second, right.getKey());
 
         return new Pair<>(question, _op.apply(left.getValue(), right.getValue()));
-    }
-
-    @Override
-    public String                   toString() {
-        return "(" + _first.toString() + " " + Arrays.toString(_operators) + " " + _second.toString() + ")";
     }
 
     /**

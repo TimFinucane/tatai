@@ -21,11 +21,6 @@ class Range implements Generatable {
         return new Pair<>(Integer.toString(answer), answer);
     }
 
-    @Override
-    public String toString() {
-        return "(" + min + " to " + max + ")";
-    }
-
     private int min;
     private int max; // inclusive
 }
