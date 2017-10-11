@@ -9,6 +9,7 @@
 <AnchorPane prefHeight="500.0" prefWidth="755.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane prefHeight="500.0" prefWidth="755.0" style="-fx-background-color: #2c2C31;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
          <children>
             <JFXButton fx:id="_btnHome" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutY="50.0" prefHeight="55.0" prefWidth="55.0" ripplerFill="#dddddd">
                <graphic>
