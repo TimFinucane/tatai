@@ -2,7 +2,7 @@ package tatai.model.question;
 
 import javafx.util.Pair;
 import tatai.model.Translator;
-import util.NumberGenerator;
+import util.NumberConstraint;
 
 /**
  * A question uses a specification to generate a specific string for the user to answer
@@ -19,7 +19,7 @@ public class Question {
     public String   generate() {
         _tries = _maxTries;
 
-        Pair<String, Integer> pair = _question.generate(new NumberGenerator());
+        Pair<String, Integer> pair = _question.generate(new NumberConstraint());
         _curAnswer = pair.getValue();
         return pair.getKey();
     }

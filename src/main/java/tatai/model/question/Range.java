@@ -1,7 +1,7 @@
 package tatai.model.question;
 
 import javafx.util.Pair;
-import util.NumberGenerator;
+import util.NumberConstraint;
 
 class Range implements Generatable {
     public Range(int min, int max) {
@@ -13,10 +13,8 @@ class Range implements Generatable {
      * Produces a _random number between the minimum and maximum
      */
     @Override
-    public Pair<String, Integer> generate(NumberGenerator number) {
-        number.greaterThanOrEqualTo(min).lessThanOrEqualTo(max);
-
-        int answer = number.generate();
+    public Pair<String, Integer> generate(NumberConstraint constraint) {
+        int answer = constraint.generate(min, max);
         return new Pair<>(Integer.toString(answer), answer);
     }
 

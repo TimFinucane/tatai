@@ -9,7 +9,7 @@ import tatai.model.question.QuestionReader;
 public class Test {
 	public Test(String name, int minValue, int maxValue) {
 	    _name = name;
-	    _question = QuestionReader.read("(" + minValue + " to " + maxValue + ")");
+	    _question = QuestionReader.read("(0 to 9) [+, \u00D7] (1 to 99)");
     }
 
     public String   name() {

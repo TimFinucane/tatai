@@ -1,6 +1,8 @@
 package tatai.model.question;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,64 +23,43 @@ public class QuestionReader {
         matches.appendTail(rangeless);
 
         // Now start reading in ops in order of precedence
-        Pattern highPrecedence = Pattern.compile(opsPattern(Operation.Operator.MULTIPLY, Operation.Operator.DIVIDE));
+        Collection<List<Operator.Type>> operators = Operator.Type.getOperatorPrecedences();
+        List<Operator.Type> precedencesList = new ArrayList<>();
 
-        matches = highPrecedence.matcher(rangeless.toString());
+        StringBuffer sBuffer = rangeless;
+        for(List<Operator.Type> operatorList : operators) {
+            precedencesList.addAll(operatorList);
+            Pattern highPrecedence = Pattern.compile(opsPattern(precedencesList));
 
-        StringBuffer multless = new StringBuffer();
-        while(matches.find()) {
-            matches.appendReplacement(multless, Integer.toString(_elements.size()));
-            // And create an op
-            Generatable left = _elements.get(Integer.valueOf(matches.group(1)));
-            Generatable right = _elements.get(Integer.valueOf(matches.group(3)));
+            matches = highPrecedence.matcher(sBuffer.toString());
 
-            _elements.add(new Operation(left, right, readOps(matches.group(2))));
+            StringBuffer opLess = new StringBuffer();
+            while( matches.find() ) {
+                matches.appendReplacement(opLess, Integer.toString(_elements.size()));
+                // And create an op
+                Generatable left = _elements.get(Integer.valueOf(matches.group(1)));
+                Generatable right = _elements.get(Integer.valueOf(matches.group(3)));
+
+                _elements.add(new Operation(left, right, Operator.Type.createOperators(matches.group(2))));
+            }
+            matches.appendTail(opLess);
+
+            sBuffer = opLess;
         }
-        matches.appendTail(multless);
-
-        // And finally do addition/multiplication
-        Pattern lowPrecedence = Pattern.compile(opsPattern(Operation.Operator.PLUS, Operation.Operator.MINUS));
-
-        matches = lowPrecedence.matcher(multless.toString());
-
-        StringBuffer opless = new StringBuffer();
-        while(matches.find()) {
-            matches.appendReplacement(opless, Integer.toString(_elements.size()));
-            // And create an op
-            Generatable left = _elements.get(Integer.valueOf(matches.group(1)));
-            Generatable right = _elements.get(Integer.valueOf(matches.group(3)));
-
-            _elements.add(new Operation(left, right, readOps(matches.group(2))));
-        }
-        matches.appendTail(opless);
 
         // TODO: Read other info at this point, like tries=(int) and time=(double)...
-
-        return new Question(_elements.get(Integer.valueOf(opless.toString())));
-    }
-
-    /**
-     * Reads an array of operators in the form ([+|-|*|/], )*
-     * outputs which of those exist
-     */
-    private static Operation.Operator[]     readOps(String ops) {
-        ArrayList<Operation.Operator> outOps = new ArrayList<>();
-        for(Operation.Operator value : Operation.Operator.values())
-            if(ops.contains(value.symbol))
-                outOps.add(value);
-
-        return (Operation.Operator[])outOps.toArray();
+        return new Question(_elements.get(Integer.valueOf(sBuffer.toString())));
     }
 
     /**
      * Produces a pattern that searches for a use of any of the given ops in the form (operand OPERATOR operand)
      */
-    private static String                   opsPattern(Operation.Operator... ops) {
+    private static String                   opsPattern(List<Operator.Type> ops) {
         StringBuilder output = new StringBuilder("\\(?(\\d+) \\[((?:");
-        for(Operation.Operator op : ops)
-            output.append(Pattern.quote(op.symbol)).append("|");
+        for(Operator.Type op : ops)
+            output.append(Pattern.quote(op.symbol())).append("|");
 
-        output.append("|,\\s)+)\\] (\\d+)\\)?");
+        output.append(",\\s)+)\\] (\\d+)\\)?");
 
         return output.toString();
     }
