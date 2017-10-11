@@ -37,7 +37,7 @@ public class Application extends javafx.application.Application {
     }
 
     @Override
-    public void start(Stage stage) {
+    public void     start(Stage stage) {
         _stage = stage;
 
         // Load the application fxml, and set self to be its controller
@@ -76,7 +76,7 @@ public class Application extends javafx.application.Application {
 
     // Called when the easy button has been pressed
     // TODO: Move this into test screen, make generic
-    private void easyTest() {
+    private void    easyTest() {
         try {
             TestController test = new TestController(TestParser.read("Easy Test"), (state) ->
                     Platform.runLater(() -> testComplete(state, true))
@@ -90,7 +90,7 @@ public class Application extends javafx.application.Application {
         }
     }
     // Called when the hard button has been pressed
-    private void hardTest() {
+    private void    hardTest() {
         try {
             TestController test = new TestController(TestParser.read("Hard Test"), (state) ->
                     Platform.runLater(() -> testComplete(state, false))
@@ -104,7 +104,7 @@ public class Application extends javafx.application.Application {
         }
     }
     // Called when the info button has been pressed
-    private void info() {
+    private void    info() {
         InfoController info = new InfoController(() ->
             Platform.runLater(() -> {
             _stage.setScene(_mainScreen);
@@ -118,7 +118,7 @@ public class Application extends javafx.application.Application {
     /**
      * Called when the main screen resizes, and adjusts the button sizes as a result
      */
-    private void onResize() {
+    private void    onResize() {
         // Adjust children to be approx. the right size based on window size
         // These numbers are pretty good as they are
         double size = Math.min(_mainScreen.getHeight() / TEXT_HEIGHT_DIV, _mainScreen.getWidth() / TEXT_WIDTH_DIV);
@@ -131,7 +131,7 @@ public class Application extends javafx.application.Application {
     /**
      * Run (on EDT) when a test is finished and control is relinquished to the application.
      */
-    private void testComplete(TestController.ReturnState state, boolean easy) {
+    private void    testComplete(TestController.ReturnState state, boolean easy) {
         switch(state) {
             case QUIT:
             case FINISHED:
