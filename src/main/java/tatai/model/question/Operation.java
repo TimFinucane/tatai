@@ -5,6 +5,9 @@ import util.NumberConstraint;
 
 import java.util.Arrays;
 
+/**
+ * A generatable part of a question that uses an operator on two input operands
+ */
 class Operation implements Generatable {
     Operation(Generatable first, Generatable second, Operator[] ops) {
         _first = first;

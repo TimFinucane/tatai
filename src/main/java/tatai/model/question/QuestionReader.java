@@ -7,9 +7,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class QuestionReader {
+    /**
+     * Reads the given string, assuming it is in question format.
+     * TODO: Produce documentation for question format
+     */
     public static Question read(String question) {
         // Stores the generatables that are created throughout
-        ArrayList<Generatable>  _elements = new ArrayList<>();
+        ArrayList<Generatable> _elements = new ArrayList<>();
 
         // First parse each number range, add to list, and replace with ints
         Pattern range = Pattern.compile("\\((\\d+) to (\\d+)\\)");

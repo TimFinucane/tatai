@@ -4,7 +4,6 @@ import java.util.Random;
 
 /**
  * Defines basic constraints on a randomly generatable number.
- *
  */
 public class NumberConstraint {
     public NumberConstraint() {
@@ -20,6 +19,9 @@ public class NumberConstraint {
         this._eqClass = eqClass % mod;
     }
 
+    /**
+     * Generates a number following all constraints that fits within the given range
+     */
     public int      generate(int min, int max) {
         int smallestMin = (int)(Math.ceil(min/_mod) * _mod);
         int largestMax = (int)(Math.floor(max-_eqClass)/_mod) * _mod;
@@ -27,9 +29,16 @@ public class NumberConstraint {
         return smallestMin + _random.nextInt((largestMax - smallestMin)/ _mod + 1) * _mod + _eqClass;
     }
 
+    /**
+     * The modulus on the constraint
+     */
     public int      mod() {
         return _mod;
     }
+
+    /**
+     * The equivalence class in the modulus of the constraint
+     */
     public int      eqClass() {
         return _eqClass;
     }

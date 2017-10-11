@@ -3,6 +3,9 @@ package tatai.model.question;
 import javafx.util.Pair;
 import util.NumberConstraint;
 
+/**
+ * Specifies generation of a random number between min and max (inclusive)
+ */
 class Range implements Generatable {
     public Range(int min, int max) {
         this.min = min;
@@ -10,7 +13,7 @@ class Range implements Generatable {
     }
 
     /**
-     * Produces a _random number between the minimum and maximum
+     * Produces a number between the minimum and maximum
      */
     @Override
     public Pair<String, Integer> generate(NumberConstraint constraint) {

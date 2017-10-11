@@ -4,6 +4,9 @@ import util.NumberConstraint;
 
 import java.util.*;
 
+/**
+ * This represents a variety of mathematical operations, all of which accept two arguments
+ */
 abstract class Operator {
     static class Add extends Operator {
         int                 precedence() { return 1; }
@@ -61,6 +64,9 @@ abstract class Operator {
         }
     }
 
+    /**
+     * The main way of accessing the operators. Has extra info as well
+     */
     enum Type {
         ADD("+", 1, Add.class),
         SUBTRACT("\u2212", 1, Subtract.class),
@@ -73,6 +79,9 @@ abstract class Operator {
             _class = cl;
         }
 
+        /**
+         * Creates an array containing all operators that have been found in the symbols string
+         */
         static Operator[]               createOperators(String symbols) {
             ArrayList<Operator> operators = new ArrayList<>();
             for(Type value : Type.values()) {
@@ -116,6 +125,10 @@ abstract class Operator {
         public int      precedence() {
             return _precedence;
         }
+
+        /**
+         * Creates the class of the given type
+         */
         public Operator create() {
             try {
                 return _class.newInstance();
@@ -137,9 +150,20 @@ abstract class Operator {
         return Type.getPrecedence(this.getClass());
     }
 
+    /**
+     * Apply the operation on the two numbers
+     */
     abstract int                apply(int left, int right);
+
+    /**
+     * This is called first, to let the operator decide constraints on the right hand side
+     */
     NumberConstraint            chooseRight(NumberConstraint original) {
         return new NumberConstraint(); // No constraint
     }
+
+    /**
+     * This then lets the operator decide constraints on the left hand side based on the right
+     */
     abstract NumberConstraint   chooseLeft(NumberConstraint original, int right);
 }

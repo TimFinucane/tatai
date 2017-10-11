@@ -14,7 +14,7 @@ public class Question {
     }
 
     /**
-     * Generates a question
+     * Generates a question string and waits for answer
      */
     public String   generate() {
         _tries = _maxTries;
