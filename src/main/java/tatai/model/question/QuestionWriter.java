@@ -1,8 +1,9 @@
 package tatai.model.question;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import com.sun.deploy.util.StringUtils;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Adds capability for creating questions through converting
@@ -17,23 +18,28 @@ public class QuestionWriter {
     }
 
     /**
+     * A list of operator strings representing various operators that can be used in an operation
+     */
+    public static List<String> operatorList() {
+        ArrayList<String> list = new ArrayList<>();
+
+        for(Operator.Type value : Operator.Type.values())
+            list.add(value.symbol());
+
+        return list;
+    }
+
+    /**
      * Creates an operation string, where left and right are operands. It could be any of the given operators,
      * and may or may not be enclosed in parentheses.
      */
-    public static String    createOperation(String left, String right, String[] operators, boolean enclosed) {
-        String ops = Arrays.toString(operators);
+    public static String    createOperation(String left, String right, List<String> operators, boolean enclosed) {
+        String ops = "[" + StringUtils.join(operators, ", ") + "]";
         String result = left + " " + ops + " " + right;
 
         if(enclosed)
             return "(" + result + ")";
         else
             return result;
-    }
-
-    /**
-     * Stores the string created through this QuestionWriter, so that it can be accessed later
-     */
-    public static void      storeQuestion(String question) {
-        throw new NotImplementedException();
     }
 }
