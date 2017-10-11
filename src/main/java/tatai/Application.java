@@ -8,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import tatai.model.test.Scores;
-import tatai.model.test.Test;
 
 import java.io.IOException;
 
@@ -72,21 +71,21 @@ public class Application extends javafx.application.Application {
 
     // Called when the easy button has been pressed
     private void easyTest() {
-    	TestController test = new TestController(new Test("EasyTest", 1, 9), (state) ->
+    	/*TestController test = new TestController(new Test("EasyTest", 1, 9), (state) ->
                 Platform.runLater(() -> testComplete(state, true))
         );
 
         _stage.setScene(new Scene(test));
-        _stage.show();
+        _stage.show();*/
     }
     // Called when the hard button has been pressed
     private void hardTest() {
-        TestController test = new TestController(new Test("HardTest", 1, 99), (state) ->
+        /*TestController test = new TestController(new Test("HardTest",), (state) ->
                 Platform.runLater(() -> testComplete(state, false))
         );
 
         _stage.setScene(new Scene(test));
-        _stage.show();
+        _stage.show();*/
     }
     // Called when the info button has been pressed
     private void info() {
