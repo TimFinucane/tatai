@@ -6,8 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import tatai.model.EasyTest;
-import tatai.model.Test;
+import tatai.model.test.Test;
 
 import java.io.IOException;
 import java.util.function.Consumer;
@@ -120,21 +119,18 @@ public class TestController extends VBox {
 		retryLbl.setVisible(false);
 		playbackCntrl.setDisable(false);
 
-    	if(text.equals("")) {
+    	if(text.equals(""))
     		recognitionLbl.setText("Nothing was recognized");
-		} else {
+		else
 			recognitionLbl.setText(text);
-		}
 
-    	if(_model.verify(text)) {
+    	if(_model.tryAnswer(text))
     		recognitionLbl.setTextFill(Color.GREEN);
-		} else {
-			if(_model.hasMoreTries()) {
+		else {
+			if(_model.hasAnotherTry())
 				retryLbl.setVisible(true);
-			} else {
-				// No more tries for you
+			else
 				recorderCntrl.setDisable(true);
-			}
 
     		recognitionLbl.setTextFill(Color.RED);
 		}
@@ -165,14 +161,14 @@ public class TestController extends VBox {
 		submitBtn.setText("Next");
 		submitBtn.setDisable(true);
 
-		numberLbl.setText(Integer.toString(_model.nextRound()));
+		numberLbl.setText(_model.nextRound());
 	}
 
 	/**
 	 * Sets up the screen when complete
 	 */
 	private void	finish() {
-		numberLbl.setText(_model.getScore() + "/10");
+		numberLbl.setText(_model.score() + "/10");
 		retryLbl.setVisible(false);
 
 		playbackCntrl.setVisible(false);
@@ -180,12 +176,12 @@ public class TestController extends VBox {
 
 		recognitionLbl.setTextFill(Color.BLACK);
 
-		if(_model.getScore() >= 8) {
+		if(_model.score() >= 8) {
 			recognitionLbl.setText("Well done!");
 
 			// TODO: If there are more tests, determine whether this test model has a harder version through test
 			//  interface, instead of this abomination.
-			if(_model instanceof EasyTest) {
+			if(_model.name().equals("EasyTest")) {
 				harderBtn.setManaged(true);
 				harderBtn.setVisible(true);
 				harderBtn.setOnAction((e) -> _notifyReturn.accept(ReturnState.RETRY_HARDER));
@@ -206,22 +202,13 @@ public class TestController extends VBox {
 	private Consumer<ReturnState>	_notifyReturn;
 
     // FXML controls
-	@FXML
-	private VBox			testBox;
-    @FXML
-    private Label           numberLbl;
-    @FXML
-    private PlaybackControl playbackCntrl;
-    @FXML
-    private RecorderControl recorderCntrl;
-    @FXML
-	private Label			recognitionLbl;
-    @FXML
-	private Label			retryLbl;
-    @FXML
-	private Button			submitBtn;
-    @FXML
-	private Button			retryBtn;
-    @FXML
-	private Button			harderBtn;
+	@FXML private VBox				testBox;
+    @FXML private Label           	numberLbl;
+    @FXML private PlaybackControl 	playbackCntrl;
+    @FXML private RecorderControl 	recorderCntrl;
+    @FXML private Label				recognitionLbl;
+    @FXML private Label				retryLbl;
+    @FXML private Button			submitBtn;
+    @FXML private Button			retryBtn;
+    @FXML private Button			harderBtn;
 }
