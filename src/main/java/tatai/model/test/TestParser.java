@@ -52,4 +52,20 @@ public class TestParser {
 
         return new Test(testJson.name, questions);
     }
+
+    /**
+     * Writes the given test so that it can be retrievable later
+     */
+    public static void          makeTest(String name, TestJson testInfo) throws IOException {
+        File file = Files.testFile(name);
+        file.createNewFile();
+
+        try(Writer writer = new FileWriter(file)) {
+            // Thank you again holy Gson
+            Gson gson = new Gson();
+
+            gson.toJson(testInfo, writer);
+        }
+
+    }
 }
