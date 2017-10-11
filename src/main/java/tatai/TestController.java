@@ -8,12 +8,10 @@ import javafx.scene.paint.Color;
 import tatai.model.test.Test;
 import util.Views;
 
-import java.util.function.Consumer;
-
 /**
  * A test window, to which you can pass specifications for the type of test
  */
-public class TestController extends VBox {
+public class TestController extends Controller {
 	enum ReturnState {
 		QUIT, // TODO: Use this to notify early exit if ever needed
 		FINISHED,
@@ -35,9 +33,8 @@ public class TestController extends VBox {
 	 * When the user is ready to finish the test, notifyReturn is called
 	 * with the appropriate ReturnState.
      */
-	public TestController(Test model, Consumer<ReturnState> notifyReturn) {
-	    _model = model;
-	    _notifyReturn = notifyReturn;
+	public TestController(Test model) {
+        _model = model;
 
 	    // Load fxml, set self to act as controller and root
 		Views.load("Test", this, this);
@@ -69,6 +66,13 @@ public class TestController extends VBox {
 		recorderCntrl.onMediaAvailable(this::mediaAvailable);
 		recorderCntrl.onRecognitionComplete(this::recognize);
 	}
+
+    /**
+     * Gets the state in which the TestController exited
+     */
+	public ReturnState returnState() {
+	    return _returnState;
+    }
 
     @Override
     public void    	resize(double width, double height) {
@@ -174,7 +178,7 @@ public class TestController extends VBox {
 			if(_model.name().equals("EasyTest")) {
 				harderBtn.setManaged(true);
 				harderBtn.setVisible(true);
-				harderBtn.setOnAction((e) -> _notifyReturn.accept(ReturnState.RETRY_HARDER));
+				harderBtn.setOnAction((e) -> exit(ReturnState.RETRY_HARDER));
 			}
 		} else {
 			recognitionLbl.setText("Good try!");
@@ -182,14 +186,19 @@ public class TestController extends VBox {
 
 		retryBtn.setManaged(true);
 		retryBtn.setVisible(true);
-		retryBtn.setOnAction((e) -> _notifyReturn.accept(ReturnState.RETRY));
+		retryBtn.setOnAction((e) -> exit(ReturnState.RETRY));
 
 		submitBtn.setText("Finish");
-		submitBtn.setOnAction((e) -> _notifyReturn.accept(ReturnState.FINISHED));
+		submitBtn.setOnAction((e) -> exit(ReturnState.FINISHED));
 	}
 
-	private Test    				_model;
-	private Consumer<ReturnState>	_notifyReturn;
+	private void                    exit(ReturnState state) {
+	    _returnState = state;
+	    exit();
+    }
+
+    private ReturnState         _returnState;
+    private Test    				_model;
 
     // FXML controls
 	@FXML private VBox				testBox;

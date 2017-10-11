@@ -1,6 +1,5 @@
 package tatai;
 
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -71,12 +70,9 @@ public class Application extends javafx.application.Application {
     // TODO: Move this into test screen, make generic
     private void    easyTest() {
         try {
-            TestController test = new TestController(TestParser.read("Easy Test"), (state) ->
-                    Platform.runLater(() -> testComplete(state, true))
-            );
+            TestController test = new TestController(TestParser.read("Easy Test"));
 
-            _stage.setScene(new Scene(test));
-            _stage.show();
+            test.display(_stage, () -> testComplete(test.returnState(), true));
         } catch(FileNotFoundException e) {
             // TODO: File box
             throw new RuntimeException("Easy test doesnt exist!");
@@ -85,12 +81,9 @@ public class Application extends javafx.application.Application {
     // Called when the hard button has been pressed
     private void    hardTest() {
         try {
-            TestController test = new TestController(TestParser.read("Hard Test"), (state) ->
-                    Platform.runLater(() -> testComplete(state, false))
-            );
+            TestController test = new TestController(TestParser.read("Hard Test"));
 
-            _stage.setScene(new Scene(test));
-            _stage.show();
+            test.display(_stage, () -> testComplete(test.returnState(), false));
         } catch(FileNotFoundException e) {
             // TODO: File box
             throw new RuntimeException("Hard test doesnt exist!");
@@ -98,14 +91,12 @@ public class Application extends javafx.application.Application {
     }
     // Called when the info button has been pressed
     private void    info() {
-        InfoController info = new InfoController(() ->
-            Platform.runLater(() -> {
+        InfoController info = new InfoController();
+
+        info.display(_stage, () -> {
             _stage.setScene(_mainScreen);
             _stage.show();
-        }));
-
-        _stage.setScene(new Scene(info));
-        _stage.show();
+        });
     }
 
     /**
