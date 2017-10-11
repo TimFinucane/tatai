@@ -1,14 +1,13 @@
 package tatai;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import tatai.model.test.Test;
+import util.Views;
 
-import java.io.IOException;
 import java.util.function.Consumer;
 
 /**
@@ -41,16 +40,7 @@ public class TestController extends VBox {
 	    _notifyReturn = notifyReturn;
 
 	    // Load fxml, set self to act as controller and root
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/tatai/Test.fxml"));
-
-		loader.setController(this);
-		loader.setRoot(this);
-
-		try {
-			loader.load();
-		} catch(IOException e) {
-			throw new RuntimeException("Unable to load tatai.Test.fxml: " + e.getMessage());
-		}
+		Views.load("Test", this, this);
 
 		playbackCntrl.setVisible(false);
 		recorderCntrl.setVisible(false);

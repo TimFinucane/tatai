@@ -3,13 +3,13 @@ package tatai;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import tatai.model.test.Scores;
 import tatai.model.test.TestJson;
 import tatai.model.test.TestParser;
+import util.Views;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -41,14 +41,7 @@ public class Application extends javafx.application.Application {
         _stage = stage;
 
         // Load the application fxml, and set self to be its controller
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/tatai/Application.fxml"));
-        loader.setController(this);
-
-        try {
-            _mainScreen = new Scene(loader.load());
-        } catch(IOException e) {
-            throw new RuntimeException("Unable to load tatai.Application.fxml: " + e.getMessage());
-        }
+        _mainScreen = new Scene(Views.load("Application", this, null));
 
         _stage.setTitle(APP_NAME);
         _stage.setScene(_mainScreen);
