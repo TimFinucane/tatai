@@ -18,11 +18,14 @@ public class TestParser {
         File files[] = Files.testFolder().listFiles();
 
         if(files == null) {
-            return list; // Nothing exists, thats ok
+            return list; // Nothing exists, that's ok
         }
 
-        for(File file : files)
-            list.add(file.getName());
+        for(File file : files) {
+            String name = file.getName();
+            name = name.substring(0, name.lastIndexOf('.'));
+            list.add(name);
+        }
 
         return list;
     }
