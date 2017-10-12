@@ -7,8 +7,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-import tatai.model.test.TestJson;
-import tatai.model.test.TestParser;
 
 import java.io.IOException;
 
