@@ -76,8 +76,7 @@ public class SelectTestController extends Controller {
 
         for(String testName : TestParser.listTests()) {
             JFXButton button = new JFXButton(testName);
-            System.out.println(testName);
-            // TODO: Set button styles here
+
             AnchorPane.setLeftAnchor(_paneFlow,20.0);
             AnchorPane.setRightAnchor(_paneFlow, 20.0);
 

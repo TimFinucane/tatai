@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import util.Views;
@@ -32,6 +33,8 @@ public class Application extends javafx.application.Application {
         statsBtn.setOnAction(event -> stats());
     }
 
+//    TODO: Either lock the sidepane buttons or hide them when in test mode.
+
     // Called when home button pressed
     private void home(){
         throw new NotImplementedException();
@@ -45,6 +48,7 @@ public class Application extends javafx.application.Application {
     // Called when test button pressed
     private void test(){
         new SelectTestController().display(topPane, this::home);
+        testBtn.setStyle("-fx-background-color: #29292D");
     }
 
     // Called when stats button pressed

@@ -3,7 +3,11 @@ package tatai;
 import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 import tatai.model.test.Test;
 import util.Views;
 
@@ -24,11 +28,13 @@ public class TestController extends Controller {
 	 * with the appropriate ReturnState.
      */
 	public TestController(Test model) {
+
+//	    TODO: Fix anchors for the record and playback controls.
+
         _model = model;
 
 	    // Load fxml, set self to act as controller and root
 		Views.load("Test", this, this);
-
 		_playbackControl.setVisible(false);
 		_recorderControl.setVisible(false);
 		_btnNext.setVisible(false);
@@ -44,6 +50,7 @@ public class TestController extends Controller {
 			_recorderControl.setManaged(true);
 			_recorderControl.setManaged(true);
 
+			_lblTitle.setVisible(false);
 			_btnNext.setVisible(true);
 			_playbackControl.setVisible(true);
 			_recorderControl.setVisible(true);
@@ -51,10 +58,10 @@ public class TestController extends Controller {
 			nextRound();
 		});
 
-		_lblRecognition.setText("Welcome to the " + model.name());
+		_lblTitle.setText("Welcome to the " + model.name());
 
-		//_recorderControl.onMediaAvailable(this::mediaAvailable);
-		//_recorderControl.onRecognitionComplete(this::recognize);
+		_recorderControl.onMediaAvailable(this::mediaAvailable);
+		_recorderControl.onRecognitionComplete(this::recognize);
 	}
 
     /**
@@ -85,13 +92,13 @@ public class TestController extends Controller {
             _lblRecognition.setText(text);
         }
     	if(_model.tryAnswer(text))
-    		_lblRecognition.setTextFill(Color.GREEN);
+    		_lblRecognition.setTextFill(Paint.valueOf("#00e640"));
 		else {
 			if(_model.hasAnotherTry())
 			    _btnSubmit.setText("Retry");
 			else
 				_recorderControl.setDisable(true);
-    		    _lblRecognition.setTextFill(Color.RED);
+    		    _lblRecognition.setTextFill(Paint.valueOf("#f03434"));
 		}
 
 		// Prepare user submit options
@@ -126,12 +133,13 @@ public class TestController extends Controller {
 	 * Sets up the screen when complete
 	 */
 	private void	finish() {
-		_lblNumber.setText(_model.score() + "/10");
+		_lblTitle.setText(_model.score() + "/10");
 
+		_btnNext.setVisible(false);
 		_playbackControl.setVisible(false);
 		_recorderControl.setVisible(false);
 
-		_lblRecognition.setTextFill(Color.WHITE);
+		//_lblRecognition.setTextFill(Color.WHITE);
 
 		_btnSubmit.setText("Finish");
 		exit(ReturnState.FINISHED);
@@ -152,4 +160,5 @@ public class TestController extends Controller {
 	@FXML private JFXButton 		_btnNext;
 	@FXML private RecorderControl 	_recorderControl;
 	@FXML private PlaybackControl 	_playbackControl;
+	@FXML private Label 			_lblTitle;
 }

@@ -6,6 +6,7 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -88,15 +89,15 @@ public class PlaybackControl extends Region {
 //    Helper methods to display icons.
     private static FontAwesomeIconView setPlay() {
         FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.PLAY);
-        icon.setFill(Paint.valueOf("#2ecc71"));
-        icon.setGlyphSize(150);
+        icon.setFill(Paint.valueOf("#00e640"));
+        icon.setGlyphSize(60);
         return icon;
     }
 
     private static FontAwesomeIconView setStop() {
         FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.STOP);
-        icon.setFill(Paint.valueOf("#e74c3c"));
-        icon.setGlyphSize(150);
+        icon.setFill(Paint.valueOf("#f03434"));
+        icon.setGlyphSize(60);
         return icon;
     }
 

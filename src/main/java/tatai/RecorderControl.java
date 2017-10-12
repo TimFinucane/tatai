@@ -103,15 +103,15 @@ public class RecorderControl extends Region {
 //    Just some helper methods to create the icon to be displayed.
     private static FontAwesomeIconView setRecord() {
         FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.CIRCLE);
-        icon.setFill(Paint.valueOf("#e74c3c"));
-        icon.setGlyphSize(150);
+        icon.setFill(Paint.valueOf("#f03434"));
+        icon.setGlyphSize(60);
         return icon;
     }
 
     private static FontAwesomeIconView setStop() {
         FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.STOP);
-        icon.setFill(Paint.valueOf("#e74c3c"));
-        icon.setGlyphSize(150);
+        icon.setFill(Paint.valueOf("#f03434"));
+        icon.setGlyphSize(60);
         return icon;
     }
 
