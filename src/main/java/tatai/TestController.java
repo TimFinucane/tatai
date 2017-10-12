@@ -2,21 +2,15 @@ package tatai;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import tatai.model.test.Test;
-
-import java.io.IOException;
-import java.util.function.Consumer;
+import util.Views;
 
 /**
  * A test window, to which you can pass specifications for the type of test
  */
-public class TestController extends AnchorPane {
+public class TestController extends Controller {
 	enum ReturnState {
 		QUIT, // TODO: Use this to notify early exit if ever needed
 		FINISHED,
@@ -24,37 +18,16 @@ public class TestController extends AnchorPane {
 		RETRY_HARDER
 	}
 
-	private Test _model;
-	private Consumer<ReturnState> _notifyReturn;
-
-//	JavaFX Controls
-	@FXML private Label _lblNumber;
-	@FXML private Label _lblRecognition;
-	@FXML private JFXButton _btnSubmit;
-	@FXML private JFXButton _btnNext;
-	@FXML private RecorderControl _recorderControl;
-	@FXML private PlaybackControl _playbackControl;
-
 	/**
      * Creates and starts a test.
 	 * When the user is ready to finish the test, notifyReturn is called
 	 * with the appropriate ReturnState.
      */
-	public TestController(Test model, Consumer<ReturnState> notifyReturn) {
-	    _model = model;
-	    _notifyReturn = notifyReturn;
+	public TestController(Test model) {
+        _model = model;
 
 	    // Load fxml, set self to act as controller and root
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/tatai/Test.fxml"));
-
-		loader.setController(this);
-		loader.setRoot(this);
-
-		try {
-			loader.load();
-		} catch(IOException e) {
-			throw new RuntimeException("Unable to load tatai.Test.fxml: " + e.getMessage());
-		}
+		Views.load("Test", this, this);
 
 		_playbackControl.setVisible(false);
 		_recorderControl.setVisible(false);
@@ -80,6 +53,13 @@ public class TestController extends AnchorPane {
 		//_recorderControl.onMediaAvailable(this::mediaAvailable);
 		//_recorderControl.onRecognitionComplete(this::recognize);
 	}
+
+    /**
+     * Gets the state in which the TestController exited
+     */
+	public ReturnState returnState() {
+	    return _returnState;
+    }
 
 	/**
 	 * Called when the recorder has recorded something
@@ -151,7 +131,22 @@ public class TestController extends AnchorPane {
 		_lblRecognition.setTextFill(Color.WHITE);
 
 		_btnSubmit.setText("Finish");
-		_btnSubmit.setOnAction((e) -> _notifyReturn.accept(ReturnState.FINISHED));
+		exit(ReturnState.FINISHED);
 	}
 
+	private void                    exit(ReturnState state) {
+	    _returnState = state;
+	    exit();
+    }
+
+    private ReturnState         	_returnState;
+    private Test    				_model;
+
+	// FXML controls
+	@FXML private Label 			_lblNumber;
+	@FXML private Label 			_lblRecognition;
+	@FXML private JFXButton 		_btnSubmit;
+	@FXML private JFXButton 		_btnNext;
+	@FXML private RecorderControl 	_recorderControl;
+	@FXML private PlaybackControl 	_playbackControl;
 }

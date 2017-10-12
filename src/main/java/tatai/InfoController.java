@@ -1,21 +1,18 @@
 package tatai;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import tatai.model.test.Scores;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
 /**
  * Shows statistics about the session score
  */
-public class InfoController extends VBox {
+public class InfoController extends Controller {
     private static double TITLE_HEIGHT_DIV = 15;
     private static double TITLE_WIDTH_DIV = 9;
     private static double SMALL_HEIGHT_DIV = 24;
@@ -24,27 +21,15 @@ public class InfoController extends VBox {
     /**
      * Creates an Info screen. Once the user is done, notifyFinished will be called
      */
-    public InfoController(Runnable notifyFinished) {
-        _notifyFinished = notifyFinished;
-
-        // Load fxml, set self to act as controller and root
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/tatai/Info.fxml"));
-
-        loader.setController(this);
-        loader.setRoot(this);
-
-        try {
-            loader.load();
-        } catch(IOException e) {
-            throw new RuntimeException("Unable to load tatai.Info.fxml: " + e.getMessage());
-        }
+    public InfoController() {
+        loadFxml("Info");
 
         highEasyLbl.setTextFill(Color.GREEN);
         avgEasyLbl.setTextFill(Color.GREEN);
         highHardLbl.setTextFill(Color.BLUE);
         avgHardLbl.setTextFill(Color.BLUE);
 
-        mainMenuBtn.setOnAction((e) -> _notifyFinished.run());
+        mainMenuBtn.setOnAction((e) -> exit());
 
         loadData();
     }
@@ -85,9 +70,11 @@ public class InfoController extends VBox {
             if(entry.getKey().equals("Easy Test")) {
                 easySum = entry.getValue().stream().mapToInt(Integer::valueOf).sum();
                 easyHigh = entry.getValue().stream().mapToInt(Integer::valueOf).max().getAsInt();
+                easyCount = entry.getValue().size();
             } else if(entry.getKey().equals("Hard Test")) {
                 hardSum = entry.getValue().stream().mapToInt(Integer::valueOf).sum();
                 hardHigh = entry.getValue().stream().mapToInt(Integer::valueOf).max().getAsInt();
+                hardCount = entry.getValue().size();
             }
         }
 
@@ -107,25 +94,14 @@ public class InfoController extends VBox {
 
     }
 
-    private Runnable _notifyFinished;
+    @FXML private Label   titleLbl;
+    @FXML private Label   infoLbl;
+    @FXML private Label   highLbl;
+    @FXML private Label   avgLbl;
 
-    @FXML
-    private Label   titleLbl;
-    @FXML
-    private Label   infoLbl;
-    @FXML
-    private Label   highLbl;
-    @FXML
-    private Label   avgLbl;
-
-    @FXML
-    private Label   highEasyLbl;
-    @FXML
-    private Label   highHardLbl;
-    @FXML
-    private Label   avgEasyLbl;
-    @FXML
-    private Label   avgHardLbl;
-    @FXML
-    private Button  mainMenuBtn;
+    @FXML private Label   highEasyLbl;
+    @FXML private Label   highHardLbl;
+    @FXML private Label   avgEasyLbl;
+    @FXML private Label   avgHardLbl;
+    @FXML private Button  mainMenuBtn;
 }

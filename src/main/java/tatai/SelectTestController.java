@@ -1,15 +1,15 @@
 package tatai;
 
-import javafx.application.Platform;
+import com.jfoenix.controls.JFXButton;
+import com.sun.media.jfxmedia.logging.Logger;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import tatai.model.test.Test;
 import tatai.model.test.TestJson;
 import tatai.model.test.TestParser;
-
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -17,105 +17,86 @@ import java.io.IOException;
 /**
  * A window where you can select which test you want to do
  */
-public class SelectTestController extends AnchorPane{
+public class SelectTestController extends Controller {
 
-    private TestController _test;
+    private TestController _curTest;
 
-//    JavaFX Controls
-    @FXML private Button _btnEasy;
-    @FXML private Button _btnIntermediate;
-    @FXML private Button _btnAdvanced;
-    @FXML private Button _btnCustom;
+    //    JavaFX Controls
+    @FXML private FlowPane _paneFlow;
     @FXML private Button _btnCreateCustom;
     @FXML private Button _btnRemoveCustom;
 
 	public SelectTestController() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/tatai/SelectTest.fxml"));
-        loader.setController(this);
-        loader.setRoot(this);
-
-        try {
-            loader.load();
-        } catch (IOException e) {
-            throw new RuntimeException("Unable to load tatai.SelectTest.fxml: " + e.getMessage());
-        }
+        loadFxml("SelectTest");
 
         createBasicTests();
 
-        _btnEasy.setOnAction(event -> easyTest());
-        _btnIntermediate.setOnAction(event -> intermediateTest());
-        _btnAdvanced.setOnAction(event -> advancedTest());
-        _btnCustom.setOnAction(event -> customTest());
+        refreshButtons();
+
         _btnCreateCustom.setOnAction(event -> createCustom());
         _btnRemoveCustom.setOnAction(event -> removeCustom());
     }
 
-//    Called when easy button pressed.
-    private void easyTest() {
-
-	    try{
-
-            _test = new TestController(TestParser.read("Easy Test"), (state) ->
-                    Platform.runLater(() -> testComplete(state, true))
-            );
-            this.getChildren().add(_test);
-
-        }
-        catch(FileNotFoundException e) {
-	        //TODO: FIlebox
-            throw new RuntimeException("Easy test doesn't exist!");
-        }
-
-
-    }
-
-//    Called when intermediate button pressed.
-    private void intermediateTest() {
-	    throw new NotImplementedException();
-    }
-
-//    Called when advanced button pressed
-    private void advancedTest() {
-	    throw new NotImplementedException();
-    }
-
-//    Called when custom button pressed
-    private void customTest() {
-	    throw new NotImplementedException();
-	    //TODO: Opens a custom test.
-    }
-
-//    Called when create custom button pressed
+    // Called when create custom button pressed
     private void createCustom() {
 	    throw new NotImplementedException();
 	    //TODO: creates a custom test.
     }
 
-//    Called when remove custom button pressed
+    // Called when remove custom button pressed
     private void removeCustom() {
 	    throw new NotImplementedException();
 	    //TODO: removes a custom test
     }
 
-    private void testComplete(TestController.ReturnState state, boolean easy) {
-        switch(state) {
-            case QUIT:
-            case FINISHED: {
-                this.getChildren().remove(_test);
-            }
+    /**
+     * Opens the given test and transfers control to it
+     */
+    private void openTest(String name) {
+        try {
+            Test test = TestParser.read(name);
+            _curTest = new TestController(test);
 
+            switchTo(_curTest);
+        } catch(FileNotFoundException e) {
+            new Alert(Alert.AlertType.ERROR, "There was a problem loading that test! Please try another")
+                    .show();
+            Logger.logMsg(Logger.ERROR, "Loading of test " + name + " failed: " + e.getMessage());
         }
+    }
+
+    /**
+     * Displays all tests in the flow pane
+     */
+    private void refreshButtons() {
+        // TODO: Locking and unlocking would go here
+        _paneFlow.getChildren().clear();
+
+        for(String testName : TestParser.listTests()) {
+            JFXButton button = new JFXButton(testName);
+
+            // TODO: Set button styles here
+
+            button.setOnAction(e -> openTest(testName));
+
+            _paneFlow.getChildren().add(button);
+        }
+    }
+
+    @Override
+    protected void onSwitchedBack() {
+        // TODO: Switch over the test return state to decide what to do next
     }
 
     /**
      * Temporary method for creating basic tests if they are not already made
      */
     private static void createBasicTests() {
-        if(TestParser.listTests().contains("Easy Test"))
+        if(TestParser.listTests().contains("Easy"))
             return;
 
         TestJson basic = new TestJson();
-        basic.name = "Easy Test";
+        basic.name = "Easy";
         basic.questions = new TestJson.Question[1];
         basic.questions[0] = new TestJson.Question();
         basic.questions[0].rounds = 10;
@@ -128,7 +109,7 @@ public class SelectTestController extends AnchorPane{
             throw new RuntimeException(e.getMessage());
         }
 
-        basic.name = "Hard Test";
+        basic.name = "Hard";
         basic.questions = new TestJson.Question[1];
         basic.questions[0] = new TestJson.Question();
         basic.questions[0].rounds = 10;

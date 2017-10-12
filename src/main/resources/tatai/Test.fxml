@@ -1,44 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import tatai.PlaybackControl?>
 <?import tatai.RecorderControl?>
 
-<fx:root minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: #29292D;" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+
+<fx:root alignment="CENTER" spacing="20.0" type="VBox" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <Label fx:id="_lblNumber" focusTraversable="false" text="5" textFill="WHITE">
+         <font>
+            <Font size="96.0" />
+         </font>
+      </Label>
+      <HBox spacing="30.0">
          <children>
-            <Pane prefHeight="500.0" prefWidth="700.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-               <children>
-                  <Label fx:id="_lblNumber" focusTraversable="false" layoutX="324.0" layoutY="14.0" text="5" textFill="WHITE">
-                     <font>
-                        <Font size="96.0" />
-                     </font>
-                  </Label>
-                  <RecorderControl fx:id="_recorderControl" layoutX="79.0" layoutY="155.0" />
-                  <PlaybackControl fx:id="_playbackControl" layoutX="448.0" layoutY="155.0" />
-                  <Label fx:id="_lblRecognition" alignment="CENTER" layoutX="237.0" layoutY="340.0" textFill="WHITE">
-                     <font>
-                        <Font size="26.0" />
-                     </font>
-                  </Label>
-                  <JFXButton fx:id="_btnSubmit" contentDisplay="TEXT_ONLY" layoutX="293.0" layoutY="402.0" textFill="WHITE">
-                     <font>
-                        <Font size="26.0" />
-                     </font>
-                  </JFXButton>
-                  <JFXButton fx:id="_btnNext" contentDisplay="TEXT_ONLY" layoutX="476.0" layoutY="402.0" textFill="WHITE">
-                     <font>
-                        <Font size="26.0" />
-                     </font>
-                  </JFXButton>
-               </children>
-            </Pane>
+            <RecorderControl fx:id="_recorderControl" />
+            <PlaybackControl fx:id="_playbackControl" />
          </children>
-      </AnchorPane>
+      </HBox>
+      <Label fx:id="_lblRecognition" alignment="CENTER" textFill="WHITE">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <JFXButton fx:id="_btnNext" contentDisplay="TEXT_ONLY" textFill="WHITE">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="_btnSubmit" contentDisplay="TEXT_ONLY" textFill="WHITE">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </HBox>
    </children>
+   <padding>
+      <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+   </padding>
 </fx:root>

@@ -1,85 +1,70 @@
 package tatai;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-import java.io.IOException;
+import util.Views;
 
 /**
  * The top level class of this project. Is controller of the application/initial window
  */
 public class Application extends javafx.application.Application {
-
-    private static final String APP_NAME = "T\u0101tai";
-    private Stage _stage;
-    private Scene _mainScene;
-
-
-//    JavaFX Controls
-    @FXML private Button _btnHome;
-    @FXML private Button _btnPractice;
-    @FXML private Button _btnTest;
-    @FXML private Button _btnStats;
-    @FXML private AnchorPane _viewWindow;
-
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
-    public void start(Stage stage) {
+    public void     start(Stage stage) {
         _stage = stage;
 
-        // Load the application fxml, and set self to be its controller
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/tatai/Application.fxml"));
-        loader.setController(this);
+        stage.setScene(new Scene(Views.load("Application", this, null)));
 
-        try {
-            _mainScene = new Scene(loader.load());
-
-        } catch(IOException e) {
-            throw new RuntimeException("Unable to load tatai.Application.fxml: " + e.getMessage());
-        }
-        //_stage.initStyle(StageStyle.UNDECORATED);
         _stage.setTitle(APP_NAME);
-
-        _stage.setScene(_mainScene);
-
         _stage.show();
 
-        _btnHome.setOnAction(event -> Home());
-        _btnPractice.setOnAction(event -> Practice());
-        _btnTest.setOnAction((event -> Test()));
-        _btnStats.setOnAction(event -> Stats());
+        homeBtn.setOnAction(event -> home());
+        practiceBtn.setOnAction(event -> practice());
+        testBtn.setOnAction((event -> test()));
+        statsBtn.setOnAction(event -> stats());
     }
 
-//    Called when home button pressed
-    private void Home(){
+    // Called when home button pressed
+    private void home(){
         throw new NotImplementedException();
     }
 
-//    Called when practice button pressed
-    private void Practice(){
+    // Called when practice button pressed
+    private void practice() {
         throw new NotImplementedException();
     }
 
-//    Called when test button pressed
-    private void Test(){
-        SelectTestController controller = new SelectTestController();
-        _viewWindow.getChildren().add(controller);
-
+    // Called when test button pressed
+    private void test(){
+        new SelectTestController().display(topBox, this::home);
     }
 
-//    Called when stats button pressed
-    private void Stats(){
+    // Called when stats button pressed
+    private void stats(){
         throw new NotImplementedException();
     }
 
+    // Called when the info button has been pressed
+    private void    info() {
+        InfoController info = new InfoController();
 
+        info.display(topBox, this::home);
+    }
 
+    private static final String APP_NAME = "T\u0101tai";
+    private Stage _stage;
+
+    // JavaFX Controls
+    @FXML private Button    homeBtn;
+    @FXML private Button    practiceBtn;
+    @FXML private Button    testBtn;
+    @FXML private Button    statsBtn;
+    @FXML private HBox      topBox;
 }
