@@ -3,6 +3,7 @@ package tatai;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -43,7 +44,7 @@ public class Application extends javafx.application.Application {
 
     // Called when test button pressed
     private void test(){
-        new SelectTestController().display(topBox, this::home);
+        new SelectTestController().display(topPane, this::home);
     }
 
     // Called when stats button pressed
@@ -55,7 +56,7 @@ public class Application extends javafx.application.Application {
     private void    info() {
         InfoController info = new InfoController();
 
-        info.display(topBox, this::home);
+        info.display(topPane, this::home);
     }
 
     private static final String APP_NAME = "T\u0101tai";
@@ -66,5 +67,5 @@ public class Application extends javafx.application.Application {
     @FXML private Button    practiceBtn;
     @FXML private Button    testBtn;
     @FXML private Button    statsBtn;
-    @FXML private HBox      topBox;
+    @FXML private AnchorPane topPane;
 }

@@ -2,16 +2,15 @@ package tatai;
 
 import javafx.application.Platform;
 import javafx.scene.Parent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import util.Views;
 
 /**
  * Implements some basic funcitonality for switching from one controller to another.
- * Currently assumes the controller is also a root of type VBox. This might need changing in future
- * but atm is fine.
  */
-public abstract class Controller extends VBox {
+public abstract class Controller extends AnchorPane {
     /**
      * Displays this controller on the given stage.
      * @param onExit when the controller is ready to release control, onExit is called.
@@ -19,11 +18,10 @@ public abstract class Controller extends VBox {
     public void display(Pane root, Runnable onExit) {
         _root = root;
         _onExit = onExit;
-
         _root.getChildren().add(this);
     }
 
-    // Loads the given FXML with this being root and controll
+    // Loads the given FXML with this being root and controller
     protected void  loadFxml(String name) {
         Views.load(name, this, this);
     }
@@ -32,6 +30,7 @@ public abstract class Controller extends VBox {
      * Switch to the given controller from this one
      */
     protected void  switchTo(Controller controller) {
+
         _child = controller;
         controller.display(_root, this::switchFrom);
     }

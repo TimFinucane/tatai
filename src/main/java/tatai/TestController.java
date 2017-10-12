@@ -31,10 +31,12 @@ public class TestController extends Controller {
 
 		_playbackControl.setVisible(false);
 		_recorderControl.setVisible(false);
+		_btnNext.setVisible(false);
 
 		_lblNumber.setManaged(false);
 		_playbackControl.setManaged(false);
 		_recorderControl.setManaged(false);
+		_btnNext.setOnAction(event -> nextRound());
 
 		_btnSubmit.setText("Start");
 		_btnSubmit.setOnAction(e -> {
@@ -42,6 +44,7 @@ public class TestController extends Controller {
 			_recorderControl.setManaged(true);
 			_recorderControl.setManaged(true);
 
+			_btnNext.setVisible(true);
 			_playbackControl.setVisible(true);
 			_recorderControl.setVisible(true);
 

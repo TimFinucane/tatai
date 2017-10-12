@@ -1,11 +1,14 @@
 package tatai;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXRippler;
 import com.sun.media.jfxmedia.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.paint.Paint;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import tatai.model.test.Test;
 import tatai.model.test.TestJson;
@@ -28,7 +31,6 @@ public class SelectTestController extends Controller {
 
 	public SelectTestController() {
         loadFxml("SelectTest");
-
         createBasicTests();
 
         refreshButtons();
@@ -56,7 +58,6 @@ public class SelectTestController extends Controller {
         try {
             Test test = TestParser.read(name);
             _curTest = new TestController(test);
-
             switchTo(_curTest);
         } catch(FileNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, "There was a problem loading that test! Please try another")
@@ -70,12 +71,19 @@ public class SelectTestController extends Controller {
      */
     private void refreshButtons() {
         // TODO: Locking and unlocking would go here
+
         _paneFlow.getChildren().clear();
 
         for(String testName : TestParser.listTests()) {
             JFXButton button = new JFXButton(testName);
-
+            System.out.println(testName);
             // TODO: Set button styles here
+            AnchorPane.setLeftAnchor(_paneFlow,20.0);
+            AnchorPane.setRightAnchor(_paneFlow, 20.0);
+
+
+            button.setRipplerFill(Paint.valueOf("dddddd"));
+            button.setTextFill(Paint.valueOf("ffffff"));
 
             button.setOnAction(e -> openTest(testName));
 
