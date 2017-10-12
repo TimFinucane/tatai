@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import tatai.PlaybackControl?>
+<?import tatai.RecorderControl?>
+
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: #29292D;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <Pane prefHeight="500.0" prefWidth="700.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <children>
+                  <Label fx:id="_lblNumber" focusTraversable="false" layoutX="324.0" layoutY="14.0" text="5" textFill="WHITE">
+                     <font>
+                        <Font size="96.0" />
+                     </font>
+                  </Label>
+                  <RecorderControl fx:id="_recorderControl" layoutX="79.0" layoutY="155.0" />
+                  <PlaybackControl fx:id="_playbackControl" layoutX="448.0" layoutY="155.0" />
+                  <Label fx:id="_lblRecognition" layoutX="320.0" layoutY="335.0" text="Label" textFill="WHITE">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </Label>
+                  <JFXButton fx:id="_btnSubmit" layoutX="293.0" layoutY="402.0" text="Button" textFill="WHITE">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton fx:id="_btnNext" layoutX="476.0" layoutY="402.0" text="Button" textFill="WHITE">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </Pane>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
