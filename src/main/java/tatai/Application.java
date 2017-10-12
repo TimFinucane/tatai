@@ -4,20 +4,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
-import tatai.model.test.Scores;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import tatai.model.test.TestJson;
 import tatai.model.test.TestParser;
 
-import javafx.stage.StageStyle;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -90,38 +82,6 @@ public class Application extends javafx.application.Application {
         throw new NotImplementedException();
     }
 
-    /**
-     * Temporary method for creating basic tests if they are not already made
-     */
-    private static void createBasicTests() {
-        if(TestParser.listTests().contains("Easy Test"))
-            return;
 
-        TestJson basic = new TestJson();
-        basic.name = "Easy Test";
-        basic.questions = new TestJson.Question[1];
-        basic.questions[0] = new TestJson.Question();
-        basic.questions[0].rounds = 10;
-        basic.questions[0].tries = 2;
-        basic.questions[0].question = "(1 to 9)";
 
-        try {
-            TestParser.makeTest(basic);
-        } catch(IOException e) {
-            throw new RuntimeException(e.getMessage());
-        }
-
-        basic.name = "Hard Test";
-        basic.questions = new TestJson.Question[1];
-        basic.questions[0] = new TestJson.Question();
-        basic.questions[0].rounds = 10;
-        basic.questions[0].tries = 2;
-        basic.questions[0].question = "(1 to 99)";
-
-        try {
-            TestParser.makeTest(basic);
-        } catch(IOException e) {
-            throw new RuntimeException(e.getMessage());
-        }
-    }
 }
