@@ -10,6 +10,7 @@ import static org.junit.Assert.*;
 
 public class ScoresTest {
 
+    @Test
     public void TestSingleScore() {
         Scores.save("user", "test", 10);
 
@@ -28,20 +29,20 @@ public class ScoresTest {
         assertEquals("Not saving score correctly", 10, scores[0].score);
         assertEquals("Date is incorrect", date, scores[0].date);
 
-        //Scores.clear("test");
+        Scores.clear("test");
     }
 
     @Test
     public void TestAppendingScore() throws NullPointerException {
-        Scores.save("user", "test", 10);
-        Scores.save("user2", "test", 8);
+        Scores.save("user", "test2", 10);
+        Scores.save("user2", "test2", 8);
 
-        Scores.Score[] scores = Scores.retrieve("test");
+        Scores.Score[] scores = Scores.retrieve("test2");
 
         assertNotNull("Retrieved scores is null!", scores);
 
         assertEquals("Appending scores doesn't work :(", 2, scores.length);
 
-        //Scores.clear("test");
+        //Scores.clear("test2");
     }
 }

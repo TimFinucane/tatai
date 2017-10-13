@@ -6,11 +6,8 @@ import com.sun.media.jfxmedia.logging.Logger;
 import util.Files;
 
 import javax.annotation.Nullable;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Date;
+import java.io.*;
+import java.util.*;
 
 public class Scores {
     public static class Score {
@@ -41,13 +38,35 @@ public class Scores {
     }
 
     /**
-     * Saves a score
+     * Saves a score. I hate this function
      */
     public static void      save(String user, String test, int score) {
-        try(FileWriter writer = new FileWriter(Files.scoreFile(test))) {
-            _gson.toJson(new Score[]{ new Score(user, score) }, (Appendable)writer);
+        File file = Files.scoreFile(test);
+
+        Score[] scores = null;
+
+        // Horrible, but cant find any other way of doing it
+        if(file.exists()) {
+            try( FileReader reader = new FileReader(file) ) {
+                List<Score> list = new ArrayList<>();
+                Collections.addAll(list, _gson.fromJson(reader, Score[].class));
+                list.add(new Score(user, score));
+                scores = list.toArray(new Score[0]);
+            } catch(FileNotFoundException e) {
+                // Cant happen so thanks.
+            } catch(IOException e) {
+                Logger.logMsg(Logger.ERROR, "Unexpected IO exception writing to " + test + " score file: "
+                        + e.getMessage());
+            }
+        } else {
+            scores = new Score[]{ new Score(user, score) };
+        }
+
+        try(FileWriter writer = new FileWriter(file, false)) {
+            _gson.toJson(scores, writer);
         } catch(IOException e) {
-            Logger.logMsg(Logger.ERROR, "Unexpected IO exception writing to " + test + " score file");
+            Logger.logMsg(Logger.ERROR, "Unexpected IO exception writing to " + test + " score file: "
+                    + e.getMessage());
         }
     }
 
@@ -58,5 +77,5 @@ public class Scores {
         Files.scoreFile(test).delete();
     }
 
-    private static Gson     _gson = new GsonBuilder().setDateFormat("yyyy MMM dd HH:mm").create();
+    private static Gson     _gson = new GsonBuilder().setDateFormat("yyyy MMM dd HH:mm").setLenient().create();
 }
