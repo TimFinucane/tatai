@@ -83,12 +83,7 @@ public class Application extends javafx.application.Application {
     }
     // Called when the info button has been pressed
     private void    info() {
-        InfoController info = new InfoController();
-
-        info.display(_stage, () -> {
-            _stage.setScene(_mainScreen);
-            _stage.show();
-        });
+        // TODO: New info controller
     }
 
     /**
