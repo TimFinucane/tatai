@@ -29,15 +29,16 @@ public class TestController extends Controller {
      */
 	public TestController(Test model) {
 
-//	    TODO: Fix anchors for the record and playback controls.
+//	    TODO: Fix playback control position and resizing.
 
-        _model = model;
+		_model = model;
 
 	    // Load fxml, set self to act as controller and root
 		Views.load("Test", this, this);
 		_playbackControl.setVisible(false);
 		_recorderControl.setVisible(false);
 		_btnNext.setVisible(false);
+		_lblRecognition.setVisible(false);
 
 		_lblNumber.setManaged(false);
 		_playbackControl.setManaged(false);

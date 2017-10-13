@@ -115,7 +115,7 @@ public class RecorderControl extends Region {
         return icon;
     }
 
-    private Button      _button;
+    private JFXButton      _button;
     private Recording   _recording = null;
 
     private Runnable            _mediaAvailable = null;

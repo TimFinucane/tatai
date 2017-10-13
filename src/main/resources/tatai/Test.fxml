@@ -1,36 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import tatai.PlaybackControl?>
 <?import tatai.RecorderControl?>
 
-<fx:root minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="645.0" style="-fx-background-color: #29292D;" type="AnchorPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root prefHeight="400.0" prefWidth="645.0" style="-fx-background-color: #29292D;" type="AnchorPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="_lblTitle" alignment="CENTER" layoutX="45.0" layoutY="148.0" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="150.0">
-         <font>
-            <Font size="26.0" />
-         </font>
-      </Label>
-      <JFXButton fx:id="_btnSubmit" layoutX="295.0" layoutY="324.0" ripplerFill="#dddddd" text="Submit" textFill="WHITE" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="270.0" AnchorPane.rightAnchor="270.0" />
-      <JFXButton fx:id="_btnNext" layoutX="558.0" layoutY="313.0" ripplerFill="#dddddd" text="Next" textFill="WHITE" AnchorPane.bottomAnchor="35.0" AnchorPane.rightAnchor="100.0" />
-      <RecorderControl fx:id="_recorderControl" layoutX="209.0" layoutY="167.0" AnchorPane.leftAnchor="100.0" />
-      <Label fx:id="_lblNumber" alignment="CENTER" layoutX="276.0" layoutY="14.0" text="5" textFill="WHITE" AnchorPane.leftAnchor="270.0" AnchorPane.rightAnchor="270.0">
-         <font>
-            <Font size="150.0" />
-         </font>
-      </Label>
-      <PlaybackControl fx:id="_playbackControl" layoutX="425.0" layoutY="164.0" AnchorPane.rightAnchor="100.0" />
-      <Label fx:id="_lblRecognition" alignment="CENTER" layoutX="25.0" layoutY="267.0" prefHeight="38.0" prefWidth="555.0" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0">
-         <font>
-            <Font size="26.0" />
-         </font>
-      </Label>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="645.0" style="-fx-background-color: #29292D;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="80.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Region prefHeight="200.0" prefWidth="200.0" />
+                  <Label fx:id="_lblNumber" text="5" textFill="WHITE" HBox.hgrow="ALWAYS">
+                     <font>
+                        <Font size="96.0" />
+                     </font>
+                  </Label>
+                  <Region prefHeight="200.0" prefWidth="200.0" />
+               </children>
+            </HBox>
+            <Region prefHeight="200.0" prefWidth="200.0" />
+            <Label fx:id="_lblTitle" alignment="CENTER" text="Welcome to the easy test" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
+            <Region prefHeight="200.0" prefWidth="200.0" />
+            <HBox alignment="TOP_CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="55.0" prefWidth="400.0">
+               <children>
+                  <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                  <RecorderControl fx:id="_recorderControl" HBox.hgrow="SOMETIMES" />
+                  <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                  <PlaybackControl fx:id="_playbackControl" HBox.hgrow="SOMETIMES" />
+                  <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+            <Region prefHeight="200.0" prefWidth="200.0" />
+            <Label fx:id="_lblRecognition" text="Recognition Label" textFill="WHITE">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
+            <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Region prefHeight="200.0" prefWidth="200.0" />
+                  <JFXButton fx:id="_btnSubmit" prefHeight="30.0" prefWidth="100.0" text="Submit" textFill="WHITE" />
+                  <Region prefHeight="200.0" prefWidth="200.0" />
+                  <JFXButton fx:id="_btnNext" prefHeight="30.0" prefWidth="100.0" text="Next" textFill="WHITE" />
+                  <Region prefHeight="200.0" prefWidth="200.0" />
+               </children>
+            </HBox>
+            <Region prefHeight="250.0" prefWidth="200.0" />
+         </children>
+      </VBox>
    </children>
-   <padding>
-      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-   </padding>
 </fx:root>

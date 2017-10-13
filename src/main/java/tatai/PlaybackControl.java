@@ -20,10 +20,10 @@ public class PlaybackControl extends Region {
         _playbackBtn = new JFXButton( "");
 
         _playbackBtn.setGraphic(setPlay());
-        _playbackBtn.setDisable(true);
+
 
         getChildren().add(_playbackBtn);
-
+        _playbackBtn.setDisable(true);
        // _imageView.setPreserveRatio(true);
 
         _playbackBtn.setOnAction((ignored) -> {
@@ -103,7 +103,7 @@ public class PlaybackControl extends Region {
 
     private boolean     _playing = false;
     private MediaPlayer _player = null;
-    private Button      _playbackBtn;
+    private JFXButton      _playbackBtn;
 
     //private Image       _playImage = new Image(getClass().getResourceAsStream("/tatai/icons/play.png"));
   //  private Image       _stopImage = new Image(getClass().getResourceAsStream("/tatai/icons/stop.png"));
