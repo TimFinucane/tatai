@@ -61,7 +61,7 @@ public class TestController extends Controller {
 			nextRound();
 		});
 
-		recognitionLbl.setText("Welcome to the " + model.name());
+		recognitionLbl.setText("Welcome to the " + _model.name);
 
 		recorderCntrl.onMediaAvailable(this::mediaAvailable);
 		recorderCntrl.onRecognitionComplete(this::recognize);
@@ -175,7 +175,7 @@ public class TestController extends Controller {
 
 			// TODO: If there are more tests, determine whether this test model has a harder version through test
 			//  interface, instead of this abomination.
-			if(_model.name().equals("EasyTest")) {
+			if(_model.name.equals("EasyTest")) {
 				harderBtn.setManaged(true);
 				harderBtn.setVisible(true);
 				harderBtn.setOnAction((e) -> exit(ReturnState.RETRY_HARDER));

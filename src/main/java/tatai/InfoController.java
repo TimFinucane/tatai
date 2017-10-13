@@ -4,10 +4,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
-import tatai.model.test.Scores;
-
-import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * Shows statistics about the session score
@@ -56,7 +52,7 @@ public class InfoController extends Controller {
     }
 
     private void loadData() {
-        Map<String, ArrayList<Integer>> data = Scores.retrieve();
+        /*Map<String, ArrayList<Integer>> data = Scores.retrieve();
 
         int easyHigh = 0;
         int easyCount = 0;
@@ -90,7 +86,7 @@ public class InfoController extends Controller {
             avgHardLbl.setText(String.valueOf(hardSum/hardCount));
         } else {
             avgHardLbl.setText("0");
-        }
+        }*/
 
     }
 

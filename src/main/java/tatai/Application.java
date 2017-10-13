@@ -5,13 +5,10 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
-import tatai.model.test.Scores;
-import tatai.model.test.TestJson;
 import tatai.model.test.TestParser;
 import util.Views;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
 /**
  * The top level class of this project. Is controller of the application/initial window
@@ -57,11 +54,6 @@ public class Application extends javafx.application.Application {
         easyBtn.setOnAction((ignored) -> easyTest());
         hardBtn.setOnAction((ignored) -> hardTest());
         infoBtn.setOnAction((ignored) -> info());
-
-        // Clear scores on shutdown, so only most recent session is shown
-        Runtime.getRuntime().addShutdownHook(new Thread(Scores::clear));
-
-        createBasicTests();
 
         _stage.show();
     }
@@ -131,41 +123,6 @@ public class Application extends javafx.application.Application {
                 break;
             case RETRY_HARDER:
                 hardTest();
-        }
-    }
-
-    /**
-     * Temporary method for creating basic tests if they are not already made
-     */
-    private static void createBasicTests() {
-        if(TestParser.listTests().contains("Easy Test"))
-            return;
-
-        TestJson basic = new TestJson();
-        basic.name = "Easy Test";
-        basic.questions = new TestJson.Question[1];
-        basic.questions[0] = new TestJson.Question();
-        basic.questions[0].rounds = 10;
-        basic.questions[0].tries = 2;
-        basic.questions[0].question = "(1 to 9)";
-
-        try {
-            TestParser.makeTest(basic);
-        } catch(IOException e) {
-            throw new RuntimeException(e.getMessage());
-        }
-
-        basic.name = "Hard Test";
-        basic.questions = new TestJson.Question[1];
-        basic.questions[0] = new TestJson.Question();
-        basic.questions[0].rounds = 10;
-        basic.questions[0].tries = 2;
-        basic.questions[0].question = "(1 to 99)";
-
-        try {
-            TestParser.makeTest(basic);
-        } catch(IOException e) {
-            throw new RuntimeException(e.getMessage());
         }
     }
 
