@@ -6,7 +6,9 @@ import util.Files;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class TestParser {
     /**
@@ -52,6 +54,9 @@ public class TestParser {
                             question.tries,
                             QuestionReader.read(question.question)));
         }
+
+        if(testJson.randomizeQuestions)
+            Collections.shuffle(questions, new Random());
 
         return new Test(testJson.name, questions);
     }

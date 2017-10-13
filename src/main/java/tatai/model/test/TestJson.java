@@ -14,5 +14,7 @@ public class TestJson {
     public String       name;
     public String       author = "";
 
+
+    public boolean      randomizeQuestions;
     public Question[]   questions;
 }
