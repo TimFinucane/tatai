@@ -43,6 +43,6 @@ public class ScoresTest {
 
         assertEquals("Appending scores doesn't work :(", 2, scores.length);
 
-        //Scores.clear("test2");
+        Scores.clear("test2");
     }
 }
