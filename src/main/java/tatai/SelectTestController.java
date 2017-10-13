@@ -1,7 +1,6 @@
 package tatai;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXRippler;
 import com.sun.media.jfxmedia.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -22,12 +21,12 @@ import java.io.IOException;
  */
 public class SelectTestController extends Controller {
 
-    private TestController _curTest;
+    private TestController  _curTest;
 
     //    JavaFX Controls
-    @FXML private FlowPane _paneFlow;
-    @FXML private Button _btnCreateCustom;
-    @FXML private Button _btnRemoveCustom;
+    @FXML private FlowPane  _paneFlow;
+    @FXML private Button    _btnCreateCustom;
+    @FXML private Button    _btnRemoveCustom;
 
 	public SelectTestController() {
         loadFxml("SelectTest");
