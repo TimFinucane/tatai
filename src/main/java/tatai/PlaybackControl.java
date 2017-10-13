@@ -4,9 +4,6 @@ import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -63,18 +60,9 @@ public class PlaybackControl extends Region {
         stop();
     }
 
-    /**
-     * A special resize function which only takes one parameter that determines both the width and height
-     *  of the icons control.
-     */
-    //public void     resize(double size) {
-  //      _imageView.setFitHeight(size);
-  //  }
-
     // Called when the play button is pressed
     private void play() {
         _player.play();
-        //_imageView.setImage(_stopImage);
         _playbackBtn.setGraphic(setStop());
         _playing = true;
     }
@@ -82,11 +70,10 @@ public class PlaybackControl extends Region {
     private void stop() {
         _player.stop();
         _playbackBtn.setGraphic(setPlay());
-        //_imageView.setImage(_playImage);
         _playing = false;
     }
 
-//    Helper methods to display icons.
+    // Helper methods to display icons.
     private static FontAwesomeIconView setPlay() {
         FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.PLAY);
         icon.setFill(Paint.valueOf("#00e640"));
@@ -104,8 +91,4 @@ public class PlaybackControl extends Region {
     private boolean     _playing = false;
     private MediaPlayer _player = null;
     private Button      _playbackBtn;
-
-    //private Image       _playImage = new Image(getClass().getResourceAsStream("/tatai/icons/play.png"));
-  //  private Image       _stopImage = new Image(getClass().getResourceAsStream("/tatai/icons/stop.png"));
-   // private ImageView   _imageView = new ImageView(_playImage);
 }
