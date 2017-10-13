@@ -26,6 +26,6 @@ public class Files {
         return new File(testFolder().getPath() + "/" + name + ".txt");
     }
     public static File scoreFile(String name) {
-        return new File(testFolder().getPath() + "/" + name + ".txt");
+        return new File(scoreFolder().getPath() + "/" + name + ".txt");
     }
 }

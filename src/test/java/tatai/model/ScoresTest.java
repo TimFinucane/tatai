@@ -3,20 +3,23 @@ package tatai.model;
 import org.junit.Test;
 import tatai.model.test.Scores;
 
+import java.util.Calendar;
 import java.util.Date;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class ScoresTest {
-    @Test
+
     public void TestSingleScore() {
         Scores.save("user", "test", 10);
 
         Scores.Score[] scores = Scores.retrieve("test");
 
-        Date date = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.clear(Calendar.SECOND);
+        cal.clear(Calendar.MILLISECOND);
+
+        Date date = new Date(cal.getTimeInMillis());
 
         assertNotNull("Retrieved scores is null!", scores);
 
@@ -25,7 +28,7 @@ public class ScoresTest {
         assertEquals("Not saving score correctly", 10, scores[0].score);
         assertEquals("Date is incorrect", date, scores[0].date);
 
-        Scores.clear("test");
+        //Scores.clear("test");
     }
 
     @Test
@@ -39,6 +42,6 @@ public class ScoresTest {
 
         assertEquals("Appending scores doesn't work :(", 2, scores.length);
 
-        Scores.clear("test");
+        //Scores.clear("test");
     }
 }

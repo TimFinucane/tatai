@@ -45,7 +45,7 @@ public class Scores {
      */
     public static void      save(String user, String test, int score) {
         try(FileWriter writer = new FileWriter(Files.scoreFile(test))) {
-            _gson.toJson(new Score(user, score), (Appendable)writer);
+            _gson.toJson(new Score[]{ new Score(user, score) }, (Appendable)writer);
         } catch(IOException e) {
             Logger.logMsg(Logger.ERROR, "Unexpected IO exception writing to " + test + " score file");
         }
@@ -58,5 +58,5 @@ public class Scores {
         Files.scoreFile(test).delete();
     }
 
-    private static Gson     _gson = new GsonBuilder().setDateFormat("yyyy HH:mm").create();
+    private static Gson     _gson = new GsonBuilder().setDateFormat("yyyy MMM dd HH:mm").create();
 }
