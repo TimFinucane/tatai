@@ -20,9 +20,9 @@ public class Scores {
             this.date = new Date(); // Now
         }
 
-        String  user;
-        int     score;
-        Date    date;
+        public String  user;
+        public int     score;
+        public Date    date;
     }
 
     /**
