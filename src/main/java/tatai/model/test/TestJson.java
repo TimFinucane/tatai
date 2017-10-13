@@ -11,10 +11,19 @@ public class TestJson {
         public String   question;
     }
 
-    public String       name;
-    public String       author = "";
+    /**
+     * Info about a prerequisite for the game
+     */
+    public static class Prerequisite {
+        public String   name;
+        public int      score;
+    }
 
+    public String           name;
+    public String           author = "";
 
-    public boolean      randomizeQuestions;
-    public Question[]   questions;
+    public Prerequisite[]   prerequisites;
+
+    public boolean          randomizeQuestions;
+    public Question[]       questions;
 }
