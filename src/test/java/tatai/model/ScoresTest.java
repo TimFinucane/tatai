@@ -20,10 +20,12 @@ public class ScoresTest {
 
         assertNotNull("Retrieved scores is null!", scores);
 
-        assertEquals("There must be a score retrieved when one is saved", scores.length, 1);
+        assertEquals("There must be a score retrieved when one is saved", 1, scores.length);
         assertTrue("Not saving name correctly", scores[0].user.equals("user"));
-        assertEquals("Not saving score correctly", scores[0].score, 10);
-        assertEquals("Date is incorrect", scores[0].date, date);
+        assertEquals("Not saving score correctly", 10, scores[0].score);
+        assertEquals("Date is incorrect", date, scores[0].date);
+
+        Scores.clear("test");
     }
 
     @Test
@@ -35,6 +37,8 @@ public class ScoresTest {
 
         assertNotNull("Retrieved scores is null!", scores);
 
-        assertEquals("Appending scores doesn't work :(", scores.length, 2);
+        assertEquals("Appending scores doesn't work :(", 2, scores.length);
+
+        Scores.clear("test");
     }
 }
