@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import util.Views;
 
 /**
@@ -30,7 +29,7 @@ public abstract class Controller extends AnchorPane {
      * Switch to the given controller from this one
      */
     protected void  switchTo(Controller controller) {
-
+        _root.getChildren().remove(this);
         _child = controller;
         controller.display(_root, this::switchFrom);
     }

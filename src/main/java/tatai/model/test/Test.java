@@ -39,18 +39,14 @@ public class Test {
 	 * @return the question generated for that round.
 	 */
 	public String		nextRound() {
-        if(_questionIndex >= _questions.size()) {
-            throw new IllegalStateException("Test is finished. Please do not do this");
-        }
-
 		_round++;
 
-		if(_round >= _questions.get(_questionIndex).rounds) {
-			_round = 0;
+		if(_round > _questions.get(_questionIndex).rounds) {
+			_round = 1;
 			_questionIndex += 1;
 
-            if(_questionIndex == _questions.size())
-                Scores.save(_user, name, _score);
+			if(_questionIndex == _questions.size())
+				throw new IllegalStateException("Test is finished. Please do not do this");
 		}
 
 		_tries = _questions.get(_questionIndex).tries;
@@ -62,8 +58,13 @@ public class Test {
 	 * Method which returns whether or not there are any more rounds
 	 * @return true if there is at least one round remaining
 	 */
-	public boolean 		hasNextRound() {
-		return _questionIndex > _questions.size();
+	public boolean 		hasAnotherRound() {
+		if(_questionIndex == (_questions.size() - 1) && _round == _questions.get(_questionIndex).rounds) {
+			Scores.save(_user, name, _score);
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	/**

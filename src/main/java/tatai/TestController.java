@@ -30,34 +30,27 @@ public class TestController extends Controller {
 	    // Load fxml, set self to act as controller and root
 		loadFxml("Test");
 
-		_lblTitle.setFont(Font.font(TITLE_TEXT_SIZE ));
-		_lblTitle.setText("Welcome to the " + _model.name + " test");
+		titleLbl.setFont(Font.font(TITLE_TEXT_SIZE ));
+		titleLbl.setText("Welcome to the " + _model.name + " test");
 
-		_playbackControl.setVisible(false);
-		_recorderControl.setVisible(false);
-		_recorderControl.setDisable(true);
+		playbackControl.setVisible(false);
+		recorderControl.setVisible(false);
+		recorderControl.setDisable(true);
 
-		_btnNext.setVisible(false);
-		_lblRecognition.setVisible(false);
+		recognitionLbl.setVisible(false);
 
-		_btnNext.setManaged(false);
-		_btnNext.setOnAction(event -> nextRound());
+		submitBtn.setText("Start");
+		submitBtn.setOnAction(e -> {
+            titleLbl.setFont(Font.font(TITLE_NUMBERS_SIZE ));
 
-		_btnSubmit.setText("Start");
-		_btnSubmit.setOnAction(e -> {
-            _lblTitle.setFont(Font.font(TITLE_NUMBERS_SIZE ));
-
-		    _playbackControl.setVisible(true);
-		    _recorderControl.setVisible(true);
-
-			_btnNext.setManaged(true);
-			_btnNext.setVisible(true);
+		    playbackControl.setVisible(true);
+		    recorderControl.setVisible(true);
 
 			nextRound();
 		});
 
-		_recorderControl.onMediaAvailable(this::mediaAvailable);
-		_recorderControl.onRecognitionComplete(this::recognize);
+		recorderControl.onMediaAvailable(this::mediaAvailable);
+		recorderControl.onRecognitionComplete(this::recognize);
 	}
 
     /**
@@ -71,7 +64,7 @@ public class TestController extends Controller {
 	 * Called when the recorder has recorded something
 	 */
 	private void	mediaAvailable() {
-		_playbackControl.setMedia(_recorderControl.media());
+		playbackControl.setMedia(recorderControl.media());
 	}
 
 	/**
@@ -79,66 +72,72 @@ public class TestController extends Controller {
 	 * the state
 	 */
     private void	recognize(String text) {
-		_playbackControl.setDisable(false);
+		playbackControl.setDisable(false);
+
+        retryLbl.setText("");
+		submitBtn.setDisable(false);
 
     	if(text.equals("")) {
-            _lblRecognition.setText("Nothing was recognized");
+            recognitionLbl.setText("Nothing was recognized");
         }
 		else {
-            _lblRecognition.setText(text);
+            recognitionLbl.setText(text);
         }
 
     	if(_model.tryAnswer(text))
-    		_lblRecognition.setTextFill(SUCCESS_COLOUR);
+    		recognitionLbl.setTextFill(SUCCESS_COLOUR);
 		else {
-			if(_model.hasAnotherTry())
-			    _btnSubmit.setText("Retry");
-			else
-				_recorderControl.setDisable(true);
-    		    _lblRecognition.setTextFill(FAILURE_COLOUR);
+			if(_model.hasAnotherTry()) {
+			    retryLbl.setText("You can try again by re-clicking the record button");
+            } else {
+                recorderControl.setDisable(true);
+            }
+            recognitionLbl.setTextFill(FAILURE_COLOUR);
 		}
 
-		// Prepare user submit options
-		_btnSubmit.setDisable(false);
-		if(_model.hasNextRound()) {
-			_btnSubmit.setText("Next");
-			_btnSubmit.setOnAction(e -> nextRound());
-		} else {
-			_btnSubmit.setText("Finish");
-			_btnSubmit.setOnAction(e -> finish());
-		}
+		recognitionLbl.setVisible(true);
 	}
 
 	/**
 	 * Sets up the screen for the next round
 	 */
 	private void	nextRound() {
-	    _btnSubmit.setText("Submit");
+	    retryLbl.setText("");
+        submitBtn.setDisable(true);
 
-		_playbackControl.setDisable(true);
-		_recorderControl.setDisable(false);
+		playbackControl.setDisable(true);
+		recorderControl.setDisable(false);
 
-		_lblRecognition.setText("");
-		_playbackControl.dispose();
+		recognitionLbl.setText("");
+		playbackControl.dispose();
 
-		_btnSubmit.setDisable(true);
+		titleLbl.setText(_model.nextRound());
 
-		_lblTitle.setText(_model.nextRound());
+        // Prepare user submit options
+        if(_model.hasAnotherRound()) {
+            submitBtn.setText("Next");
+            submitBtn.setOnAction(e -> nextRound());
+        } else {
+            submitBtn.setText("Finish");
+            submitBtn.setOnAction(e -> finish());
+        }
 	}
 
 	/**
 	 * Sets up the screen when complete
 	 */
 	private void	finish() {
-        _lblTitle.setFont(Font.font(TITLE_TEXT_SIZE ));
-		_lblTitle.setText(_model.score() + "/10");
+        titleLbl.setFont(Font.font(TITLE_TEXT_SIZE));
+		titleLbl.setText(_model.score() + "/10");
 
-		_btnNext.setVisible(false);
-		_playbackControl.setVisible(false);
-		_recorderControl.setVisible(false);
+		recognitionLbl.setVisible(false);
+		retryLbl.setVisible(false);
 
-		_btnSubmit.setText("Finish");
-		exit(ReturnState.FINISHED);
+		playbackControl.setVisible(false);
+		recorderControl.setVisible(false);
+
+		submitBtn.setText("Main Menu");
+		submitBtn.setOnAction(e -> exit(ReturnState.FINISHED));
 	}
 
 	private void                    exit(ReturnState state) {
@@ -156,10 +155,10 @@ public class TestController extends Controller {
     private Test    				_model;
 
 	// FXML controls
-	@FXML private Label 			_lblTitle;
-	@FXML private Label 			_lblRecognition;
-	@FXML private JFXButton 		_btnSubmit;
-	@FXML private JFXButton 		_btnNext;
-	@FXML private RecorderControl 	_recorderControl;
-	@FXML private PlaybackControl 	_playbackControl;
+	@FXML private Label             titleLbl;
+	@FXML private Label             recognitionLbl;
+	@FXML private Label             retryLbl;
+	@FXML private JFXButton         submitBtn;
+	@FXML private RecorderControl   recorderControl;
+	@FXML private PlaybackControl   playbackControl;
 }

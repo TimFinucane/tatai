@@ -13,26 +13,29 @@
    <children>
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="645.0" spacing="15.0" style="-fx-background-color: #29292D;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label fx:id="_lblTitle" text="5" textFill="WHITE">
+            <Label fx:id="titleLbl" text="5" textFill="WHITE">
                <font>
                   <Font size="96.0" />
                </font>
             </Label>
             <HBox alignment="TOP_CENTER" spacing="50.0">
                <children>
-                  <RecorderControl fx:id="_recorderControl" />
-                  <PlaybackControl fx:id="_playbackControl" />
+                  <RecorderControl fx:id="recorderControl" />
+                  <PlaybackControl fx:id="playbackControl" />
                </children>
             </HBox>
-            <Label fx:id="_lblRecognition" text="Recognition Label" textFill="WHITE">
+            <Label fx:id="recognitionLbl" text="Recognition Label" textFill="WHITE">
                <font>
                   <Font size="26.0" />
                </font>
             </Label>
+            <Label fx:id="retryLbl" textFill="WHITE">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font></Label>
             <HBox alignment="TOP_CENTER" spacing="50.0">
                <children>
-                  <JFXButton fx:id="_btnSubmit" text="Submit" textFill="WHITE" />
-                  <JFXButton fx:id="_btnNext" text="Next" textFill="WHITE" />
+                  <JFXButton fx:id="submitBtn" text="Submit" textFill="WHITE" />
                </children>
             </HBox>
          </children>
