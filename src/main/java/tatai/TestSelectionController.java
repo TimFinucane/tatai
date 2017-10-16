@@ -34,7 +34,7 @@ public class TestSelectionController extends Controller {
 
     private void openTest(String name) {
         try {
-            Test test = TestParser.read(name);
+            Test test = TestParser.make(TestParser.read(name));
             _curTest = new TestController(test);
 
             switchTo(_curTest);

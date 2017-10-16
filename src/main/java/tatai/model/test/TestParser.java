@@ -1,6 +1,7 @@
 package tatai.model.test;
 
 import com.google.gson.Gson;
+import org.jetbrains.annotations.NotNull;
 import tatai.model.question.QuestionReader;
 import util.Files;
 
@@ -37,14 +38,20 @@ public class TestParser {
      * listTests method
      * TODO: Document the format
      */
-    public static Test          read(String name) throws FileNotFoundException {
+    public static TestJson      read(String name) throws FileNotFoundException {
         Reader reader = new FileReader(Files.testFile(name));
 
         // Thank you holy Gson
         Gson gson = new Gson();
 
-        TestJson testJson = gson.fromJson(reader, TestJson.class);
+        return gson.fromJson(reader, TestJson.class);
+    }
 
+    /**
+     * Makes a test from a testJson
+     */
+    @NotNull
+    public static Test          make(TestJson testJson) {
         // Create questions
         ArrayList<Test.QuestionInfo> questions = new ArrayList<>();
         for(TestJson.Question question : testJson.questions) {
@@ -64,7 +71,7 @@ public class TestParser {
     /**
      * Writes the given test so that it can be retrievable later
      */
-    public static void          makeTest(String user, TestJson testInfo) throws IOException {
+    public static void          save(String user, TestJson testInfo) throws IOException {
         File file = Files.testFile(testInfo.name);
         file.createNewFile();
 
