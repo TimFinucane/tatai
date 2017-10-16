@@ -4,9 +4,5 @@ Building: (Only necessary if you downloaded from a repo)
 	To build, run gradlew with the command build. Output is placed in the bin folder.
 	
 Running:
-	There are two kinds of test, easy and hard. Easy tests will give you numbers between 1-9, and hard tests 1-99. You
-	will be asked to pronounce these words, to do so press the circular record button. Text will appear corresponding to
-	how the machine recognized your text. If it was correct, then the text will be green. If it was red, you will be given a
-	chance to try again before moving on to the next question. You can listen to yourself pronounce it by pressing the play button.
-	
-	You can also view basic statistics about the most recent session by pressing the Info button on the main menu.
+	In the current version, there are two tests and two practices. These can be accessed from the
+	side bar. Currently no in-app way of creating custom tests exists, and stats are being reworked.
