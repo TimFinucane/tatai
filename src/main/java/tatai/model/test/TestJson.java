@@ -25,7 +25,7 @@ public class TestJson {
     public boolean          practice = false;
     public boolean          custom = true;
 
-    protected int           order = -1; // Order it should be displayed in. Non-custom only
+    public int              order = -1; // Order it should be displayed in. Non-custom only
 
     public Prerequisite[]   prerequisites;
 

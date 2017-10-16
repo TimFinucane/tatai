@@ -7,7 +7,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import tatai.model.test.Test;
-import util.Views;
 
 /**
  * A test window, to which you can pass specifications for the type of test
@@ -29,7 +28,7 @@ public class TestController extends Controller {
 		_model = model;
 
 	    // Load fxml, set self to act as controller and root
-		Views.load("Test", this, this);
+		loadFxml("Test");
 
 		_lblTitle.setFont(Font.font(TITLE_TEXT_SIZE ));
 		_lblTitle.setText("Welcome to the " + _model.name + " test");

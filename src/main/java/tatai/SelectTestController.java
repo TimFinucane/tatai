@@ -58,7 +58,7 @@ public class SelectTestController extends Controller {
                 info = TestParser.read(testName);
             } catch(FileNotFoundException e) { continue; /* Skip */ }
 
-            if(_practice && info.practice || !_practice && !info.practice) {
+            if(_practice != info.practice) {
                 continue;
             }
 
@@ -75,7 +75,10 @@ public class SelectTestController extends Controller {
                 switchTo(_curTest);
             });
 
-            _paneFlow.getChildren().add(button);
+            if(!info.custom && info.order >= 0)
+                _paneFlow.getChildren().add(Math.min(info.order, _paneFlow.getChildren().size()), button);
+            else
+                _paneFlow.getChildren().add(button);
         }
     }
 
@@ -94,8 +97,10 @@ public class SelectTestController extends Controller {
         TestJson basic = new TestJson();
         basic.custom = false;
         basic.author = "Tatai";
+        basic.practice = false;
 
         basic.name = "Easy Test";
+        basic.order = 0;
         basic.questions = new TestJson.Question[1];
         basic.questions[0] = new TestJson.Question();
         basic.questions[0].rounds = 10;
@@ -109,6 +114,7 @@ public class SelectTestController extends Controller {
         }
 
         basic.name = "Hard Test";
+        basic.order = 1;
         basic.questions = new TestJson.Question[1];
         basic.questions[0] = new TestJson.Question();
         basic.questions[0].rounds = 10;
@@ -124,6 +130,7 @@ public class SelectTestController extends Controller {
         basic.practice = true;
 
         basic.name = "Easy Practice";
+        basic.order = 0;
         basic.questions = new TestJson.Question[1];
         basic.questions[0] = new TestJson.Question();
         basic.questions[0].rounds = 10;
@@ -137,6 +144,7 @@ public class SelectTestController extends Controller {
         }
 
         basic.name = "Advanced Practice";
+        basic.order = 1;
         basic.questions = new TestJson.Question[1];
         basic.questions[0] = new TestJson.Question();
         basic.questions[0].rounds = 10;
