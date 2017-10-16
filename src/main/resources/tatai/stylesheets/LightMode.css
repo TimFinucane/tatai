@@ -1,0 +1,16 @@
+.root {
+    -fx-background-color: #DADFE1;
+}
+.button {
+
+    -fx-text-fill: #000000;
+    -jfx-rippler-fill: #ffffff;
+
+}
+.label {
+    -fx-text-fill: #000000;
+    -fx-background-color: #DADFE1;
+}
+.side-pane {
+    -fx-background-color: #BDC3C7;
+}

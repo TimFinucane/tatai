@@ -2,12 +2,11 @@ package tatai;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.validation.RequiredFieldValidator;
-import com.jfoenix.validation.base.ValidatorBase;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextInputControl;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import tatai.model.test.TestJson;
 import tatai.model.test.TestParser;
 
@@ -20,9 +19,29 @@ public class CreateCustomController extends Controller{
     public CreateCustomController() {
         loadFxml("CreateCustom");
         validateInput();
+
+        _btnCreate.setOnAction(event -> {
+//            Right now this assumes all input is valid.
+            createTest();
+        });
+
+        _btnCancel.setOnAction(event -> {
+           Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Are you sure you want to cancel this custom test creation?",
+                    ButtonType.YES, ButtonType.NO);
+           alert.showAndWait();
+           if(alert.getResult() == ButtonType.YES) {
+               switchTo(new SelectTestController());
+           }
+           else {
+               alert.close();
+           }
+        });
     }
 
     private void validateInput() {
+
+//        TODO: Check for all cases of invalid input.
+
         List<JFXTextField> input = getInput();
         input.forEach(e -> {
             e.textProperty().addListener(new ChangeListener<String>() {
@@ -63,7 +82,7 @@ public class CreateCustomController extends Controller{
         newTest.questions[0].question = "(" + _txtMin.getText() + " to " + _txtMax.getText() + ")";
 
         try {
-            TestParser.makeTest(newTest);
+            TestParser.save("", newTest);
         } catch(IOException e) {
             throw new RuntimeException(e.getMessage());
         }
