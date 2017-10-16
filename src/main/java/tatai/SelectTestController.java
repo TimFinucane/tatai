@@ -105,7 +105,7 @@ public class SelectTestController extends Controller {
         basic.questions[0] = new TestJson.Question();
         basic.questions[0].rounds = 10;
         basic.questions[0].tries = 2;
-        basic.questions[0].question = "(1 to 9)";
+        basic.questions[0].question = "(5 to 9) [+] (1 to 4)";
 
         try {
             TestParser.save("", basic);
@@ -115,11 +115,22 @@ public class SelectTestController extends Controller {
 
         basic.name = "Hard Test";
         basic.order = 1;
-        basic.questions = new TestJson.Question[1];
+        basic.randomizeQuestions = true;
+        basic.questions = new TestJson.Question[3];
         basic.questions[0] = new TestJson.Question();
-        basic.questions[0].rounds = 10;
+        basic.questions[0].rounds = 4;
         basic.questions[0].tries = 2;
-        basic.questions[0].question = "(1 to 99)";
+        basic.questions[0].question = "(1 to 25) [+] (1 to 75)";
+
+        basic.questions[1] = new TestJson.Question();
+        basic.questions[1].rounds = 3;
+        basic.questions[1].tries = 2;
+        basic.questions[1].question = "(1 to 9) [\u00D7, +] (1 to 9)";
+
+        basic.questions[2] = new TestJson.Question();
+        basic.questions[2].rounds = 3;
+        basic.questions[2].tries = 2;
+        basic.questions[2].question = "(10 to 99) [\u00F7] (1 to 9)";
 
         try {
             TestParser.save("", basic);
@@ -127,6 +138,7 @@ public class SelectTestController extends Controller {
             throw new RuntimeException(e.getMessage());
         }
 
+        basic.randomizeQuestions = false;
         basic.practice = true;
 
         basic.name = "Easy Practice";
