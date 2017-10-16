@@ -1,14 +1,9 @@
 package tatai;
 
-import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXHamburger;
-import com.jfoenix.transitions.hamburger.HamburgerTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.animation.Transition;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
@@ -19,8 +14,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import util.Views;
-
-import java.io.IOException;
 
 /**
  * The top level class of this project. Is controller of the application/initial window
@@ -47,7 +40,7 @@ public class Application extends javafx.application.Application {
         statsBtn.setOnAction(event -> stats());
     }
 
-//    TODO: Either lock the sidepane buttons or hide them when in test mode.
+    // TODO: Either lock the sidepane buttons or hide them when in test mode.
 
     // Called when home button pressed
     private void home(){
@@ -78,50 +71,47 @@ public class Application extends javafx.application.Application {
     }
 
 
+    /**
+     * Opens the side pane to show text
+     */
     @FXML
     private void openPane(MouseEvent e) {
-
-        Timeline timeline = new Timeline();
-
-        timeline.getKeyFrames().addAll(
-                new KeyFrame(Duration.ZERO,
-                        new KeyValue(_sidePane.prefWidthProperty(), 55.0)
-                ),
-                new KeyFrame(Duration.millis(100.0d),
-
-                        new KeyValue(_sidePane.prefWidthProperty(), 225.0)
-                )
-        );
-
-        timeline.play();
         homeBtn.setContentDisplay(ContentDisplay.LEFT);
         testBtn.setContentDisplay(ContentDisplay.LEFT);
         practiceBtn.setContentDisplay(ContentDisplay.LEFT);
         statsBtn.setContentDisplay(ContentDisplay.LEFT);
+
+        Timeline timeline = new Timeline();
+        timeline.getKeyFrames().addAll(
+                new KeyFrame(Duration.ZERO, new KeyValue(_sidePane.prefWidthProperty(), SIDE_MIN) ),
+                new KeyFrame(Duration.millis(100.0d), new KeyValue(_sidePane.prefWidthProperty(), SIDE_MAX) )
+        );
+        timeline.play();
     }
 
+    /**
+     * Closes the side pane when hovering has stopped
+     */
     @FXML
     private void closePane(MouseEvent e) {
-        Timeline timeline = new Timeline();
         homeBtn.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         testBtn.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         practiceBtn.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         statsBtn.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+
+        Timeline timeline = new Timeline();
         timeline.getKeyFrames().addAll(
-                new KeyFrame(Duration.ZERO,
-                        new KeyValue(_sidePane.prefWidthProperty(), 225.0)
-                ),
-                new KeyFrame(Duration.millis(100.0d),
-
-                        new KeyValue(_sidePane.prefWidthProperty(), 55.0)
-                )
+                new KeyFrame(Duration.ZERO,             new KeyValue(_sidePane.prefWidthProperty(), SIDE_MAX) ),
+                new KeyFrame(Duration.millis(100.0d),   new KeyValue(_sidePane.prefWidthProperty(), SIDE_MIN) )
         );
-
         timeline.play();
     }
 
     private static final String APP_NAME = "T\u0101tai";
-    private Stage _stage;
+    private static final double SIDE_MIN = 55.0;
+    private static final double SIDE_MAX = 225.0;
+
+    private Stage           _stage;
 
     // JavaFX Controls
     @FXML private Button    homeBtn;

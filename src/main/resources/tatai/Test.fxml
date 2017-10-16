@@ -4,59 +4,37 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import tatai.PlaybackControl?>
 <?import tatai.RecorderControl?>
 
-<fx:root prefHeight="400.0" prefWidth="645.0" style="-fx-background-color: #29292D;" type="AnchorPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root prefHeight="400.0" prefWidth="645.0" style="-fx-background-color: #29292D;" type="AnchorPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="645.0" style="-fx-background-color: #29292D;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="645.0" spacing="15.0" style="-fx-background-color: #29292D;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER" prefHeight="80.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <Region prefHeight="200.0" prefWidth="200.0" />
-                  <Label fx:id="_lblNumber" text="5" textFill="WHITE" HBox.hgrow="ALWAYS">
-                     <font>
-                        <Font size="96.0" />
-                     </font>
-                  </Label>
-                  <Region prefHeight="200.0" prefWidth="200.0" />
-               </children>
-            </HBox>
-            <Region prefHeight="200.0" prefWidth="200.0" />
-            <Label fx:id="_lblTitle" alignment="CENTER" text="Welcome to the easy test" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="_lblTitle" text="5" textFill="WHITE">
                <font>
-                  <Font size="26.0" />
+                  <Font size="96.0" />
                </font>
             </Label>
-            <Region prefHeight="200.0" prefWidth="200.0" />
-            <HBox alignment="TOP_CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="55.0" prefWidth="400.0">
+            <HBox alignment="TOP_CENTER" spacing="50.0">
                <children>
-                  <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <RecorderControl fx:id="_recorderControl" HBox.hgrow="SOMETIMES" />
-                  <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <PlaybackControl fx:id="_playbackControl" HBox.hgrow="SOMETIMES" />
-                  <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                  <RecorderControl fx:id="_recorderControl" />
+                  <PlaybackControl fx:id="_playbackControl" />
                </children>
             </HBox>
-            <Region prefHeight="200.0" prefWidth="200.0" />
             <Label fx:id="_lblRecognition" text="Recognition Label" textFill="WHITE">
                <font>
                   <Font size="26.0" />
                </font>
             </Label>
-            <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="TOP_CENTER" spacing="50.0">
                <children>
-                  <Region prefHeight="200.0" prefWidth="200.0" />
-                  <JFXButton fx:id="_btnSubmit" prefHeight="30.0" prefWidth="100.0" text="Submit" textFill="WHITE" />
-                  <Region prefHeight="200.0" prefWidth="200.0" />
-                  <JFXButton fx:id="_btnNext" prefHeight="30.0" prefWidth="100.0" text="Next" textFill="WHITE" />
-                  <Region prefHeight="200.0" prefWidth="200.0" />
+                  <JFXButton fx:id="_btnSubmit" text="Submit" textFill="WHITE" />
+                  <JFXButton fx:id="_btnNext" text="Next" textFill="WHITE" />
                </children>
             </HBox>
-            <Region prefHeight="250.0" prefWidth="200.0" />
          </children>
       </VBox>
    </children>
