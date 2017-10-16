@@ -1,7 +1,8 @@
-version '1.1-SNAPSHOT'
-
 apply plugin: 'java'
 apply plugin: 'eclipse'
+
+group 'tif.tat'
+version '1.1'
 
 sourceCompatibility = 1.8
 
@@ -18,8 +19,6 @@ dependencies {
     compile group: 'com.jfoenix', name: 'jfoenix', version: '1.9.1' // apache 2.0 license
     compile group: 'de.jensd', name: 'fontawesomefx', version: '8.9' // apache 2.0 license
     compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2' // For the annotations. apache 2.0
-
-    //configurations.compile.extendsFrom(configurations.compile)
 }
 
 sourceSets {
@@ -47,4 +46,3 @@ jar {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
-
