@@ -27,10 +27,10 @@ public class Views {
             return loader.load();
         } catch(IOException e) {
             new Alert(Alert.AlertType.ERROR,"Problem loading " + name + " FXML. Please contact system admin")
-            .show();
+            .showAndWait();
             Logger.logMsg(Logger.ERROR, e.getMessage());
 
-            throw new IllegalArgumentException("Could not load the " + name + " FXML");
+            throw new IllegalArgumentException("Could not load the " + name + " FXML " + e.getCause());
         }
     }
 }
