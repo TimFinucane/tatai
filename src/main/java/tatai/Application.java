@@ -49,7 +49,8 @@ public class Application extends javafx.application.Application {
 
     // Called when practice button pressed
     private void practice() {
-        throw new NotImplementedException();
+        new SelectPracticeController().display(topPane, this::home);
+        testBtn.setStyle("-fx-background-color: #29292D");
     }
 
     // Called when test button pressed
@@ -80,6 +81,8 @@ public class Application extends javafx.application.Application {
         testBtn.setContentDisplay(ContentDisplay.LEFT);
         practiceBtn.setContentDisplay(ContentDisplay.LEFT);
         statsBtn.setContentDisplay(ContentDisplay.LEFT);
+
+        _sidePane.toFront();
 
         Timeline timeline = new Timeline();
         timeline.getKeyFrames().addAll(
