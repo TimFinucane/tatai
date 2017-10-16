@@ -21,14 +21,7 @@ import java.io.IOException;
  */
 public class SelectTestController extends Controller {
 
-    private TestController  _curTest;
-
-    //    JavaFX Controls
-    @FXML private FlowPane  _paneFlow;
-    @FXML private Button    _btnCreateCustom;
-    @FXML private Button    _btnRemoveCustom;
-
-	public SelectTestController() {
+    public SelectTestController() {
         loadFxml("SelectTest");
         createBasicTests();
 
@@ -53,7 +46,7 @@ public class SelectTestController extends Controller {
     /**
      * Opens the given test and transfers control to it
      */
-    private void openTest(String name) {
+    protected void openTest(String name) {
         try {
             Test test = TestParser.read(name);
             _curTest = new TestController(test);
@@ -68,12 +61,15 @@ public class SelectTestController extends Controller {
     /**
      * Displays all tests in the flow pane
      */
-    private void refreshButtons() {
+    protected void refreshButtons() {
         // TODO: Locking and unlocking would go here
 
         _paneFlow.getChildren().clear();
 
         for(String testName : TestParser.listTests()) {
+            if(testName.equals("Easy Practice") || testName.equals("Advanced Practice")) {
+                continue;
+            }
             JFXButton button = new JFXButton(testName);
 
             AnchorPane.setLeftAnchor(_paneFlow,20.0);
@@ -102,7 +98,7 @@ public class SelectTestController extends Controller {
             return;
 
         TestJson basic = new TestJson();
-        basic.name = "Easy";
+        basic.name = "Easy Test";
         basic.questions = new TestJson.Question[1];
         basic.questions[0] = new TestJson.Question();
         basic.questions[0].rounds = 10;
@@ -115,7 +111,7 @@ public class SelectTestController extends Controller {
             throw new RuntimeException(e.getMessage());
         }
 
-        basic.name = "Hard";
+        basic.name = "Hard Test";
         basic.questions = new TestJson.Question[1];
         basic.questions[0] = new TestJson.Question();
         basic.questions[0].rounds = 10;
@@ -128,6 +124,14 @@ public class SelectTestController extends Controller {
             throw new RuntimeException(e.getMessage());
         }
     }
+
+    private TestController  _curTest;
+
+    //    JavaFX Controls
+    @FXML private FlowPane  _paneFlow;
+    @FXML private Button    _btnCreateCustom;
+    @FXML private Button    _btnRemoveCustom;
+
 }
 
 

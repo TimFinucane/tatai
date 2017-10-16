@@ -3,11 +3,7 @@ package tatai;
 import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Region;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.text.Font;
 import tatai.model.test.Test;
 import util.Views;
 
@@ -48,7 +44,7 @@ public class TestController extends Controller {
 		_btnSubmit.setText("Start");
 		_btnSubmit.setOnAction(e -> {
 			_lblNumber.setManaged(true);
-			_recorderControl.setManaged(true);
+			_playbackControl.setManaged(true);
 			_recorderControl.setManaged(true);
 
 			_lblTitle.setVisible(false);

@@ -1,14 +1,9 @@
 package tatai;
 
-import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXHamburger;
-import com.jfoenix.transitions.hamburger.HamburgerTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.animation.Transition;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
@@ -19,8 +14,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import util.Views;
-
-import java.io.IOException;
 
 /**
  * The top level class of this project. Is controller of the application/initial window
@@ -56,7 +49,8 @@ public class Application extends javafx.application.Application {
 
     // Called when practice button pressed
     private void practice() {
-        throw new NotImplementedException();
+        new SelectPracticeController().display(topPane, this::home);
+        testBtn.setStyle("-fx-background-color: #29292D");
     }
 
     // Called when test button pressed
@@ -80,6 +74,7 @@ public class Application extends javafx.application.Application {
 
     @FXML
     private void openPane(MouseEvent e) {
+        _sidePane.toFront();
 
         Timeline timeline = new Timeline();
 
