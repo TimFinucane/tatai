@@ -1,10 +1,9 @@
 package tatai.model.test;
 
 import com.google.gson.Gson;
-import org.jetbrains.annotations.NotNull;
 import tatai.model.question.QuestionReader;
 import util.Files;
-
+import javax.annotation.Nonnull;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,7 +49,7 @@ public class TestParser {
     /**
      * Makes a test from a testJson
      */
-    @NotNull
+    @Nonnull
     public static Test          make(TestJson testJson) {
         // Create questions
         ArrayList<Test.QuestionInfo> questions = new ArrayList<>();

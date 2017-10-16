@@ -1,30 +1,27 @@
 package tatai;
 
 import javafx.application.Platform;
-import javafx.scene.Scene;
+import javafx.scene.Parent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import util.Views;
 
 /**
  * Implements some basic funcitonality for switching from one controller to another.
- * Currently assumes the controller is also a root of type VBox. This might need changing in future
- * but atm is fine.
  */
-public abstract class Controller extends VBox {
+public abstract class Controller extends AnchorPane {
     /**
      * Displays this controller on the given stage.
      * @param onExit when the controller is ready to release control, onExit is called.
      */
-    public void display(Stage stage, Runnable onExit) {
-        _stage = stage;
+    public void display(Pane root, Runnable onExit) {
+        _root = root;
         _onExit = onExit;
-
-        _scene = new Scene(this);
-        _stage.setScene(_scene);
+        _root.getChildren().add(this);
     }
 
-    // Loads the given FXML with this being root and controll
+    // Loads the given FXML with this being root and controller
     protected void  loadFxml(String name) {
         Views.load(name, this, this);
     }
@@ -33,7 +30,9 @@ public abstract class Controller extends VBox {
      * Switch to the given controller from this one
      */
     protected void  switchTo(Controller controller) {
-        controller.display(_stage, this::switchFrom);
+
+        _child = controller;
+        controller.display(_root, this::switchFrom);
     }
 
     /**
@@ -48,12 +47,18 @@ public abstract class Controller extends VBox {
         Platform.runLater(_onExit);
     }
 
+    /**
+     * Called when child has released control to this
+     */
     private void    switchFrom() {
-        _stage.setScene(_scene);
+        _root.getChildren().remove(_child);
+        _root.getChildren().add(this);
+
         onSwitchedBack();
     }
 
     private Runnable    _onExit;
-    private Stage       _stage;
-    private Scene       _scene;
+    private Pane        _root;
+
+    private Parent      _child = null;
 }

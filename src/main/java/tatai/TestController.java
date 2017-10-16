@@ -1,10 +1,11 @@
 package tatai;
 
+import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 import tatai.model.test.Test;
 import util.Views;
 
@@ -19,52 +20,45 @@ public class TestController extends Controller {
 		RETRY_HARDER
 	}
 
-	private static double NUMBER_HEIGHT_DIV = 5;
-    private static double NUMBER_WIDTH_DIV = 3;
-    private static double CONTROL_SIZE_DIV = 8;
-    private static double BUTTON_SIZE_DIV = 24;
-    private static double LABEL_HEIGHT_DIV = 20;
-	private static double RECOGNITION_WIDTH_DIV = 12;
-	private static double RETRY_WIDTH_DIV = 30;
-
-
 	/**
      * Creates and starts a test.
 	 * When the user is ready to finish the test, notifyReturn is called
 	 * with the appropriate ReturnState.
      */
 	public TestController(Test model) {
-        _model = model;
+		_model = model;
 
 	    // Load fxml, set self to act as controller and root
 		Views.load("Test", this, this);
 
-		playbackCntrl.setVisible(false);
-		recorderCntrl.setVisible(false);
+		_lblTitle.setFont(Font.font(TITLE_TEXT_SIZE ));
+		_lblTitle.setText("Welcome to the " + _model.name + " test");
 
-		numberLbl.setManaged(false);
-		recorderCntrl.setManaged(false);
-		playbackCntrl.setManaged(false);
+		_playbackControl.setVisible(false);
+		_recorderControl.setVisible(false);
+		_recorderControl.setDisable(true);
 
-		retryBtn.setManaged(false);
-		harderBtn.setManaged(false);
+		_btnNext.setVisible(false);
+		_lblRecognition.setVisible(false);
 
-		submitBtn.setText("Start");
-		submitBtn.setOnAction(e -> {
-			numberLbl.setManaged(true);
-			recorderCntrl.setManaged(true);
-			playbackCntrl.setManaged(true);
+		_btnNext.setManaged(false);
+		_btnNext.setOnAction(event -> nextRound());
 
-			playbackCntrl.setVisible(true);
-			recorderCntrl.setVisible(true);
+		_btnSubmit.setText("Start");
+		_btnSubmit.setOnAction(e -> {
+            _lblTitle.setFont(Font.font(TITLE_NUMBERS_SIZE ));
+
+		    _playbackControl.setVisible(true);
+		    _recorderControl.setVisible(true);
+
+			_btnNext.setManaged(true);
+			_btnNext.setVisible(true);
 
 			nextRound();
 		});
 
-		recognitionLbl.setText("Welcome to the " + _model.name);
-
-		recorderCntrl.onMediaAvailable(this::mediaAvailable);
-		recorderCntrl.onRecognitionComplete(this::recognize);
+		_recorderControl.onMediaAvailable(this::mediaAvailable);
+		_recorderControl.onRecognitionComplete(this::recognize);
 	}
 
     /**
@@ -74,35 +68,11 @@ public class TestController extends Controller {
 	    return _returnState;
     }
 
-    @Override
-    public void    	resize(double width, double height) {
-        super.resize(width, height);
-
-        // Adjust children to be approx. the right size based on window size
-        // These numbers are pretty good as they are
-        double numberSize = Math.min(getHeight()/NUMBER_HEIGHT_DIV, getWidth()/NUMBER_WIDTH_DIV);
-        double controlSize = Math.min(getHeight()/CONTROL_SIZE_DIV, getWidth()/CONTROL_SIZE_DIV);
-		double buttonSize = Math.min(getHeight()/BUTTON_SIZE_DIV, getWidth()/BUTTON_SIZE_DIV);
-		double recognitionSize = Math.min(getHeight()/LABEL_HEIGHT_DIV, getWidth()/RECOGNITION_WIDTH_DIV);
-		double retrySize = Math.min(getHeight()/LABEL_HEIGHT_DIV, getWidth()/RETRY_WIDTH_DIV);
-
-        numberLbl.setStyle("-fx-font-size: " + numberSize);
-        playbackCntrl.resize(controlSize);
-        recorderCntrl.resize(controlSize);
-
-        submitBtn.setStyle("-fx-font-size: " + buttonSize);
-		retryBtn.setStyle("-fx-font-size: " + buttonSize);
-		harderBtn.setStyle("-fx-font-size: " + buttonSize);
-
-		recognitionLbl.setStyle("-fx-font-size: " + recognitionSize);
-		retryLbl.setStyle("-fx-font-size: " + retrySize);
-    }
-
 	/**
 	 * Called when the recorder has recorded something
 	 */
 	private void	mediaAvailable() {
-		playbackCntrl.setMedia(recorderCntrl.media());
+		_playbackControl.setMedia(_recorderControl.media());
 	}
 
 	/**
@@ -110,33 +80,33 @@ public class TestController extends Controller {
 	 * the state
 	 */
     private void	recognize(String text) {
-		retryLbl.setVisible(false);
-		playbackCntrl.setDisable(false);
+		_playbackControl.setDisable(false);
 
-    	if(text.equals(""))
-    		recognitionLbl.setText("Nothing was recognized");
-		else
-			recognitionLbl.setText(text);
+    	if(text.equals("")) {
+            _lblRecognition.setText("Nothing was recognized");
+        }
+		else {
+            _lblRecognition.setText(text);
+        }
 
     	if(_model.tryAnswer(text))
-    		recognitionLbl.setTextFill(Color.GREEN);
+    		_lblRecognition.setTextFill(SUCCESS_COLOUR);
 		else {
 			if(_model.hasAnotherTry())
-				retryLbl.setVisible(true);
+			    _btnSubmit.setText("Retry");
 			else
-				recorderCntrl.setDisable(true);
-
-    		recognitionLbl.setTextFill(Color.RED);
+				_recorderControl.setDisable(true);
+    		    _lblRecognition.setTextFill(FAILURE_COLOUR);
 		}
 
 		// Prepare user submit options
-		submitBtn.setDisable(false);
+		_btnSubmit.setDisable(false);
 		if(_model.hasNextRound()) {
-			submitBtn.setText("Next");
-			submitBtn.setOnAction(e -> nextRound());
+			_btnSubmit.setText("Next");
+			_btnSubmit.setOnAction(e -> nextRound());
 		} else {
-			submitBtn.setText("Finish");
-			submitBtn.setOnAction(e -> finish());
+			_btnSubmit.setText("Finish");
+			_btnSubmit.setOnAction(e -> finish());
 		}
 	}
 
@@ -144,52 +114,32 @@ public class TestController extends Controller {
 	 * Sets up the screen for the next round
 	 */
 	private void	nextRound() {
-		retryLbl.setVisible(false);
+	    _btnSubmit.setText("Submit");
 
-		playbackCntrl.setDisable(true);
-		recorderCntrl.setDisable(false);
+		_playbackControl.setDisable(true);
+		_recorderControl.setDisable(false);
 
-		recognitionLbl.setText("");
-		playbackCntrl.dispose();
+		_lblRecognition.setText("");
+		_playbackControl.dispose();
 
-		submitBtn.setText("Next");
-		submitBtn.setDisable(true);
+		_btnSubmit.setDisable(true);
 
-		numberLbl.setText(_model.nextRound());
+		_lblTitle.setText(_model.nextRound());
 	}
 
 	/**
 	 * Sets up the screen when complete
 	 */
 	private void	finish() {
-		numberLbl.setText(_model.score() + "/10");
-		retryLbl.setVisible(false);
+        _lblTitle.setFont(Font.font(TITLE_TEXT_SIZE ));
+		_lblTitle.setText(_model.score() + "/10");
 
-		playbackCntrl.setVisible(false);
-		recorderCntrl.setVisible(false);
+		_btnNext.setVisible(false);
+		_playbackControl.setVisible(false);
+		_recorderControl.setVisible(false);
 
-		recognitionLbl.setTextFill(Color.BLACK);
-
-		if(_model.score() >= 8) {
-			recognitionLbl.setText("Well done!");
-
-			// TODO: If there are more tests, determine whether this test model has a harder version through test
-			//  interface, instead of this abomination.
-			if(_model.name.equals("EasyTest")) {
-				harderBtn.setManaged(true);
-				harderBtn.setVisible(true);
-				harderBtn.setOnAction((e) -> exit(ReturnState.RETRY_HARDER));
-			}
-		} else {
-			recognitionLbl.setText("Good try!");
-		}
-
-		retryBtn.setManaged(true);
-		retryBtn.setVisible(true);
-		retryBtn.setOnAction((e) -> exit(ReturnState.RETRY));
-
-		submitBtn.setText("Finish");
-		submitBtn.setOnAction((e) -> exit(ReturnState.FINISHED));
+		_btnSubmit.setText("Finish");
+		exit(ReturnState.FINISHED);
 	}
 
 	private void                    exit(ReturnState state) {
@@ -197,17 +147,20 @@ public class TestController extends Controller {
 	    exit();
     }
 
-    private ReturnState         _returnState;
+    private static final int        TITLE_NUMBERS_SIZE = 96;
+	private static final int        TITLE_TEXT_SIZE = 36;
+
+    private static final Paint      SUCCESS_COLOUR = Color.color(0/255.0, 230/255.0, 64/255.0);
+	private static final Paint      FAILURE_COLOUR = Color.color(240/255.0, 52/255.0, 52/255.0);
+
+    private ReturnState         	_returnState;
     private Test    				_model;
 
-    // FXML controls
-	@FXML private VBox				testBox;
-    @FXML private Label           	numberLbl;
-    @FXML private PlaybackControl 	playbackCntrl;
-    @FXML private RecorderControl 	recorderCntrl;
-    @FXML private Label				recognitionLbl;
-    @FXML private Label				retryLbl;
-    @FXML private Button			submitBtn;
-    @FXML private Button			retryBtn;
-    @FXML private Button			harderBtn;
+	// FXML controls
+	@FXML private Label 			_lblTitle;
+	@FXML private Label 			_lblRecognition;
+	@FXML private JFXButton 		_btnSubmit;
+	@FXML private JFXButton 		_btnNext;
+	@FXML private RecorderControl 	_recorderControl;
+	@FXML private PlaybackControl 	_playbackControl;
 }

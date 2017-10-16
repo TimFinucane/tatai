@@ -1,59 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
-<?import javafx.scene.control.Button?>
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import tatai.PlaybackControl?>
 <?import tatai.RecorderControl?>
 
-<fx:root alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" spacing="5.0" type="VBox" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root prefHeight="400.0" prefWidth="645.0" style="-fx-background-color: #29292D;" type="AnchorPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox fx:id="testBox" alignment="CENTER" prefWidth="600.0" VBox.vgrow="SOMETIMES">
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="645.0" spacing="15.0" style="-fx-background-color: #29292D;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Region VBox.vgrow="SOMETIMES" />
-            <Label fx:id="numberLbl">
+            <Label fx:id="_lblTitle" text="5" textFill="WHITE">
                <font>
-                  <Font size="72.0" />
+                  <Font size="96.0" />
                </font>
             </Label>
-            <Region VBox.vgrow="SOMETIMES" />
-            <HBox spacing="20.0">
+            <HBox alignment="TOP_CENTER" spacing="50.0">
                <children>
-                  <Region HBox.hgrow="SOMETIMES" />
-                  <RecorderControl fx:id="recorderCntrl">
-      </RecorderControl>
-                  <PlaybackControl fx:id="playbackCntrl">
-      </PlaybackControl>
-                  <Region HBox.hgrow="SOMETIMES" />
+                  <RecorderControl fx:id="_recorderControl" />
+                  <PlaybackControl fx:id="_playbackControl" />
                </children>
             </HBox>
-         </children>
-      </VBox>
-      <VBox alignment="CENTER" spacing="8.0" VBox.vgrow="SOMETIMES">
-         <children>
-            <Label fx:id="recognitionLbl" />
-            <Label fx:id="retryLbl" text="You can try again by re-recording" visible="false">
+            <Label fx:id="_lblRecognition" text="Recognition Label" textFill="WHITE">
                <font>
-                  <Font name="System Italic" size="12.0" />
-               </font></Label>
-            <HBox alignment="TOP_CENTER" spacing="30.0">
+                  <Font size="26.0" />
+               </font>
+            </Label>
+            <HBox alignment="TOP_CENTER" spacing="50.0">
                <children>
-                  <Button fx:id="retryBtn" mnemonicParsing="false" text="Go Again" visible="false" />
-                  <Button fx:id="submitBtn" mnemonicParsing="false" text="Start" />
-                  <Button fx:id="harderBtn" mnemonicParsing="false" text="Harder!" visible="false" />
+                  <JFXButton fx:id="_btnSubmit" text="Submit" textFill="WHITE" />
+                  <JFXButton fx:id="_btnNext" text="Next" textFill="WHITE" />
                </children>
             </HBox>
-            <Region VBox.vgrow="SOMETIMES" />
          </children>
       </VBox>
    </children>
-   <stylesheets>
-      <URL value="@stylesheets/Background.css" />
-      <URL value="@stylesheets/Buttons.css" />
-      <URL value="@stylesheets/Test.css" />
-   </stylesheets>
 </fx:root>
