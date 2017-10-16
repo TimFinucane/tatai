@@ -1,5 +1,8 @@
 package tatai;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -27,7 +30,10 @@ public class Application extends javafx.application.Application {
     public void     start(Stage stage) {
         _stage = stage;
 
-        stage.setScene(new Scene(Views.load("Application", this, null)));
+        _scene = new Scene(Views.load("Application", this, null));
+        _scene.getStylesheets().add("/tatai/stylesheets/DarkMode.css");
+
+        stage.setScene(_scene);
 
         _stage.setTitle(APP_NAME);
         _stage.show();
@@ -38,6 +44,7 @@ public class Application extends javafx.application.Application {
         practiceBtn.setOnAction(event -> practice());
         testBtn.setOnAction((event -> test()));
         statsBtn.setOnAction(event -> stats());
+        colorBtn.setOnAction(event -> changeColor());
     }
 
     // TODO: Either lock the sidepane buttons or hide them when in test mode.
@@ -46,16 +53,18 @@ public class Application extends javafx.application.Application {
         throw new NotImplementedException();
     }
 
-    // Called when practice button pressed
+//     Called when practice button pressed
     private void practice() {
         new SelectTestController(true).display(topPane, this::home);
         testBtn.setStyle("-fx-background-color: #29292D");
+
     }
 
     // Called when test button pressed
     private void test(){
         new SelectTestController().display(topPane, this::home);
         practiceBtn.setStyle("-fx-background-color: #29292D");
+
     }
 
     // Called when stats button pressed
@@ -67,6 +76,16 @@ public class Application extends javafx.application.Application {
     private void    info() {
         // TODO: New info controller
         throw new NotImplementedException();
+    }
+
+    private void changeColor() {
+        if(COLOUR.equals("Dark")) {
+            COLOUR = "Light";
+            _scene.getStylesheets().add("/tatai/stylesheets/LightMode.css");
+            _sidePane.getStyleClass().add("side-pane");
+            topPane.setStyle("-fx-background-color: #DADFE1");
+        }
+
     }
 
 
@@ -108,17 +127,20 @@ public class Application extends javafx.application.Application {
         timeline.play();
     }
 
+    private static String COLOUR = "Dark";
     private static final String APP_NAME = "T\u0101tai";
     private static final double SIDE_MIN = 55.0;
     private static final double SIDE_MAX = 225.0;
 
     private Stage           _stage;
+    private Scene           _scene;
 
     // JavaFX Controls
     @FXML private Button    homeBtn;
     @FXML private Button    practiceBtn;
     @FXML private Button    testBtn;
     @FXML private Button    statsBtn;
+    @FXML private Button    colorBtn;
     @FXML private AnchorPane topPane;
     @FXML private VBox _sidePane;
 }

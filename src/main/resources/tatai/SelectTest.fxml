@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.text.Font?>
 
-<fx:root prefHeight="400.0" prefWidth="645.0" style="-fx-background-color: #29292D;" type="AnchorPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root prefHeight="400.0" prefWidth="645.0" style="-fx-background-color: #29292D;" type="AnchorPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label alignment="CENTER" layoutX="200.0" layoutY="14.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="55.0" prefWidth="343.0" style="-fx-background-color: #29292D;" text="Select a level of difficulty" textFill="#fffdfd" AnchorPane.leftAnchor="122.5" AnchorPane.rightAnchor="122.5">
+      <Label alignment="CENTER" layoutX="200.0" layoutY="14.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="55.0" prefWidth="343.0" text="Select a level of difficulty" textFill="#fffdfd" AnchorPane.leftAnchor="122.5" AnchorPane.rightAnchor="122.5">
          <font>
             <Font size="36.0" />
          </font>

@@ -1,0 +1,9 @@
+.root{
+    -fx-background-color: #29292D
+}
+.button {
+    -jfx-rippler-fill: #6622cc;
+}
+.side-pane {
+    -fx-background-color:  #6622cc;
+}
