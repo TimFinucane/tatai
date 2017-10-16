@@ -11,8 +11,24 @@ public class TestJson {
         public String   question;
     }
 
-    public String       name;
-    public String       author = "";
+    /**
+     * Info about a prerequisite for the game
+     */
+    public static class Prerequisite {
+        public String   name;
+        public int      score;
+    }
 
-    public Question[]   questions;
+    public String           name;
+    public String           author = "";
+
+    public boolean          practice = false;
+    public boolean          custom = true;
+
+    protected int           order = -1; // Order it should be displayed in. Non-custom only
+
+    public Prerequisite[]   prerequisites;
+
+    public boolean          randomizeQuestions;
+    public Question[]       questions;
 }

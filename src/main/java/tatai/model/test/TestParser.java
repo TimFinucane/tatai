@@ -1,12 +1,15 @@
 package tatai.model.test;
 
 import com.google.gson.Gson;
+import org.jetbrains.annotations.NotNull;
 import tatai.model.question.QuestionReader;
 import util.Files;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class TestParser {
     /**
@@ -35,14 +38,20 @@ public class TestParser {
      * listTests method
      * TODO: Document the format
      */
-    public static Test          read(String name) throws FileNotFoundException {
+    public static TestJson      read(String name) throws FileNotFoundException {
         Reader reader = new FileReader(Files.testFile(name));
 
         // Thank you holy Gson
         Gson gson = new Gson();
 
-        TestJson testJson = gson.fromJson(reader, TestJson.class);
+        return gson.fromJson(reader, TestJson.class);
+    }
 
+    /**
+     * Makes a test from a testJson
+     */
+    @NotNull
+    public static Test          make(TestJson testJson) {
         // Create questions
         ArrayList<Test.QuestionInfo> questions = new ArrayList<>();
         for(TestJson.Question question : testJson.questions) {
@@ -53,13 +62,16 @@ public class TestParser {
                             QuestionReader.read(question.question)));
         }
 
-        return new Test(testJson.name, questions);
+        if(testJson.randomizeQuestions)
+            Collections.shuffle(questions, new Random());
+
+        return new Test("", testJson.name, "", questions);
     }
 
     /**
      * Writes the given test so that it can be retrievable later
      */
-    public static void          makeTest(TestJson testInfo) throws IOException {
+    public static void          save(String user, TestJson testInfo) throws IOException {
         File file = Files.testFile(testInfo.name);
         file.createNewFile();
 
@@ -70,24 +82,5 @@ public class TestParser {
             gson.toJson(testInfo, writer);
         }
 
-    }
-
-    /**
-     * Creates some basic tests. TODO: Move this to another area for checking and creating
-     */
-    public static void          main(String[] args) {
-        TestJson basic = new TestJson();
-        basic.name = "Easy Test";
-        basic.questions = new TestJson.Question[1];
-        basic.questions[0] = new TestJson.Question();
-        basic.questions[0].rounds = 10;
-        basic.questions[0].tries = 2;
-        basic.questions[0].question = "(1 to 9)";
-
-        try {
-            makeTest(basic);
-        } catch(IOException e) {
-            throw new RuntimeException(e.getMessage());
-        }
     }
 }

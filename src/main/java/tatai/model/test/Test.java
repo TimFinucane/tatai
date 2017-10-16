@@ -20,16 +20,18 @@ public class Test {
         Question 	question;
 	}
 
-	Test(String name, ArrayList<QuestionInfo> questions) {
-	    _name = name;
+	Test(String user, String name, String author, ArrayList<QuestionInfo> questions) {
+	    this._user = user;
+	    this.name = name;
+	    this.author = author;
 	    _questions = questions;
     }
 
-    public String   	name() {
-	    return _name;
-    }
-    public int 			score() {
-        return _score;
+    public final String	name;
+	public final String author;
+
+	public int          score() {
+	    return _score;
     }
 
 	/**
@@ -37,15 +39,18 @@ public class Test {
 	 * @return the question generated for that round.
 	 */
 	public String		nextRound() {
+        if(_questionIndex >= _questions.size()) {
+            throw new IllegalStateException("Test is finished. Please do not do this");
+        }
+
 		_round++;
 
 		if(_round >= _questions.get(_questionIndex).rounds) {
 			_round = 0;
 			_questionIndex += 1;
 
-			if(_questionIndex > _questions.size()) {
-				Scores.save(_name, _score);
-			}
+            if(_questionIndex == _questions.size())
+                Scores.save(_user, name, _score);
 		}
 
 		_tries = _questions.get(_questionIndex).tries;
@@ -94,6 +99,7 @@ public class Test {
 		return _questions.get(_questionIndex).question;
 	}
 
+	private String                  _user;
     private int 	    			_score = 0;
 
 	private int                     _tries;
@@ -101,7 +107,4 @@ public class Test {
 	private int						_questionIndex = 0;
 	private int						_round = 0;
 	private ArrayList<QuestionInfo>	_questions;
-
-    private String	    			_name;
-    private String                  _author;
 }

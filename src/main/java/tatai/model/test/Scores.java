@@ -1,68 +1,81 @@
 package tatai.model.test;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sun.media.jfxmedia.logging.Logger;
+import util.Files;
 
+import javax.annotation.Nullable;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Scores {
-    private static final String SCORES_FILE = "scores.txt";
+    public static class Score {
+        public Score(String user, int score) {
+            this.user = user;
+            this.score = score;
+            this.date = new Date(); // Now
+        }
+
+        public String  user;
+        public int     score;
+        public Date    date;
+    }
 
     /**
      * Gets all recorded scores
      */
-    public static Map<String, ArrayList<Integer>>   retrieve() {
-        HashMap<String, ArrayList<Integer>> scores = new HashMap<>();
-
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader(SCORES_FILE));
-
-            for(String line = reader.readLine(); line != null; line = reader.readLine()) {
-                String items[] = line.split(",");
-
-                scores.get(items[0]).add(Integer.parseInt(items[1]));
-            }
-        } catch (FileNotFoundException e) {
-            // Do nothing. If the file doesn't exist the intended behaviour is that
-            //  no scores have been recorded
-        } catch (IOException e) {
-            Logger.logMsg(Logger.ERROR, "Exception closing the reader: " + e.getMessage());
-        } finally {
-            // I really do not like having to do this. Why would you do this java.
-            try {
-                if( reader != null ) {
-                    reader.close();
-                }
-            } catch(IOException e) {
-                Logger.logMsg(Logger.ERROR, "Exception closing the reader: " + e.getMessage());
-            }
+    @Nullable
+    public static Score[]   retrieve(String test) {
+        try(FileReader reader = new FileReader(Files.scoreFile(test))) {
+            return _gson.fromJson(reader, Score[].class);
+        } catch(FileNotFoundException e) {
+            return null;
+        } catch(IOException e) {
+            Logger.logMsg(Logger.ERROR, "Unexpected IO exception reading from " + test + " score file");
+            return null;
         }
-        return scores;
     }
 
     /**
-     * Saves a score
+     * Saves a score. I hate this function
      */
-    public static void                              save(String testName, Integer score) {
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(SCORES_FILE, true));
+    public static void      save(String user, String test, int score) {
+        File file = Files.scoreFile(test);
 
-            writer.write(testName + "," + String.valueOf(score));
-            writer.newLine();
+        Score[] scores = null;
 
-            writer.close();
+        // Horrible, but cant find any other way of doing it
+        if(file.exists()) {
+            try( FileReader reader = new FileReader(file) ) {
+                List<Score> list = new ArrayList<>();
+                Collections.addAll(list, _gson.fromJson(reader, Score[].class));
+                list.add(new Score(user, score));
+                scores = list.toArray(new Score[0]);
+            } catch(FileNotFoundException e) {
+                // Cant happen so thanks.
+            } catch(IOException e) {
+                Logger.logMsg(Logger.ERROR, "Unexpected IO exception writing to " + test + " score file: "
+                        + e.getMessage());
+            }
+        } else {
+            scores = new Score[]{ new Score(user, score) };
+        }
+
+        try(FileWriter writer = new FileWriter(file, false)) {
+            _gson.toJson(scores, writer);
         } catch(IOException e) {
-            Logger.logMsg(Logger.ERROR, "Cannot store scores: " + e.getMessage());
+            Logger.logMsg(Logger.ERROR, "Unexpected IO exception writing to " + test + " score file: "
+                    + e.getMessage());
         }
     }
 
     /**
      * Clears all scores
      */
-    public static void	                            clear() {
-        new File(SCORES_FILE).delete();
+    public static void	    clear(String test) {
+        Files.scoreFile(test).delete();
     }
+
+    private static Gson     _gson = new GsonBuilder().setDateFormat("yyyy MMM dd HH:mm").setLenient().create();
 }

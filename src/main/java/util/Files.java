@@ -11,11 +11,21 @@ public class Files {
 
         return file;
     }
+    public static File scoreFolder() {
+        File file = new File("./scores");
 
+        if(!file.exists())
+            file.mkdir();
+
+        return file;
+    }
     /**
      * Gets a test file with the given name
      */
     public static File testFile(String name) {
         return new File(testFolder().getPath() + "/" + name + ".txt");
+    }
+    public static File scoreFile(String name) {
+        return new File(scoreFolder().getPath() + "/" + name + ".txt");
     }
 }
