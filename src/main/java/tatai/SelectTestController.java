@@ -12,7 +12,9 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import tatai.model.test.Test;
 import tatai.model.test.TestJson;
 import tatai.model.test.TestParser;
+import util.Views;
 
+import javax.swing.text.View;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -33,8 +35,7 @@ public class SelectTestController extends Controller {
 
     // Called when create custom button pressed
     private void createCustom() {
-	    throw new NotImplementedException();
-	    //TODO: creates a custom test.
+        switchTo(new CreateCustomController());
     }
 
     // Called when remove custom button pressed

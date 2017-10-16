@@ -29,6 +29,7 @@ public class TestController extends Controller {
 		_model = model;
 
 	    // Load fxml, set self to act as controller and root
+
 		Views.load("Test", this, this);
 
 		_lblTitle.setFont(Font.font(TITLE_TEXT_SIZE ));
