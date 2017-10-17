@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
+import tatai.model.ScoreKeeper;
 import tatai.model.test.Test;
 import tatai.model.test.TestJson;
 import tatai.model.test.TestParser;
@@ -26,8 +27,12 @@ public class TestController extends Controller {
 	 * When the user is ready to finish the test, notifyReturn is called
 	 * with the appropriate ReturnState.
      */
-	public TestController(TestJson model) {
+	public TestController(ScoreKeeper keeper, TestJson model) {
 		_name = model.name;
+		_practice = model.practice;
+
+		_scoreKeeper = keeper;
+
 		_model = TestParser.make(model);
 
 	    // Load fxml, set self to act as controller and root
@@ -130,6 +135,9 @@ public class TestController extends Controller {
 	 * Sets up the screen when complete
 	 */
 	private void	finish() {
+	    if(!_practice)
+	        _scoreKeeper.addScore(_name, _model.score());
+
         titleLbl.setFont(Font.font(TITLE_TEXT_SIZE));
 		titleLbl.setText(_model.score() + "/10");
 
@@ -155,8 +163,10 @@ public class TestController extends Controller {
 	private static final Paint      FAILURE_COLOUR = Color.color(240/255.0, 52/255.0, 52/255.0);
 
     private ReturnState         	_returnState;
-    private String					_name;
+    private final String		    _name;
+    private final boolean           _practice;
     private Test    				_model;
+    private ScoreKeeper             _scoreKeeper;
 
 	// FXML controls
 	@FXML private Label             titleLbl;
