@@ -7,6 +7,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import tatai.model.test.Test;
+import tatai.model.test.TestJson;
+import tatai.model.test.TestParser;
 
 /**
  * A test window, to which you can pass specifications for the type of test
@@ -24,14 +26,15 @@ public class TestController extends Controller {
 	 * When the user is ready to finish the test, notifyReturn is called
 	 * with the appropriate ReturnState.
      */
-	public TestController(Test model) {
-		_model = model;
+	public TestController(TestJson model) {
+		_name = model.name;
+		_model = TestParser.make(model);
 
 	    // Load fxml, set self to act as controller and root
 		loadFxml("Test");
 
-		titleLbl.setFont(Font.font(TITLE_TEXT_SIZE ));
-		titleLbl.setText("Welcome to the " + _model.name + " test");
+		titleLbl.setFont(Font.font(TITLE_TEXT_SIZE));
+		titleLbl.setText("Welcome to the " + model.name + " test");
 
 		playbackControl.setVisible(false);
 		recorderControl.setVisible(false);
@@ -41,7 +44,7 @@ public class TestController extends Controller {
 
 		submitBtn.setText("Start");
 		submitBtn.setOnAction(e -> {
-            titleLbl.setFont(Font.font(TITLE_NUMBERS_SIZE ));
+            titleLbl.setFont(Font.font(TITLE_NUMBERS_SIZE));
 
 		    playbackControl.setVisible(true);
 		    recorderControl.setVisible(true);
@@ -152,6 +155,7 @@ public class TestController extends Controller {
 	private static final Paint      FAILURE_COLOUR = Color.color(240/255.0, 52/255.0, 52/255.0);
 
     private ReturnState         	_returnState;
+    private String					_name;
     private Test    				_model;
 
 	// FXML controls

@@ -71,7 +71,7 @@ public class SelectTestController extends Controller {
             button.setTextFill(Paint.valueOf("ffffff"));
 
             button.setOnAction(e -> {
-                _curTest = new TestController(TestParser.make(info));
+                _curTest = new TestController(info);
                 switchTo(_curTest);
             });
 
