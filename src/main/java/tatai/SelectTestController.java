@@ -20,10 +20,11 @@ import java.io.IOException;
  */
 public class SelectTestController extends Controller {
     public SelectTestController() {
-        this(false);
+        this(false, false);
     }
-    public SelectTestController(boolean practice) {
+    public SelectTestController(boolean practice, boolean stats) {
         _practice = practice;
+        _stats = stats;
 
         loadFxml("SelectTest");
         createBasicTests();
@@ -51,6 +52,11 @@ public class SelectTestController extends Controller {
     private void    refreshButtons() {
         // TODO: Locking and unlocking would go here
 
+        if(_practice == false || _stats == false) {
+            _btnCreateCustom.setVisible(false);
+            _btnRemoveCustom.setVisible(false);
+        }
+
         _paneFlow.getChildren().clear();
 
         for(String testName : TestParser.listTests()) {
@@ -71,10 +77,18 @@ public class SelectTestController extends Controller {
             button.setRipplerFill(Paint.valueOf("dddddd"));
             button.setTextFill(Paint.valueOf("ffffff"));
 
-            button.setOnAction(e -> {
-                _curTest = new TestController(TestParser.make(info));
-                switchTo(_curTest);
-            });
+            if(_stats == false) {
+                button.setOnAction(e -> {
+                    _curTest = new TestController(TestParser.make(info));
+                    switchTo(_curTest);
+                });
+            }
+            else {
+                button.setOnAction(e -> {
+                    _curStats = new StatsController();
+                    switchTo(_curStats);
+                });
+            }
 
             if(!info.custom && info.order >= 0)
                 _paneFlow.getChildren().add(Math.min(info.order, _paneFlow.getChildren().size()), button);
@@ -172,8 +186,10 @@ public class SelectTestController extends Controller {
     }
 
     private boolean         _practice;
+    private boolean         _stats;
 
     private TestController  _curTest;
+    private StatsController _curStats;
 
     //    JavaFX Controls
     @FXML private FlowPane  _paneFlow;

@@ -55,7 +55,7 @@ public class Application extends javafx.application.Application {
 
 //     Called when practice button pressed
     private void practice() {
-        new SelectTestController(true).display(topPane, this::home);
+        new SelectTestController(true, false).display(topPane, this::home);
         testBtn.setStyle("-fx-background-color: #29292D");
 
     }
@@ -69,7 +69,8 @@ public class Application extends javafx.application.Application {
 
     // Called when stats button pressed
     private void stats(){
-        throw new NotImplementedException();
+        new SelectTestController(false, true).display(topPane, this::home);
+        statsBtn.setStyle("-fx-background-color: #29292D");
     }
 
     // Called when the info button has been pressed
