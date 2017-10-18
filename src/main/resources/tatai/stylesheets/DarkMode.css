@@ -1,12 +1,17 @@
 .root{
-    -fx-background-color: #29292D
+    -fx-background-color: #29292D;
 }
 .button {
-    -jfx-rippler-fill: #6622cc;
-}
-.side-pane {
-    -fx-background-color:  #6622cc;
+    -fx-font-size: 20;
 }
 .label {
-    -fx-text-fill: #ffffff
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 36;
 }
+.text-input {
+    -fx-text-fill: #ffffff;
+    -fx-prompt-text-fill: #ffffff;
+}
+
+
+

@@ -53,7 +53,7 @@ public class SelectTestController extends Controller {
     private void    refreshButtons() {
         // TODO: Locking and unlocking would go here
 
-        if(_practice == false || _stats == false) {
+        if(_practice == true || _stats == true) {
             _btnCreateCustom.setVisible(false);
             _btnRemoveCustom.setVisible(false);
         }

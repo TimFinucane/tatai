@@ -1,8 +1,5 @@
 package tatai;
 
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
-import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -10,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -53,18 +51,16 @@ public class Application extends javafx.application.Application {
         throw new NotImplementedException();
     }
 
-//     Called when practice button pressed
+    // Called when practice button pressed
     private void practice() {
         new SelectTestController(true, false).display(topPane, this::home);
         testBtn.setStyle("-fx-background-color: #29292D");
-
-
     }
 
     // Called when test button pressed
     private void test(){
         new SelectTestController().display(topPane, this::home);
-        practiceBtn.setStyle("-fx-background-color: #29292D");
+        practiceBtn.getStyleClass().add("root");
     }
 
     // Called when stats button pressed
@@ -78,7 +74,7 @@ public class Application extends javafx.application.Application {
         // TODO: New info controller
         throw new NotImplementedException();
     }
-
+    // Called when the colour change button pressed
     private void changeColor() {
         if(COLOUR.equals("Dark")) {
             COLOUR = "Light";
@@ -86,9 +82,7 @@ public class Application extends javafx.application.Application {
             _sidePane.getStyleClass().add("side-pane");
             topPane.setStyle("-fx-background-color: #DADFE1");
         }
-
     }
-
 
     /**
      * Opens the side pane to show text
@@ -142,6 +136,7 @@ public class Application extends javafx.application.Application {
     @FXML private Button    testBtn;
     @FXML private Button    statsBtn;
     @FXML private Button    colorBtn;
+    @FXML private Label     titleLbl;
     @FXML private AnchorPane topPane;
     @FXML private VBox _sidePane;
 }
