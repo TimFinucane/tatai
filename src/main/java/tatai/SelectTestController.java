@@ -7,6 +7,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Paint;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import tatai.model.ScoreKeeper;
 import tatai.model.test.TestJson;
 import tatai.model.test.TestParser;
 import util.Views;
@@ -79,7 +80,8 @@ public class SelectTestController extends Controller {
 
             if(_stats == false) {
                 button.setOnAction(e -> {
-                    _curTest = new TestController(TestParser.make(info));
+                    // TODO: When users come in, improve that
+                    _curTest = new TestController(new ScoreKeeper("scores"), info);
                     switchTo(_curTest);
                 });
             }

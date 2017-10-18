@@ -22,7 +22,7 @@ public class TestJson {
     public String           name;
     public String           author = "";
 
-    public boolean          practice = false;
+    public boolean          practice = false; // Practice questions don't save and go on forever
     public boolean          custom = true;
 
     public int              order = -1; // Order it should be displayed in. Non-custom only
