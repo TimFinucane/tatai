@@ -12,6 +12,9 @@
     -fx-text-fill: #ffffff;
     -fx-prompt-text-fill: #ffffff;
 }
+.jfx-text-field {
+    -jfx-unfocus-color: #ffffff;
+}
 
 
 

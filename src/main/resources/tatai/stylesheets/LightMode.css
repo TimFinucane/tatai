@@ -2,15 +2,16 @@
     -fx-background-color: #DADFE1;
 }
 .button {
-
     -fx-text-fill: #000000;
-    -jfx-rippler-fill: #ffffff;
-
 }
 .label {
     -fx-text-fill: #000000;
-    -fx-background-color: #DADFE1;
+    -fx-font-size: 36;
 }
-.side-pane {
-    -fx-background-color: #BDC3C7;
+.text-input {
+    -fx-text-fill: #000000;
+    -fx-prompt-text-fill: #000000;
+}
+.jfx-text-field {
+    -jfx-unfocus-color: #000000;
 }

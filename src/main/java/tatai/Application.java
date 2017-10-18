@@ -1,5 +1,6 @@
 package tatai;
 
+import com.jfoenix.controls.JFXTextField;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -12,6 +13,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import sun.util.resources.cldr.se.CurrencyNames_se;
 import util.Views;
 import javafx.util.Duration;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -74,13 +76,20 @@ public class Application extends javafx.application.Application {
         // TODO: New info controller
         throw new NotImplementedException();
     }
+
     // Called when the colour change button pressed
     private void changeColor() {
-        if(COLOUR.equals("Dark")) {
-            COLOUR = "Light";
+        if(isDark == true) {
+            _scene.getStylesheets().clear();
             _scene.getStylesheets().add("/tatai/stylesheets/LightMode.css");
-            _sidePane.getStyleClass().add("side-pane");
             topPane.setStyle("-fx-background-color: #DADFE1");
+            isDark = false;
+        }
+        else if(isDark == false){
+            _scene.getStylesheets().clear();
+            _scene.getStylesheets().add("/tatai/stylesheets/DarkMode.css");
+            topPane.setStyle("-fx-background-color: #29292D");
+            isDark = true;
         }
     }
 
@@ -122,10 +131,10 @@ public class Application extends javafx.application.Application {
         timeline.play();
     }
 
-    private static String COLOUR = "Dark";
+    private boolean isDark = true;
     private static final String APP_NAME = "T\u0101tai";
     private static final double SIDE_MIN = 55.0;
-    private static final double SIDE_MAX = 225.0;
+    private static final double SIDE_MAX = 200.0;
 
     private Stage           _stage;
     private Scene           _scene;
@@ -136,7 +145,8 @@ public class Application extends javafx.application.Application {
     @FXML private Button    testBtn;
     @FXML private Button    statsBtn;
     @FXML private Button    colorBtn;
-    @FXML private Label     titleLbl;
+    @FXML private JFXTextField usernameTxt;
+    @FXML private Button    signInBtn;
     @FXML private AnchorPane topPane;
     @FXML private VBox _sidePane;
 }
