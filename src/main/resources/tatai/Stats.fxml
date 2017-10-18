@@ -13,9 +13,9 @@
             <AnchorPane prefHeight="200.0" prefWidth="624.0" />
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <VBox fx:id="dateBox" prefHeight="200.0" prefWidth="100.0" />
-                  <VBox fx:id="scoreBox" prefHeight="200.0" prefWidth="100.0" />
-                  <VBox fx:id="progessBox" prefHeight="200.0" prefWidth="100.0" />
+                  <VBox fx:id="dateBox" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" />
+                  <VBox fx:id="scoreBox" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" />
+                  <VBox fx:id="progessBox" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" />
                </children>
             </HBox>
          </children>

@@ -7,3 +7,6 @@
 .side-pane {
     -fx-background-color:  #6622cc;
 }
+.label {
+    -fx-text-fill: #ffffff
+}

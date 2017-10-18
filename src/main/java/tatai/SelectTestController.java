@@ -87,7 +87,7 @@ public class SelectTestController extends Controller {
             }
             else {
                 button.setOnAction(e -> {
-                    _curStats = new StatsController();
+                    _curStats = new StatsController(new ScoreKeeper("scores"));
                     switchTo(_curStats);
                 });
             }
