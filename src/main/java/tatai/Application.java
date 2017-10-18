@@ -1,6 +1,8 @@
 package tatai;
 
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXToggleButton;
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -33,6 +35,11 @@ public class Application extends javafx.application.Application {
         _scene = new Scene(Views.load("Application", this, null));
         _scene.getStylesheets().add("/tatai/stylesheets/DarkMode.css");
 
+        colourLbl.setVisible(false);
+        colourToggle.setVisible(false);
+        testBtn.setVisible(false);
+        statsBtn.setVisible(false);
+
         stage.setScene(_scene);
 
         _stage.setTitle(APP_NAME);
@@ -42,12 +49,13 @@ public class Application extends javafx.application.Application {
 
         homeBtn.setOnAction(event -> home());
         practiceBtn.setOnAction(event -> practice());
-        testBtn.setOnAction((event -> test()));
-        statsBtn.setOnAction(event -> stats());
-        colorBtn.setOnAction(event -> changeColor());
+
+        signInBtn.setOnAction(event -> next());
+
     }
 
     // TODO: Either lock the sidepane buttons or hide them when in test mode.
+    // TODO: Fix overlap if test or practice button pressed multiple times.
     // Called when home button pressed
     private void home(){
         throw new NotImplementedException();
@@ -77,19 +85,76 @@ public class Application extends javafx.application.Application {
         throw new NotImplementedException();
     }
 
+    // Called when the sign in button pressed
+    private void next() {
+        Timeline timeline = new Timeline();
+        timeline.getKeyFrames().addAll(
+                new KeyFrame(Duration.millis(200.0d), new KeyValue(signInLbl.prefHeightProperty(), 0.0) ),
+                new KeyFrame(Duration.ZERO, new KeyValue(colourLbl.prefHeightProperty(), 0.0) ),
+                new KeyFrame(Duration.millis(200.0d), new KeyValue(colourLbl.prefHeightProperty(), LABEL_MAX) ),
+                new KeyFrame(Duration.ZERO, new KeyValue(statsBtn.prefHeightProperty(), 0.0) ),
+                new KeyFrame(Duration.millis(200.0d), new KeyValue(statsBtn.prefHeightProperty(), SIDE_MIN) ),
+                new KeyFrame(Duration.ZERO, new KeyValue(testBtn.prefHeightProperty(), 0.0) ),
+                new KeyFrame(Duration.millis(200.0d), new KeyValue(testBtn.prefHeightProperty(), SIDE_MIN) )
+        );
+
+        usernameTxt.setVisible(false);
+        colourToggle.setVisible(true);
+        colourLbl.setVisible(true);
+
+        signInBtn.setText("Sign In");
+
+        signInBtn.setOnAction(event -> signIn());
+
+        timeline.play();
+    }
+
+    //TODO: Send this username string to any tests the user does.
+
+    /**
+     * Once the user has signed in they now have access to the test and stats modules
+     */
+    private void signIn() {
+
+        FadeTransition fadeInStats = new FadeTransition(Duration.seconds(3.0), statsBtn);
+        FadeTransition fadeInTest = new FadeTransition(Duration.seconds(3.0), testBtn);
+
+        fadeInStats.setFromValue(0.0);
+        fadeInStats.setToValue(1.0);
+        fadeInStats.setCycleCount(1);
+        fadeInStats.setAutoReverse(false);
+
+        fadeInTest.setFromValue(0.0);
+        fadeInTest.setToValue(1.0);
+        fadeInTest.setCycleCount(1);
+        fadeInTest.setAutoReverse(false);
+
+        fadeInTest.play();
+
+        statsBtn.setVisible(true);
+        testBtn.setVisible(true);
+        fadeInStats.playFromStart();
+        fadeInTest.playFromStart();
+
+        String username = usernameTxt.getText();
+
+        testBtn.setOnAction((event -> test()));
+        statsBtn.setOnAction(event -> stats());
+        changeColor(colourToggle.isSelected());
+    }
+
     // Called when the colour change button pressed
-    private void changeColor() {
-        if(isDark == true) {
+    private void changeColor(boolean dark) {
+        _isDark = dark;
+        if(_isDark == true) {
             _scene.getStylesheets().clear();
             _scene.getStylesheets().add("/tatai/stylesheets/LightMode.css");
             topPane.setStyle("-fx-background-color: #DADFE1");
-            isDark = false;
         }
-        else if(isDark == false){
+        else if(_isDark == false){
             _scene.getStylesheets().clear();
             _scene.getStylesheets().add("/tatai/stylesheets/DarkMode.css");
             topPane.setStyle("-fx-background-color: #29292D");
-            isDark = true;
         }
     }
 
@@ -131,10 +196,11 @@ public class Application extends javafx.application.Application {
         timeline.play();
     }
 
-    private boolean isDark = true;
+    private boolean _isDark = true;
     private static final String APP_NAME = "T\u0101tai";
     private static final double SIDE_MIN = 55.0;
     private static final double SIDE_MAX = 200.0;
+    private static final double LABEL_MAX = 30.0;
 
     private Stage           _stage;
     private Scene           _scene;
@@ -144,9 +210,12 @@ public class Application extends javafx.application.Application {
     @FXML private Button    practiceBtn;
     @FXML private Button    testBtn;
     @FXML private Button    statsBtn;
-    @FXML private Button    colorBtn;
-    @FXML private JFXTextField usernameTxt;
+    @FXML private Button    infoBtn;
     @FXML private Button    signInBtn;
+    @FXML private JFXTextField usernameTxt;
+    @FXML private Label     signInLbl;
+    @FXML private Label     colourLbl;
+    @FXML private JFXToggleButton   colourToggle;
     @FXML private AnchorPane topPane;
     @FXML private VBox _sidePane;
 }

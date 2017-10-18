@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXToggleButton?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.scene.control.Label?>
@@ -11,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="topPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="topPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #29292D;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox fx:id="_sidePane" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#openPane" onMouseExited="#closePane" prefHeight="400.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -24,17 +25,17 @@
                   <MaterialDesignIconView fx:id="_iconHome" fill="WHITE" glyphName="HOME" size="26" />
                </graphic>
             </JFXButton>
-            <JFXButton fx:id="testBtn" alignment="BASELINE_LEFT" contentDisplay="GRAPHIC_ONLY" graphicTextGap="15.0" prefHeight="55.0" prefWidth="317.0" ripplerFill="#22a7f0" text="Test" textFill="WHITE">
+            <JFXButton fx:id="practiceBtn" alignment="BASELINE_LEFT" contentDisplay="GRAPHIC_ONLY" graphicTextGap="15.0" prefHeight="55.0" prefWidth="296.0" ripplerFill="#22a7f0" text="Practice" textFill="WHITE">
                <graphic>
-                  <FontAwesomeIconView fill="WHITE" glyphName="CALCULATOR" size="26" text="" />
+                  <FontAwesomeIconView fill="WHITE" glyphName="SORT_NUMERIC_ASC" size="28" text="" />
                </graphic>
                <font>
                   <Font size="20.0" />
                </font>
             </JFXButton>
-            <JFXButton fx:id="practiceBtn" alignment="BASELINE_LEFT" contentDisplay="GRAPHIC_ONLY" graphicTextGap="15.0" prefHeight="55.0" prefWidth="296.0" ripplerFill="#22a7f0" text="Practice" textFill="WHITE">
+            <JFXButton fx:id="testBtn" alignment="BASELINE_LEFT" contentDisplay="GRAPHIC_ONLY" graphicTextGap="15.0" prefHeight="55.0" prefWidth="317.0" ripplerFill="#22a7f0" text="Test" textFill="WHITE">
                <graphic>
-                  <FontAwesomeIconView fill="WHITE" glyphName="SORT_NUMERIC_ASC" size="28" text="" />
+                  <FontAwesomeIconView fill="WHITE" glyphName="CALCULATOR" size="26" text="" />
                </graphic>
                <font>
                   <Font size="20.0" />
@@ -49,7 +50,7 @@
                </font>
             </JFXButton>
             <Region prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-            <JFXButton fx:id="colorBtn" contentDisplay="GRAPHIC_ONLY">
+            <JFXButton fx:id="infoBtn" contentDisplay="GRAPHIC_ONLY">
                <graphic>
                   <MaterialDesignIconView fill="WHITE" glyphName="BRIGHTNESS_4" size="26" text="" />
                </graphic>
@@ -58,21 +59,23 @@
       </VBox>
       <AnchorPane layoutX="222.0" layoutY="83.0" prefHeight="250.0" prefWidth="250.0" style="-fx-border-color: #22A7F0; -fx-border-radius: 10;" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="225.0" AnchorPane.topAnchor="80.0">
          <children>
-            <Label alignment="CENTER" layoutX="40.0" layoutY="14.0" prefHeight="32.0" prefWidth="174.0" style="-fx-font-size: 22;" text="Sign in to tatai" textFill="WHITE" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="14.0">
+            <Label fx:id="signInLbl" alignment="CENTER" layoutX="40.0" layoutY="14.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="175.0" style="-fx-font-size: 22;" text="Sign in to tatai" textFill="WHITE" AnchorPane.leftAnchor="35.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="14.0">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <JFXTextField fx:id="usernameTxt" focusColor="#22a7f0" labelFloat="true" layoutX="41.0" layoutY="94.0" promptText="Username" unFocusColor="WHITE" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="95.0">
+            <JFXTextField fx:id="usernameTxt" focusColor="#22a7f0" labelFloat="true" layoutX="28.0" layoutY="98.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="196.0" promptText="Username" unFocusColor="WHITE" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="97.0">
                <font>
                   <Font size="20.0" />
                </font>
             </JFXTextField>
-            <JFXButton fx:id="signInBtn" alignment="CENTER" buttonType="RAISED" layoutX="81.0" layoutY="172.0" ripplerFill="#22a7f0" text="Sign In" textFill="WHITE" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="75.0" AnchorPane.rightAnchor="75.0">
+            <JFXButton fx:id="signInBtn" alignment="CENTER" buttonType="RAISED" layoutX="81.0" layoutY="172.0" ripplerFill="#22a7f0" text="Next" textFill="WHITE" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="75.0" AnchorPane.rightAnchor="75.0">
                <font>
                   <Font size="20.0" />
                </font>
             </JFXButton>
+            <JFXToggleButton fx:id="colourToggle" contentDisplay="GRAPHIC_ONLY" layoutX="85.0" layoutY="83.0" size="12.0" text="ToggleButton" toggleColor="WHITE" toggleLineColor="#22a7f0" unToggleColor="BLACK" unToggleLineColor="#22a7f0" />
+            <Label fx:id="colourLbl" alignment="CENTER" layoutX="35.0" layoutY="15.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="250.0" style="-fx-font-size: 22;" text="Select your theme" textFill="WHITE" AnchorPane.leftAnchor="35.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="15.0" />
          </children>
       </AnchorPane>
       <Label fx:id="titleLbl" alignment="CENTER" layoutX="188.0" layoutY="21.0" prefHeight="53.0" prefWidth="324.0" text="Welcome to Tātai" textFill="WHITE" AnchorPane.leftAnchor="188.0" AnchorPane.rightAnchor="188.0" AnchorPane.topAnchor="21.0">
