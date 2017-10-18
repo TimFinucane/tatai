@@ -58,13 +58,13 @@ public class Application extends javafx.application.Application {
         new SelectTestController(true, false).display(topPane, this::home);
         testBtn.setStyle("-fx-background-color: #29292D");
 
+
     }
 
     // Called when test button pressed
     private void test(){
         new SelectTestController().display(topPane, this::home);
         practiceBtn.setStyle("-fx-background-color: #29292D");
-
     }
 
     // Called when stats button pressed

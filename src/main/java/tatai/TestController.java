@@ -28,7 +28,7 @@ public class TestController extends Controller {
 		_model = model;
 
 	    // Load fxml, set self to act as controller and root
-
+		
 		loadFxml("Test");
 
 
