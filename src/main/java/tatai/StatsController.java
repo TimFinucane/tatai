@@ -10,6 +10,8 @@ import tatai.model.ScoreKeeper;
  */
 public class StatsController extends Controller {
 
+    //TODO: Better way of displaying stats. Maybe add some gauges/graphs ??
+    //TODO: Add other stats such as if the user is better at multiplication than addition etc.
     public StatsController(ScoreKeeper scoreKeeper){
         dateBox.getStylesheets().add("/tatai/stylesheets/DarkMode.css");
         scoreBox.getStylesheets().add("/tatai/stylesheets/DarkMode.css");

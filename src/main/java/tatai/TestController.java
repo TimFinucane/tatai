@@ -16,7 +16,7 @@ import tatai.model.test.TestParser;
  */
 public class TestController extends Controller {
 	enum ReturnState {
-		QUIT, // TODO: Use this to notify early exit if ever needed
+		QUIT, // TODO: Use this to notify early exit if ever needed.
 		FINISHED,
 		RETRY,
 		RETRY_HARDER

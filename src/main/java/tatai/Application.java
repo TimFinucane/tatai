@@ -85,6 +85,8 @@ public class Application extends javafx.application.Application {
         throw new NotImplementedException();
     }
 
+
+    //TODO: Give sign in/out view a dedicated fxml and controller. Move this logic to that controller.
     // Called when the sign in button pressed
     private void next() {
         Timeline timeline = new Timeline();
@@ -109,7 +111,7 @@ public class Application extends javafx.application.Application {
         timeline.play();
     }
 
-    //TODO: Send this username string to any tests the user does.
+
 
     /**
      * Once the user has signed in they now have access to the test and stats modules
@@ -136,6 +138,7 @@ public class Application extends javafx.application.Application {
         fadeInStats.playFromStart();
         fadeInTest.playFromStart();
 
+        //TODO: Send this username string to any tests/stats the user does.
         String username = usernameTxt.getText();
 
         testBtn.setOnAction((event -> test()));
@@ -143,6 +146,7 @@ public class Application extends javafx.application.Application {
         changeColor(colourToggle.isSelected());
     }
 
+    //TODO: Make sure all children that are added know what stylesheet to add.
     // Called when the colour change button pressed
     private void changeColor(boolean dark) {
         _isDark = dark;
