@@ -1,4 +1,4 @@
-package tatai.Controls;
+package tatai.controls;
 
 import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;

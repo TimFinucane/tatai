@@ -8,10 +8,9 @@ import tatai.model.ScoreKeeper;
 /**
  * Class which displays the scores for the current test selected
  */
+// TODO: Better way of displaying stats. Maybe add some gauges/graphs ??
+// TODO: Add other stats such as if the user is better at multiplication than addition etc.
 public class StatsController extends Controller {
-
-    //TODO: Better way of displaying stats. Maybe add some gauges/graphs ??
-    //TODO: Add other stats such as if the user is better at multiplication than addition etc.
     public StatsController(ScoreKeeper scoreKeeper){
         dateBox.getStylesheets().add("/tatai/stylesheets/DarkMode.css");
         scoreBox.getStylesheets().add("/tatai/stylesheets/DarkMode.css");
@@ -35,7 +34,7 @@ public class StatsController extends Controller {
 
     private ScoreKeeper _scoreKeeper;
 
-//    JavaFx Controls
+    // JavaFx controls
     @FXML private VBox dateBox;
     @FXML private VBox scoreBox;
     @FXML private VBox progressBox;

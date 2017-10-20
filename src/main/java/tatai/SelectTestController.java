@@ -192,7 +192,7 @@ public class SelectTestController extends Controller {
     private TestController  _curTest;
     private StatsController _curStats;
 
-    //    JavaFX Controls
+    //    JavaFX controls
     @FXML private FlowPane  _paneFlow;
     @FXML private Button    _btnCreateCustom;
     @FXML private Button    _btnRemoveCustom;

@@ -21,7 +21,7 @@ public class CreateCustomController extends Controller{
         validateInput();
 
         _btnCreate.setOnAction(event -> {
-//            Right now this assumes all input is valid.
+            // Right now this assumes all input is valid.
             createTest();
         });
 
@@ -40,7 +40,7 @@ public class CreateCustomController extends Controller{
 
     private void validateInput() {
 
-//        TODO: Check for all cases of invalid input.
+        // TODO: Check for all cases of invalid input.
 
         List<JFXTextField> input = getInput();
         input.forEach(e -> {
@@ -88,7 +88,7 @@ public class CreateCustomController extends Controller{
         }
     }
 
-//    JavaFX Controls
+//    JavaFX controls
     @FXML private JFXTextField _txtName;
     @FXML private JFXTextField _txtAuthor;
     @FXML private JFXTextField _txtRounds;
