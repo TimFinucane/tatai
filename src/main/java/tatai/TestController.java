@@ -84,9 +84,10 @@ public class TestController extends Controller {
             recognitionLbl.setText(text);
         }
 
-    	if(_model.tryAnswer(text))
-    		recognitionLbl.setTextFill(SUCCESS_COLOUR);
-		else {
+    	if(_model.tryAnswer(text)) {
+            recognitionLbl.setTextFill(SUCCESS_COLOUR);
+            recorderControl.setDisable(true);
+        } else {
 			if(_model.hasAnotherTry()) {
 			    retryLbl.setText("You can try again by re-clicking the record button");
             } else {
