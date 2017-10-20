@@ -1,8 +1,6 @@
 package tatai.controls;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
@@ -28,13 +26,36 @@ public class Sidebar extends VBox {
         testBtn.setOnAction(e -> user.test());
         statsBtn.setOnAction(e -> user.stats());
         infoBtn.setOnAction(e -> user.info());
+
+        statsBtn.setVisible(false);
+        testBtn.setVisible(false);
+    }
+
+    /**
+     * Unlocks buttons that must have a user to exist. Kinda breaks SRP but oh well
+     */
+    public void     unlockButtons() {
+        FadeTransition fadeInStats = new FadeTransition(Duration.seconds(3.0), statsBtn);
+        FadeTransition fadeInTest = new FadeTransition(Duration.seconds(3.0), testBtn);
+
+        fadeInStats.setFromValue(0.0);
+        fadeInStats.setToValue(1.0);
+        fadeInStats.setCycleCount(1);
+        fadeInStats.setAutoReverse(false);
+
+        fadeInTest.setFromValue(0.0);
+        fadeInTest.setToValue(1.0);
+        fadeInTest.setCycleCount(1);
+        fadeInTest.setAutoReverse(false);
+
+        new ParallelTransition(fadeInStats, fadeInTest).play();
     }
 
     /**
      * Opens the side pane to show text
      */
     @FXML
-    private void openPane(MouseEvent e) {
+    private void    openPane(MouseEvent e) {
         homeBtn.setContentDisplay(ContentDisplay.LEFT);
         testBtn.setContentDisplay(ContentDisplay.LEFT);
         practiceBtn.setContentDisplay(ContentDisplay.LEFT);
@@ -52,7 +73,7 @@ public class Sidebar extends VBox {
      * Closes the side pane when hovering has stopped
      */
     @FXML
-    private void closePane(MouseEvent e) {
+    private void    closePane(MouseEvent e) {
         homeBtn.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         testBtn.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         practiceBtn.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);

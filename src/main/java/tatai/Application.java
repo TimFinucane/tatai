@@ -17,7 +17,7 @@ public class Application extends javafx.application.Application implements Sideb
     }
 
     @Override
-    public void     start(Stage stage) {
+    public void start(Stage stage) {
         setUserAgentStylesheet("/tatai/stylesheets/DarkMode.css");
 
         sidebar = new Sidebar(this);
@@ -48,7 +48,7 @@ public class Application extends javafx.application.Application implements Sideb
         // TODO: Account for user exiting without wanting to log in
         login.display(centre, () -> {
             _user = login.name();
-            //unlockButtons();
+            sidebar.unlockButtons();
         });
     }
 
@@ -72,27 +72,6 @@ public class Application extends javafx.application.Application implements Sideb
         // TODO: New info controller
         throw new NotImplementedException();
     }
-
-    /**
-     * Once the user has signed in they now have access to the test and stats modules
-     */
-    /*private void unlockButtons() {
-        FadeTransition fadeInStats = new FadeTransition(Duration.seconds(3.0), statsBtn);
-        FadeTransition fadeInTest = new FadeTransition(Duration.seconds(3.0), testBtn);
-
-        fadeInStats.setFromValue(0.0);
-        fadeInStats.setToValue(1.0);
-        fadeInStats.setCycleCount(1);
-        fadeInStats.setAutoReverse(false);
-
-        fadeInTest.setFromValue(0.0);
-        fadeInTest.setToValue(1.0);
-        fadeInTest.setCycleCount(1);
-        fadeInTest.setAutoReverse(false);
-
-        fadeInStats.playFromStart();
-        fadeInTest.playFromStart();
-    }*/
 
     // TODO: Make sure all children that are added know what stylesheet to add.
     // Called when the colour change button pressed
