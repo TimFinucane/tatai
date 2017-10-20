@@ -4,6 +4,7 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
@@ -55,7 +56,7 @@
          </children>
       </VBox>
    </left>
-   <right>
-      <Pane fx:id="topPane" prefWidth="600.0" BorderPane.alignment="CENTER" />
-   </right>
+   <center>
+      <HBox fx:id="topPane" alignment="CENTER" prefWidth="600.0" BorderPane.alignment="CENTER" />
+   </center>
 </BorderPane>

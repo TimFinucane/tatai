@@ -9,7 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -26,34 +26,38 @@ public class Application extends javafx.application.Application {
 
     @Override
     public void     start(Stage stage) {
-        _stage = stage;
-
         _scene = new Scene(Views.load("Application", this, null));
         _scene.getStylesheets().add("/tatai/stylesheets/DarkMode.css");
 
-        //colourLbl.setVisible(false);
-        //colourToggle.setVisible(false);
         testBtn.setVisible(false);
         statsBtn.setVisible(false);
 
         stage.setScene(_scene);
 
-        _stage.setTitle(APP_NAME);
-        _stage.show();
+        stage.setTitle(APP_NAME);
+        stage.show();
 
         _sidePane.setPrefWidth(55.0);
 
         homeBtn.setOnAction(event -> home());
         practiceBtn.setOnAction(event -> practice());
-
-        //signInBtn.setOnAction(event -> next());
     }
 
     // TODO: Either lock the sidepane buttons or hide them when in test mode.
     // TODO: Fix overlap if test or practice button pressed multiple times.
-    // Called when home button pressed
+    // Called when home button pressed. Sends user to login screen
     private void home(){
-        throw new NotImplementedException();
+        LoginController login;
+        if(_user == null)
+            login = new LoginController();
+        else
+            login = new LoginController(_user);
+
+        // TODO: Account for user exiting without wanting to log in
+        login.display(topPane, () -> {
+            _user = login.name();
+            unlockButtons();
+        });
     }
 
     // Called when practice button pressed
@@ -75,43 +79,15 @@ public class Application extends javafx.application.Application {
     }
 
     // Called when the info button has been pressed
-    private void    info() {
+    private void info() {
         // TODO: New info controller
         throw new NotImplementedException();
     }
 
-
-    //TODO: Give sign in/out view a dedicated fxml and controller. Move this logic to that controller.
-    // Called when the sign in button pressed
-    private void next() {
-        /*Timeline timeline = new Timeline();
-        timeline.getKeyFrames().addAll(
-                //new KeyFrame(Duration.millis(200.0d), new KeyValue(signInLbl.prefHeightProperty(), 0.0) ),
-                //new KeyFrame(Duration.ZERO, new KeyValue(colourLbl.prefHeightProperty(), 0.0) ),
-                //new KeyFrame(Duration.millis(200.0d), new KeyValue(colourLbl.prefHeightProperty(), LABEL_MAX) ),
-                new KeyFrame(Duration.ZERO, new KeyValue(statsBtn.prefHeightProperty(), 0.0) ),
-                new KeyFrame(Duration.millis(200.0d), new KeyValue(statsBtn.prefHeightProperty(), SIDE_MIN) ),
-                new KeyFrame(Duration.ZERO, new KeyValue(testBtn.prefHeightProperty(), 0.0) ),
-                new KeyFrame(Duration.millis(200.0d), new KeyValue(testBtn.prefHeightProperty(), SIDE_MIN) )
-        );
-
-        //usernameTxt.setVisible(false);
-        //colourToggle.setVisible(true);
-        //colourLbl.setVisible(true);
-
-        //signInBtn.setText("Sign In");
-
-        //signInBtn.setOnAction(event -> signIn());
-
-        timeline.play();*/
-    }
-
-
-
     /**
      * Once the user has signed in they now have access to the test and stats modules
      */
-    private void signIn() {
+    private void unlockButtons() {
         FadeTransition fadeInStats = new FadeTransition(Duration.seconds(3.0), statsBtn);
         FadeTransition fadeInTest = new FadeTransition(Duration.seconds(3.0), testBtn);
 
@@ -132,24 +108,18 @@ public class Application extends javafx.application.Application {
         fadeInStats.playFromStart();
         fadeInTest.playFromStart();
 
-        //TODO: Send this username string to any tests/stats the user does.
-        //String username = usernameTxt.getText();
-
         testBtn.setOnAction((event -> test()));
         statsBtn.setOnAction(event -> stats());
-        //changeColor(colourToggle.isSelected());
     }
 
     //TODO: Make sure all children that are added know what stylesheet to add.
     // Called when the colour change button pressed
     private void changeColor(boolean dark) {
-        _isDark = dark;
-        if(_isDark == true) {
+        if(dark) {
             _scene.getStylesheets().clear();
             _scene.getStylesheets().add("/tatai/stylesheets/LightMode.css");
             topPane.setStyle("-fx-background-color: #DADFE1");
-        }
-        else if(_isDark == false){
+        } else {
             _scene.getStylesheets().clear();
             _scene.getStylesheets().add("/tatai/stylesheets/DarkMode.css");
             topPane.setStyle("-fx-background-color: #29292D");
@@ -192,13 +162,12 @@ public class Application extends javafx.application.Application {
         timeline.play();
     }
 
-    private boolean _isDark = true;
     private static final String APP_NAME = "T\u0101tai";
     private static final double SIDE_MIN = 55.0;
     private static final double SIDE_MAX = 200.0;
-    private static final double LABEL_MAX = 30.0;
 
-    private Stage           _stage;
+    private String          _user = null;
+
     private Scene           _scene;
 
     // JavaFX Controls
@@ -208,11 +177,6 @@ public class Application extends javafx.application.Application {
     @FXML private Button    statsBtn;
     @FXML private Button    infoBtn;
 
-    /*@FXML private Button    signInBtn;
-    @FXML private JFXTextField usernameTxt;
-    @FXML private Label     signInLbl;
-    @FXML private Label     colourLbl;
-    @FXML private JFXToggleButton   colourToggle;*/
-    @FXML private Pane      topPane;
+    @FXML private HBox      topPane;
     @FXML private VBox      _sidePane;
 }
