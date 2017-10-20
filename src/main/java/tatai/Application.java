@@ -1,7 +1,5 @@
 package tatai;
 
-import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.JFXToggleButton;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -10,15 +8,13 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import sun.util.resources.cldr.se.CurrencyNames_se;
-import util.Views;
 import javafx.util.Duration;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import util.Views;
 
 /**
  * The top level class of this project. Is controller of the application/initial window
@@ -35,8 +31,8 @@ public class Application extends javafx.application.Application {
         _scene = new Scene(Views.load("Application", this, null));
         _scene.getStylesheets().add("/tatai/stylesheets/DarkMode.css");
 
-        colourLbl.setVisible(false);
-        colourToggle.setVisible(false);
+        //colourLbl.setVisible(false);
+        //colourToggle.setVisible(false);
         testBtn.setVisible(false);
         statsBtn.setVisible(false);
 
@@ -50,8 +46,7 @@ public class Application extends javafx.application.Application {
         homeBtn.setOnAction(event -> home());
         practiceBtn.setOnAction(event -> practice());
 
-        signInBtn.setOnAction(event -> next());
-
+        //signInBtn.setOnAction(event -> next());
     }
 
     // TODO: Either lock the sidepane buttons or hide them when in test mode.
@@ -89,26 +84,26 @@ public class Application extends javafx.application.Application {
     //TODO: Give sign in/out view a dedicated fxml and controller. Move this logic to that controller.
     // Called when the sign in button pressed
     private void next() {
-        Timeline timeline = new Timeline();
+        /*Timeline timeline = new Timeline();
         timeline.getKeyFrames().addAll(
-                new KeyFrame(Duration.millis(200.0d), new KeyValue(signInLbl.prefHeightProperty(), 0.0) ),
-                new KeyFrame(Duration.ZERO, new KeyValue(colourLbl.prefHeightProperty(), 0.0) ),
-                new KeyFrame(Duration.millis(200.0d), new KeyValue(colourLbl.prefHeightProperty(), LABEL_MAX) ),
+                //new KeyFrame(Duration.millis(200.0d), new KeyValue(signInLbl.prefHeightProperty(), 0.0) ),
+                //new KeyFrame(Duration.ZERO, new KeyValue(colourLbl.prefHeightProperty(), 0.0) ),
+                //new KeyFrame(Duration.millis(200.0d), new KeyValue(colourLbl.prefHeightProperty(), LABEL_MAX) ),
                 new KeyFrame(Duration.ZERO, new KeyValue(statsBtn.prefHeightProperty(), 0.0) ),
                 new KeyFrame(Duration.millis(200.0d), new KeyValue(statsBtn.prefHeightProperty(), SIDE_MIN) ),
                 new KeyFrame(Duration.ZERO, new KeyValue(testBtn.prefHeightProperty(), 0.0) ),
                 new KeyFrame(Duration.millis(200.0d), new KeyValue(testBtn.prefHeightProperty(), SIDE_MIN) )
         );
 
-        usernameTxt.setVisible(false);
-        colourToggle.setVisible(true);
-        colourLbl.setVisible(true);
+        //usernameTxt.setVisible(false);
+        //colourToggle.setVisible(true);
+        //colourLbl.setVisible(true);
 
-        signInBtn.setText("Sign In");
+        //signInBtn.setText("Sign In");
 
-        signInBtn.setOnAction(event -> signIn());
+        //signInBtn.setOnAction(event -> signIn());
 
-        timeline.play();
+        timeline.play();*/
     }
 
 
@@ -117,7 +112,6 @@ public class Application extends javafx.application.Application {
      * Once the user has signed in they now have access to the test and stats modules
      */
     private void signIn() {
-
         FadeTransition fadeInStats = new FadeTransition(Duration.seconds(3.0), statsBtn);
         FadeTransition fadeInTest = new FadeTransition(Duration.seconds(3.0), testBtn);
 
@@ -139,11 +133,11 @@ public class Application extends javafx.application.Application {
         fadeInTest.playFromStart();
 
         //TODO: Send this username string to any tests/stats the user does.
-        String username = usernameTxt.getText();
+        //String username = usernameTxt.getText();
 
         testBtn.setOnAction((event -> test()));
         statsBtn.setOnAction(event -> stats());
-        changeColor(colourToggle.isSelected());
+        //changeColor(colourToggle.isSelected());
     }
 
     //TODO: Make sure all children that are added know what stylesheet to add.
@@ -172,12 +166,10 @@ public class Application extends javafx.application.Application {
         practiceBtn.setContentDisplay(ContentDisplay.LEFT);
         statsBtn.setContentDisplay(ContentDisplay.LEFT);
 
-        _sidePane.toFront();
-
         Timeline timeline = new Timeline();
         timeline.getKeyFrames().addAll(
-                new KeyFrame(Duration.ZERO, new KeyValue(_sidePane.prefWidthProperty(), SIDE_MIN) ),
-                new KeyFrame(Duration.millis(100.0d), new KeyValue(_sidePane.prefWidthProperty(), SIDE_MAX) )
+                new KeyFrame(Duration.ZERO,             new KeyValue(_sidePane.prefWidthProperty(), SIDE_MIN)),
+                new KeyFrame(Duration.millis(100.0d),   new KeyValue(_sidePane.prefWidthProperty(), SIDE_MAX))
         );
         timeline.play();
     }
@@ -194,8 +186,8 @@ public class Application extends javafx.application.Application {
 
         Timeline timeline = new Timeline();
         timeline.getKeyFrames().addAll(
-                new KeyFrame(Duration.ZERO,             new KeyValue(_sidePane.prefWidthProperty(), SIDE_MAX) ),
-                new KeyFrame(Duration.millis(100.0d),   new KeyValue(_sidePane.prefWidthProperty(), SIDE_MIN) )
+                new KeyFrame(Duration.ZERO,             new KeyValue(_sidePane.prefWidthProperty(), SIDE_MAX)),
+                new KeyFrame(Duration.millis(100.0d),   new KeyValue(_sidePane.prefWidthProperty(), SIDE_MIN))
         );
         timeline.play();
     }
@@ -215,11 +207,12 @@ public class Application extends javafx.application.Application {
     @FXML private Button    testBtn;
     @FXML private Button    statsBtn;
     @FXML private Button    infoBtn;
-    @FXML private Button    signInBtn;
+
+    /*@FXML private Button    signInBtn;
     @FXML private JFXTextField usernameTxt;
     @FXML private Label     signInLbl;
     @FXML private Label     colourLbl;
-    @FXML private JFXToggleButton   colourToggle;
-    @FXML private AnchorPane topPane;
-    @FXML private VBox _sidePane;
+    @FXML private JFXToggleButton   colourToggle;*/
+    @FXML private Pane      topPane;
+    @FXML private VBox      _sidePane;
 }

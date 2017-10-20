@@ -10,9 +10,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import tatai.model.ScoreKeeper;
 import tatai.model.test.TestJson;
 import tatai.model.test.TestParser;
-import util.Views;
 
-import javax.swing.text.View;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -92,6 +90,7 @@ public class SelectTestController extends Controller {
                 });
             }
 
+            // If this model asked to be put in a specific place, put it there
             if(!info.custom && info.order >= 0)
                 _paneFlow.getChildren().add(Math.min(info.order, _paneFlow.getChildren().size()), button);
             else

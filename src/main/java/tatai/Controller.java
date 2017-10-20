@@ -2,14 +2,14 @@ package tatai;
 
 import javafx.application.Platform;
 import javafx.scene.Parent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import util.Views;
 
 /**
  * Implements some basic funcitonality for switching from one controller to another.
  */
-public abstract class Controller extends AnchorPane {
+public abstract class Controller extends VBox {
     /**
      * Displays this controller on the given stage.
      * @param onExit when the controller is ready to release control, onExit is called.

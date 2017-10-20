@@ -4,50 +4,46 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<fx:root prefHeight="400.0" prefWidth="645.0" style="-fx-background-color: #29292D;" type="AnchorPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+
+<fx:root alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="645.0" style="-fx-background-color: #29292D;" type="VBox" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="645.0" style="-fx-background-color: #29292D;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Region prefHeight="200.0" prefWidth="200.0" />
+      <Label text="Create Custom Test" textFill="WHITE">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Region prefHeight="200.0" prefWidth="200.0" />
+      <JFXTextField fx:id="_txtName" focusColor="#6622cc" promptText="Name" unFocusColor="#756f6f" />
+      <Region prefHeight="200.0" prefWidth="200.0" />
+      <JFXTextField fx:id="_txtAuthor" focusColor="#6622cc" promptText="Author" />
+      <Region prefHeight="200.0" prefWidth="200.0" />
+      <JFXTextField fx:id="_txtRounds" focusColor="#6622cc" promptText="Number of rounds" />
+      <Region prefHeight="200.0" prefWidth="200.0" />
+      <JFXTextField fx:id="_txtTries" focusColor="#6622cc" promptText="Number of tries" />
+      <Region prefHeight="200.0" prefWidth="200.0" />
+      <JFXTextField fx:id="_txtTime" focusColor="#6622cc" promptText="Time Limit" />
+      <Region prefHeight="200.0" prefWidth="200.0" />
+      <JFXTextField fx:id="_txtMin" focusColor="#6622cc" promptText="Minumum number" />
+      <Region prefHeight="200.0" prefWidth="200.0" />
+      <JFXTextField fx:id="_txtMax" focusColor="#6622cc" promptText="Maximum number" />
+      <Region prefHeight="200.0" prefWidth="200.0" />
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
             <Region prefHeight="200.0" prefWidth="200.0" />
-            <Label text="Create Custom Test" textFill="WHITE">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
+            <JFXButton fx:id="_btnCancel" minWidth="-Infinity" prefHeight="31.0" prefWidth="80.0" text="Cancel" textFill="WHITE" />
             <Region prefHeight="200.0" prefWidth="200.0" />
-            <JFXTextField fx:id="_txtName" focusColor="#6622cc" promptText="Name" unFocusColor="#756f6f" />
+            <JFXButton fx:id="_btnCreate" minWidth="-Infinity" prefHeight="31.0" prefWidth="80.0" text="Create" textFill="WHITE" />
             <Region prefHeight="200.0" prefWidth="200.0" />
-            <JFXTextField fx:id="_txtAuthor" focusColor="#6622cc" promptText="Author" />
-            <Region prefHeight="200.0" prefWidth="200.0" />
-            <JFXTextField fx:id="_txtRounds" focusColor="#6622cc" promptText="Number of rounds" />
-            <Region prefHeight="200.0" prefWidth="200.0" />
-            <JFXTextField fx:id="_txtTries" focusColor="#6622cc" promptText="Number of tries" />
-            <Region prefHeight="200.0" prefWidth="200.0" />
-            <JFXTextField fx:id="_txtTime" focusColor="#6622cc" promptText="Time Limit" />
-            <Region prefHeight="200.0" prefWidth="200.0" />
-            <JFXTextField fx:id="_txtMin" focusColor="#6622cc" promptText="Minumum number" />
-            <Region prefHeight="200.0" prefWidth="200.0" />
-            <JFXTextField fx:id="_txtMax" focusColor="#6622cc" promptText="Maximum number" />
-            <Region prefHeight="200.0" prefWidth="200.0" />
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Region prefHeight="200.0" prefWidth="200.0" />
-                  <JFXButton fx:id="_btnCancel" minWidth="-Infinity" prefHeight="31.0" prefWidth="80.0" text="Cancel" textFill="WHITE" />
-                  <Region prefHeight="200.0" prefWidth="200.0" />
-                  <JFXButton fx:id="_btnCreate" minWidth="-Infinity" prefHeight="31.0" prefWidth="80.0" text="Create" textFill="WHITE" />
-                  <Region prefHeight="200.0" prefWidth="200.0" />
-               </children>
-            </HBox>
          </children>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-      </VBox>
+      </HBox>
    </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
 </fx:root>

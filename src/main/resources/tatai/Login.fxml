@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" spacing="50.0" style="-fx-background-color: #29292D;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <Label fx:id="signInLbl" alignment="CENTER" layoutX="40.0" layoutY="14.0" minHeight="-Infinity" minWidth="-Infinity" style="-fx-font-size: 22;" text="Sign in to tatai" textFill="WHITE" AnchorPane.leftAnchor="35.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="14.0">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </Label>
+        <JFXTextField fx:id="usernameTxt" focusColor="#22a7f0" labelFloat="true" layoutX="28.0" layoutY="98.0" minHeight="-Infinity" minWidth="-Infinity" promptText="Username" unFocusColor="WHITE" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="97.0">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </JFXTextField>
+        <JFXButton fx:id="signInBtn" alignment="CENTER" buttonType="RAISED" layoutX="81.0" layoutY="172.0" ripplerFill="#22a7f0" text="Next" textFill="WHITE" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="75.0" AnchorPane.rightAnchor="75.0">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </JFXButton>
+    </children>
+</VBox>
