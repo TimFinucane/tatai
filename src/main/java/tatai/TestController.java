@@ -6,6 +6,8 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
+import tatai.Controls.PlaybackControl;
+import tatai.Controls.RecorderControl;
 import tatai.model.ScoreKeeper;
 import tatai.model.test.Test;
 import tatai.model.test.TestJson;
@@ -175,6 +177,6 @@ public class TestController extends Controller {
 	@FXML private Label             recognitionLbl;
 	@FXML private Label             retryLbl;
 	@FXML private JFXButton         submitBtn;
-	@FXML private RecorderControl   recorderControl;
-	@FXML private PlaybackControl   playbackControl;
+	@FXML private RecorderControl recorderControl;
+	@FXML private PlaybackControl playbackControl;
 }

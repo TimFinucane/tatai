@@ -1,9 +1,8 @@
-package tatai;
+package tatai.Controls;
 
 import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import javafx.scene.control.Button;
 import javafx.scene.layout.Region;
 import javafx.scene.media.Media;
 import javafx.scene.paint.Paint;
