@@ -4,10 +4,17 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import util.Views;
 
+import java.util.function.Consumer;
+
 /**
  * Implements some basic funcitonality for switching from one controller to another.
  */
 public abstract class Controller extends VBox {
+    public enum ReturnState {
+        QUIT, // TODO: Use this to notify early exit if ever needed.
+        FINISHED
+    }
+
     /**
      * Displays this controller on the given stage.
      */
@@ -19,19 +26,22 @@ public abstract class Controller extends VBox {
      * Exits this controller
      */
     public void     exit() {
+        exit(ReturnState.QUIT);
+    }
+    protected void  exit(ReturnState state) {
         if(_child != null)
             _child.exit();
 
         pane().getChildren().remove(this);
 
         if(_onExit != null)
-            _onExit.run();
+            _onExit.accept(state);
     }
 
     /**
      * Notifies the runnable when the controller has exited
      */
-    public void     onExit(Runnable runnable) {
+    public void     onExit(Consumer<ReturnState> runnable) {
         _onExit = runnable;
     }
 
@@ -39,12 +49,13 @@ public abstract class Controller extends VBox {
         _child = controller;
 
         Pane parent = pane();
-        Runnable childExit = controller._onExit;
+        Consumer<ReturnState> childExit = controller._onExit;
 
         parent.getChildren().remove(this);
-        controller.onExit(() -> {
+        controller.onExit((state) -> {
             if(childExit != null)
-                childExit.run();
+                childExit.accept(state);
+
             display(parent);
         });
 
@@ -60,6 +71,6 @@ public abstract class Controller extends VBox {
         return (Pane)getParent();
     }
 
-    private Controller  _child;
-    private Runnable    _onExit;
+    private Controller              _child;
+    private Consumer<ReturnState>   _onExit;
 }

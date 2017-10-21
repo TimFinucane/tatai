@@ -16,13 +16,6 @@ import tatai.model.test.TestParser;
  * A test window, to which you can pass specifications for the type of test
  */
 public class TestController extends Controller {
-	public enum ReturnState {
-		QUIT, // TODO: Use this to notify early exit if ever needed.
-		FINISHED,
-		RETRY,
-		RETRY_HARDER
-	}
-
 	/**
      * Creates and starts a test.
 	 * When the user is ready to finish the test, notifyReturn is called
@@ -58,13 +51,6 @@ public class TestController extends Controller {
 		recorderControl.onMediaAvailable(this::mediaAvailable);
 		recorderControl.onRecognitionComplete(this::recognize);
 	}
-
-    /**
-     * Gets the state in which the TestController exited
-     */
-	public ReturnState 	returnState() {
-	    return _returnState;
-    }
 
 	/**
 	 * Gets the user's score in the test
@@ -153,18 +139,12 @@ public class TestController extends Controller {
 		submitBtn.setOnAction(e -> exit(ReturnState.FINISHED));
 	}
 
-	private void     	exit(ReturnState state) {
-	    _returnState = state;
-	    exit();
-    }
-
     private static final int        TITLE_NUMBERS_SIZE = 96;
 	private static final int        TITLE_TEXT_SIZE = 36;
 
     private static final Paint      SUCCESS_COLOUR = Color.color(0/255.0, 230/255.0, 64/255.0);
 	private static final Paint      FAILURE_COLOUR = Color.color(240/255.0, 52/255.0, 52/255.0);
 
-    private ReturnState         	_returnState;
     private Test    				_model;
 
 	// FXML controls
@@ -172,6 +152,6 @@ public class TestController extends Controller {
 	@FXML private Label             recognitionLbl;
 	@FXML private Label             retryLbl;
 	@FXML private JFXButton         submitBtn;
-	@FXML private RecorderControl recorderControl;
-	@FXML private PlaybackControl playbackControl;
+	@FXML private RecorderControl 	recorderControl;
+	@FXML private PlaybackControl 	playbackControl;
 }

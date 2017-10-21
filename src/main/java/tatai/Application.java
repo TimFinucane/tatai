@@ -10,6 +10,8 @@ import javafx.stage.Stage;
 import tatai.controls.Sidebar;
 import tatai.model.ScoreKeeper;
 
+import java.util.function.Consumer;
+
 /**
  * The top level class of this project. Is controller of the application/initial window
  */
@@ -50,10 +52,11 @@ public class Application extends javafx.application.Application implements Sideb
         else
             login = new LoginController(_user);
 
-        // TODO: Account for user exiting without wanting to log in
-        setScreen(login, () -> {
-            _user = login.name();
-            _sidebar.unlockButtons();
+        setScreen(login, (state) -> {
+            if(state == Controller.ReturnState.FINISHED) {
+                _user = login.name();
+                _sidebar.unlockButtons();
+            }
         });
     }
 
@@ -95,22 +98,24 @@ public class Application extends javafx.application.Application implements Sideb
      * Set the main panel to the given screen
      */
     private void setScreen(Controller controller) {
-        setScreen(controller, () -> {});
+        setScreen(controller, (e) -> {});
     }
 
     /**
      * Set the main panel to the given screen, running the given runnable when it exits
      */
-    private void setScreen(Controller controller, Runnable onExit) {
+    private void setScreen(Controller controller, Consumer<Controller.ReturnState> onExit) {
         if(_curScreen != null)
             _curScreen.exit();
 
         _curScreen = controller;
 
         controller.display(_centre);
-        controller.onExit(() -> {
-            onExit.run();
-            home();
+        controller.onExit((state) -> {
+            onExit.accept(state);
+
+            if(state == Controller.ReturnState.FINISHED)
+                home();
         });
     }
 

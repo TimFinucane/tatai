@@ -32,8 +32,8 @@ public abstract class TestController extends SelectController {
         }
         protected void      buttonPressed(TestJson test) {
             tatai.TestController controller = new tatai.TestController(test);
-            controller.onExit(() -> {
-                if(controller.returnState() == tatai.TestController.ReturnState.FINISHED)
+            controller.onExit((state) -> {
+                if(state == ReturnState.FINISHED)
                     _keeper.addScore(test.name, controller.score());
             });
 
