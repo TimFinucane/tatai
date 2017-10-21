@@ -58,6 +58,7 @@ public class Application extends javafx.application.Application implements Sideb
                 }
             });
         } else {
+            _curScreen = null;
             // TODO: Screen for when already logged in
         }
     }
