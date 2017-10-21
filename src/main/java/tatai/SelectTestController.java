@@ -1,6 +1,7 @@
 package tatai;
 
 import com.jfoenix.controls.JFXButton;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
@@ -35,12 +36,12 @@ public class SelectTestController extends Controller {
     }
 
     // Called when create custom button pressed
-    private void createCustom() {
-        switchTo(new CreateCustomController());
+    private void    createCustom() {
+        displayChild(new CreateCustomController());
     }
 
     // Called when remove custom button pressed
-    private void removeCustom() {
+    private void    removeCustom() {
 	    throw new NotImplementedException();
 	    //TODO: removes a custom test
     }
@@ -76,19 +77,15 @@ public class SelectTestController extends Controller {
             button.setRipplerFill(Paint.valueOf("dddddd"));
             button.setTextFill(Paint.valueOf("ffffff"));
 
-            if(_stats == false) {
-                button.setOnAction(e -> {
-                    // TODO: When users come in, improve that
+            button.setOnAction(e -> {
+                if(!_stats) {
                     _curTest = new TestController(new ScoreKeeper("scores"), info);
-                    switchTo(_curTest);
-                });
-            }
-            else {
-                button.setOnAction(e -> {
+                    Platform.runLater(() -> displayChild(_curTest));
+                } else {
                     _curStats = new StatsController(new ScoreKeeper("scores"));
-                    switchTo(_curStats);
-                });
-            }
+                    Platform.runLater(() -> displayChild(_curStats));
+                }
+            });
 
             // If this model asked to be put in a specific place, put it there
             if(!info.custom && info.order >= 0)
@@ -96,11 +93,6 @@ public class SelectTestController extends Controller {
             else
                 _paneFlow.getChildren().add(button);
         }
-    }
-
-    @Override
-    protected void onSwitchedBack() {
-        // TODO: Switch over the test return state to decide what to do next
     }
 
     /**

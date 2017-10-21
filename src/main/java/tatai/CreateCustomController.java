@@ -30,7 +30,7 @@ public class CreateCustomController extends Controller{
                     ButtonType.YES, ButtonType.NO);
            alert.showAndWait();
            if(alert.getResult() == ButtonType.YES) {
-               switchTo(new SelectTestController());
+               exit();
            }
            else {
                alert.close();

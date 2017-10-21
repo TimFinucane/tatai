@@ -90,15 +90,34 @@ public class Application extends javafx.application.Application implements Sideb
         });
     }
 
+    /**
+     * Set the main panel to the given screen
+     */
     private void setScreen(Controller controller) {
         setScreen(controller, () -> {});
     }
+
+    /**
+     * Set the main panel to the given screen, running the given runnable when it exits
+     * @param controller
+     * @param onExit
+     */
     private void setScreen(Controller controller, Runnable onExit) {
-        _centre.getChildren().clear();
-        controller.display(_centre, onExit);
+        if(_curScreen != null)
+            _curScreen.exit();
+
+        _curScreen = controller;
+
+        controller.display(_centre);
+        controller.onExit(() -> {
+            onExit.run();
+            home();
+        });
     }
 
     private static final String APP_NAME = "T\u0101tai";
+
+    private Controller  _curScreen = null;
 
     private String  _user = null;
     private HBox    _centre;
