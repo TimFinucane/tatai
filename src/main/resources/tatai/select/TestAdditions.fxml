@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="BOTTOM_RIGHT" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#createCustom" prefHeight="55.0" prefWidth="55.0" ripplerFill="#dddddd" text="+Custom" textAlignment="CENTER" textFill="WHITE">
+            <graphic>
+                <FontAwesomeIconView fill="WHITE" glyphName="PLUS" size="26" />
+            </graphic>
+        </JFXButton>
+        <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#deleteCustom" prefHeight="55.0" prefWidth="55.0" ripplerFill="#dddddd" text="-Custom" textAlignment="CENTER" textFill="WHITE">
+            <graphic>
+                <FontAwesomeIconView fill="WHITE" glyphName="MINUS" size="26" />
+            </graphic>
+        </JFXButton>
+    </children>
+</VBox>

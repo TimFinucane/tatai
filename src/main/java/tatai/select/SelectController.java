@@ -1,12 +1,11 @@
-package tatai;
+package tatai.select;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Paint;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import tatai.Controller;
 import tatai.model.test.TestJson;
 import tatai.model.test.TestParser;
 
@@ -14,77 +13,49 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
- * A window where you can select which test you want to do
+ * A window in which the user can select a test
  */
-public class SelectTestController extends Controller {
-    public SelectTestController() {
-        this(false);
-    }
-    public SelectTestController(boolean practice) {
-        _practice = practice;
-
-        loadFxml("SelectTest");
+public abstract class SelectController extends Controller {
+    SelectController() {
+        loadFxml("select/Select");
         createBasicTests();
 
         refreshButtons();
-
-        _btnCreateCustom.setOnAction(event -> createCustom());
-        _btnRemoveCustom.setOnAction(event -> removeCustom());
     }
 
-    // Called when create custom button pressed
-    private void createCustom() {
-	    throw new NotImplementedException();
-	    //TODO: creates a custom test.
-    }
-
-    // Called when remove custom button pressed
-    private void removeCustom() {
-	    throw new NotImplementedException();
-	    //TODO: removes a custom test
-    }
+    abstract boolean    filter(TestJson test);
+    abstract void       buttonPressed(TestJson test);
 
     /**
      * Displays all tests in the flow pane
      */
-    private void    refreshButtons() {
-        // TODO: Locking and unlocking would go here
-
-        _paneFlow.getChildren().clear();
+    private void        refreshButtons() {
+        flowPane.getChildren().clear();
 
         for(String testName : TestParser.listTests()) {
             TestJson info;
             try {
                 info = TestParser.read(testName);
-            } catch(FileNotFoundException e) { continue; /* Skip */ }
-
-            if(_practice != info.practice) {
-                continue;
+            } catch(FileNotFoundException e) {
+                continue; /* Skip */
             }
 
-            JFXButton button = new JFXButton(testName);
+            if(!filter(info))
+                continue;
 
-            AnchorPane.setLeftAnchor(_paneFlow,20.0);
-            AnchorPane.setRightAnchor(_paneFlow, 20.0);
+            JFXButton button = new JFXButton(testName);
 
             button.setRipplerFill(Paint.valueOf("dddddd"));
             button.setTextFill(Paint.valueOf("ffffff"));
 
-            button.setOnAction(e -> {
-                _curTest = new TestController(TestParser.make(info));
-                switchTo(_curTest);
-            });
+            button.setOnAction(e -> buttonPressed(info));
 
+            // If this model asked to be put in a specific place, put it there
             if(!info.custom && info.order >= 0)
-                _paneFlow.getChildren().add(Math.min(info.order, _paneFlow.getChildren().size()), button);
+                flowPane.getChildren().add(Math.min(info.order, flowPane.getChildren().size()), button);
             else
-                _paneFlow.getChildren().add(button);
+                flowPane.getChildren().add(button);
         }
-    }
-
-    @Override
-    protected void onSwitchedBack() {
-        // TODO: Switch over the test return state to decide what to do next
     }
 
     /**
@@ -170,15 +141,9 @@ public class SelectTestController extends Controller {
         }
     }
 
-    private boolean         _practice;
-
-    private TestController  _curTest;
-
-    //    JavaFX Controls
-    @FXML private FlowPane  _paneFlow;
-    @FXML private Button    _btnCreateCustom;
-    @FXML private Button    _btnRemoveCustom;
-
+    //    JavaFX controls
+    @FXML private Label     titleLbl;
+    @FXML private FlowPane  flowPane;
 }
 
 

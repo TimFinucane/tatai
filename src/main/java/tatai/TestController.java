@@ -6,32 +6,29 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
+import tatai.controls.PlaybackControl;
+import tatai.controls.RecorderControl;
 import tatai.model.test.Test;
+import tatai.model.test.TestJson;
+import tatai.model.test.TestParser;
 
 /**
  * A test window, to which you can pass specifications for the type of test
  */
 public class TestController extends Controller {
-	enum ReturnState {
-		QUIT, // TODO: Use this to notify early exit if ever needed
-		FINISHED,
-		RETRY,
-		RETRY_HARDER
-	}
-
 	/**
      * Creates and starts a test.
 	 * When the user is ready to finish the test, notifyReturn is called
 	 * with the appropriate ReturnState.
      */
-	public TestController(Test model) {
-		_model = model;
+	public TestController(TestJson model) {
+		_model = TestParser.make(model);
 
 	    // Load fxml, set self to act as controller and root
 		loadFxml("Test");
 
-		titleLbl.setFont(Font.font(TITLE_TEXT_SIZE ));
-		titleLbl.setText("Welcome to the " + _model.name + " test");
+		titleLbl.setFont(Font.font(TITLE_TEXT_SIZE));
+		titleLbl.setText("Welcome to the " + model.name + " test");
 
 		playbackControl.setVisible(false);
 		recorderControl.setVisible(false);
@@ -41,7 +38,7 @@ public class TestController extends Controller {
 
 		submitBtn.setText("Start");
 		submitBtn.setOnAction(e -> {
-            titleLbl.setFont(Font.font(TITLE_NUMBERS_SIZE ));
+            titleLbl.setFont(Font.font(TITLE_NUMBERS_SIZE));
 
 		    playbackControl.setVisible(true);
 		    recorderControl.setVisible(true);
@@ -53,17 +50,17 @@ public class TestController extends Controller {
 		recorderControl.onRecognitionComplete(this::recognize);
 	}
 
-    /**
-     * Gets the state in which the TestController exited
-     */
-	public ReturnState returnState() {
-	    return _returnState;
-    }
+	/**
+	 * Gets the user's score in the test
+	 */
+	public int			score() {
+		return _model.score();
+	}
 
 	/**
 	 * Called when the recorder has recorded something
 	 */
-	private void	mediaAvailable() {
+	private void		mediaAvailable() {
 		playbackControl.setMedia(recorderControl.media());
 	}
 
@@ -71,7 +68,7 @@ public class TestController extends Controller {
 	 * Called when the recorder has finished recognizing the text. Handles all
 	 * the state
 	 */
-    private void	recognize(String text) {
+    private void		recognize(String text) {
 		playbackControl.setDisable(false);
 
         retryLbl.setText("");
@@ -102,7 +99,7 @@ public class TestController extends Controller {
 	/**
 	 * Sets up the screen for the next round
 	 */
-	private void	nextRound() {
+	private void		nextRound() {
 	    retryLbl.setText("");
         submitBtn.setDisable(true);
 
@@ -127,7 +124,7 @@ public class TestController extends Controller {
 	/**
 	 * Sets up the screen when complete
 	 */
-	private void	finish() {
+	private void		finish() {
         titleLbl.setFont(Font.font(TITLE_TEXT_SIZE));
 		titleLbl.setText(_model.score() + "/10");
 
@@ -141,18 +138,12 @@ public class TestController extends Controller {
 		submitBtn.setOnAction(e -> exit(ReturnState.FINISHED));
 	}
 
-	private void                    exit(ReturnState state) {
-	    _returnState = state;
-	    exit();
-    }
-
     private static final int        TITLE_NUMBERS_SIZE = 96;
 	private static final int        TITLE_TEXT_SIZE = 36;
 
     private static final Paint      SUCCESS_COLOUR = Color.color(0/255.0, 230/255.0, 64/255.0);
 	private static final Paint      FAILURE_COLOUR = Color.color(240/255.0, 52/255.0, 52/255.0);
 
-    private ReturnState         	_returnState;
     private Test    				_model;
 
 	// FXML controls
@@ -160,6 +151,6 @@ public class TestController extends Controller {
 	@FXML private Label             recognitionLbl;
 	@FXML private Label             retryLbl;
 	@FXML private JFXButton         submitBtn;
-	@FXML private RecorderControl   recorderControl;
-	@FXML private PlaybackControl   playbackControl;
+	@FXML private RecorderControl 	recorderControl;
+	@FXML private PlaybackControl 	playbackControl;
 }

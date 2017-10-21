@@ -30,7 +30,7 @@ public class Views {
             .showAndWait();
             Logger.logMsg(Logger.ERROR, e.getMessage());
 
-            throw new IllegalArgumentException("Could not load the " + name + " FXML " + e.getCause());
+            throw new IllegalArgumentException("Could not load the " + name + " FXML " + e.getMessage());
         }
     }
 }

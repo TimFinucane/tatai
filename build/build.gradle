@@ -19,6 +19,8 @@ dependencies {
     compile group: 'com.jfoenix', name: 'jfoenix', version: '1.9.1' // apache 2.0 license
     compile group: 'de.jensd', name: 'fontawesomefx', version: '8.9' // apache 2.0 license
     compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2' // For the annotations. apache 2.0
+    compile group: 'eu.hansolo', name: 'Medusa', version: '7.9' // apache 2.0 license
+
 }
 
 sourceSets {
