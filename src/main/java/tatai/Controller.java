@@ -1,6 +1,6 @@
 package tatai;
 
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import util.Views;
 
@@ -18,8 +18,12 @@ public abstract class Controller extends VBox {
     /**
      * Displays this controller on the given stage.
      */
-    public void     display(Pane root) {
+    public void     display(AnchorPane root) {
         root.getChildren().add(this);
+        AnchorPane.setBottomAnchor(this, 0.0);
+        AnchorPane.setTopAnchor(this, 0.0);
+        AnchorPane.setLeftAnchor(this, 0.0);
+        AnchorPane.setRightAnchor(this, 0.0);
     }
 
     /**
@@ -48,7 +52,7 @@ public abstract class Controller extends VBox {
     protected void  displayChild(Controller controller) {
         _child = controller;
 
-        Pane parent = pane();
+        AnchorPane parent = pane();
         Consumer<ReturnState> childExit = controller._onExit;
 
         parent.getChildren().remove(this);
@@ -67,8 +71,8 @@ public abstract class Controller extends VBox {
         Views.load(name, this, this);
     }
 
-    protected Pane  pane() {
-        return (Pane)getParent();
+    protected AnchorPane    pane() {
+        return (AnchorPane)getParent();
     }
 
     private Controller              _child;

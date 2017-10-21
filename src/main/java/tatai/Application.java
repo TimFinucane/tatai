@@ -1,11 +1,10 @@
 package tatai;
 
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import tatai.controls.Sidebar;
 import tatai.model.ScoreKeeper;
@@ -26,15 +25,13 @@ public class Application extends javafx.application.Application implements Sideb
 
         // Have a sidebar on the left, and a pane in the centre to add our screens
         _sidebar = new Sidebar(this);
-        _centre = new HBox();
-        _centre.setPrefWidth(500.0);
-        _centre.setAlignment(Pos.CENTER);
+        _centre = new AnchorPane();
 
         BorderPane pane = new BorderPane();
         pane.setLeft(_sidebar);
         pane.setCenter(_centre);
 
-        stage.setScene(new Scene(pane));
+        stage.setScene(new Scene(pane, 600, 400));
 
         stage.setTitle(APP_NAME);
         stage.show();
@@ -128,7 +125,7 @@ public class Application extends javafx.application.Application implements Sideb
 
     private Controller  _curScreen = null;
 
-    private String  _user = null;
-    private HBox    _centre;
-    private Sidebar _sidebar;
+    private String      _user = null;
+    private AnchorPane  _centre;
+    private Sidebar     _sidebar;
 }

@@ -2,8 +2,7 @@ package tatai.select;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Paint;
 import tatai.Controller;
@@ -31,7 +30,7 @@ public abstract class SelectController extends Controller {
      * Displays all tests in the flow pane
      */
     private void        refreshButtons() {
-        _paneFlow.getChildren().clear();
+        flowPane.getChildren().clear();
 
         for(String testName : TestParser.listTests()) {
             TestJson info;
@@ -46,9 +45,6 @@ public abstract class SelectController extends Controller {
 
             JFXButton button = new JFXButton(testName);
 
-            AnchorPane.setLeftAnchor(_paneFlow,20.0);
-            AnchorPane.setRightAnchor(_paneFlow, 20.0);
-
             button.setRipplerFill(Paint.valueOf("dddddd"));
             button.setTextFill(Paint.valueOf("ffffff"));
 
@@ -56,9 +52,9 @@ public abstract class SelectController extends Controller {
 
             // If this model asked to be put in a specific place, put it there
             if(!info.custom && info.order >= 0)
-                _paneFlow.getChildren().add(Math.min(info.order, _paneFlow.getChildren().size()), button);
+                flowPane.getChildren().add(Math.min(info.order, flowPane.getChildren().size()), button);
             else
-                _paneFlow.getChildren().add(button);
+                flowPane.getChildren().add(button);
         }
     }
 
@@ -146,9 +142,8 @@ public abstract class SelectController extends Controller {
     }
 
     //    JavaFX controls
-    @FXML protected FlowPane    _paneFlow;
-    @FXML protected Button      _btnCreateCustom;
-    @FXML protected Button      _btnRemoveCustom;
+    @FXML private Label     titleLbl;
+    @FXML private FlowPane  flowPane;
 }
 
 

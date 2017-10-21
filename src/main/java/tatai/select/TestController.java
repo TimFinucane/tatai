@@ -2,8 +2,8 @@ package tatai.select;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import tatai.CreateCustomController;
 import tatai.model.ScoreKeeper;
@@ -44,10 +44,16 @@ public abstract class TestController extends SelectController {
     }
 
     private TestController() {
-        Region region = new Region();
+        Region height = new Region();
+        Region width = new Region();
 
-        getChildren().addAll(region, Views.load("select/TestAdditions", this, null));
-        setVgrow(region, Priority.SOMETIMES);
+        HBox bottom = new HBox(0, width, Views.load("select/TestAdditions", this, null));
+        HBox.setHgrow(width, Priority.SOMETIMES);
+
+        bottom.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, new CornerRadii(2), new BorderWidths(2))));
+
+        getChildren().addAll(height, bottom);
+        setVgrow(height, Priority.SOMETIMES);
     }
 
     /**
