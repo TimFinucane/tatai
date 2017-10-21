@@ -19,6 +19,7 @@ public class LoginController extends Controller {
         loadFxml("Login");
 
         usernameFld.textProperty().addListener((observable, oldVal, newVal) -> onTextChange(newVal));
+        signInBtn.setOnAction((e) -> onSubmit());
     }
 
     /**
@@ -28,7 +29,6 @@ public class LoginController extends Controller {
         this();
         loginLbl.setText("Switch User");
         usernameFld.setText(curName);
-        signInBtn.setOnAction((e) -> onSubmit());
     }
 
     public String   name() {
@@ -51,9 +51,9 @@ public class LoginController extends Controller {
             new Alert(Alert.AlertType.CONFIRMATION,
                     "You will be creating a new account. Is this what you want?",
                     ButtonType.YES, ButtonType.NO).showAndWait().filter(response -> ButtonType.YES == response)
-                    .ifPresent((e) -> exit());
+                    .ifPresent((e) -> exit(ReturnState.FINISHED));
         else
-            exit();
+            exit(ReturnState.FINISHED);
     }
 
     private void    onTextChange(String newText) {

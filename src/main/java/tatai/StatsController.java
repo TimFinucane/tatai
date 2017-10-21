@@ -24,7 +24,7 @@ public class StatsController extends Controller {
     }
 
     private void displayScores() {
-        ScoreKeeper.Score[] scores = _scoreKeeper.getScores("scores");
+        ScoreKeeper.Score[] scores = _scoreKeeper.getScores(_testName);
         for(ScoreKeeper.Score curScore : scores) {
             Label date = new Label(curScore.date.toString());
             Label score = new Label(Integer.toString(curScore.score));

@@ -40,24 +40,26 @@ public class Application extends javafx.application.Application implements Sideb
         stage.show();
 
         _centre.requestFocus(); // And return focus to us
+
+        home();
     }
 
     // TODO: Either lock the sidepane buttons or hide them when in test mode.
     // Called when home button pressed. Sends user to login screen
     @Override
     public void home(){
-        LoginController login;
-        if(_user == null)
-            login = new LoginController();
-        else
-            login = new LoginController(_user);
+        if(_user == null) {
+            LoginController login = new LoginController();
 
-        setScreen(login, (state) -> {
-            if(state == Controller.ReturnState.FINISHED) {
-                _user = login.name();
-                _sidebar.unlockButtons();
-            }
-        });
+            setScreen(login, (state) -> {
+                if(state == Controller.ReturnState.FINISHED) {
+                    _user = login.name();
+                    _sidebar.unlockButtons();
+                }
+            });
+        } else {
+            // TODO: Screen for when already logged in
+        }
     }
 
     // Called when practice button pressed

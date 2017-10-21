@@ -35,6 +35,9 @@ public class Sidebar extends VBox {
      * Unlocks buttons that must have a user to exist. Kinda breaks SRP but oh well
      */
     public void     unlockButtons() {
+        statsBtn.setVisible(true);
+        testBtn.setVisible(true);
+
         FadeTransition fadeInStats = new FadeTransition(Duration.seconds(3.0), statsBtn);
         FadeTransition fadeInTest = new FadeTransition(Duration.seconds(3.0), testBtn);
 
