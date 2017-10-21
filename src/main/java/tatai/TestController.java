@@ -25,9 +25,7 @@ public class TestController extends Controller {
 		_model = TestParser.make(model);
 
 	    // Load fxml, set self to act as controller and root
-		
 		loadFxml("Test");
-
 
 		titleLbl.setFont(Font.font(TITLE_TEXT_SIZE));
 		titleLbl.setText("Welcome to the " + model.name + " test");

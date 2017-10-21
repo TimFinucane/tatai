@@ -84,14 +84,16 @@ public class Application extends javafx.application.Application implements Sideb
         ButtonType light = new ButtonType("Light");
         ButtonType dark = new ButtonType("Dark");
 
-        new Alert(Alert.AlertType.INFORMATION, "Please choose a theme:", light, dark)
-                .showAndWait().ifPresent(type -> {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Please choose a theme:", light, dark);
+        // Anything less than this line here will not allow the user to exit out of the alert
+        alert.getDialogPane().getScene().getWindow().setOnCloseRequest((e) -> alert.close());
 
+        alert.showAndWait().ifPresent(type -> {
             if(type == light)
                 setUserAgentStylesheet("/tatai/stylesheets/LightMode.css");
             else if(type == dark)
                 setUserAgentStylesheet("/tatai/stylesheets/DarkMode.css");
-        });
+        });;
     }
 
     /**
