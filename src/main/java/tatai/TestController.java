@@ -8,7 +8,6 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import tatai.controls.PlaybackControl;
 import tatai.controls.RecorderControl;
-import tatai.model.ScoreKeeper;
 import tatai.model.test.Test;
 import tatai.model.test.TestJson;
 import tatai.model.test.TestParser;
@@ -17,7 +16,7 @@ import tatai.model.test.TestParser;
  * A test window, to which you can pass specifications for the type of test
  */
 public class TestController extends Controller {
-	enum ReturnState {
+	public enum ReturnState {
 		QUIT, // TODO: Use this to notify early exit if ever needed.
 		FINISHED,
 		RETRY,
@@ -29,12 +28,7 @@ public class TestController extends Controller {
 	 * When the user is ready to finish the test, notifyReturn is called
 	 * with the appropriate ReturnState.
      */
-	public TestController(ScoreKeeper keeper, TestJson model) {
-		_name = model.name;
-		_practice = model.practice;
-
-		_scoreKeeper = keeper;
-
+	public TestController(TestJson model) {
 		_model = TestParser.make(model);
 
 	    // Load fxml, set self to act as controller and root
@@ -68,14 +62,21 @@ public class TestController extends Controller {
     /**
      * Gets the state in which the TestController exited
      */
-	public ReturnState returnState() {
+	public ReturnState 	returnState() {
 	    return _returnState;
     }
 
 	/**
+	 * Gets the user's score in the test
+	 */
+	public int			score() {
+		return _model.score();
+	}
+
+	/**
 	 * Called when the recorder has recorded something
 	 */
-	private void	mediaAvailable() {
+	private void		mediaAvailable() {
 		playbackControl.setMedia(recorderControl.media());
 	}
 
@@ -83,7 +84,7 @@ public class TestController extends Controller {
 	 * Called when the recorder has finished recognizing the text. Handles all
 	 * the state
 	 */
-    private void	recognize(String text) {
+    private void		recognize(String text) {
 		playbackControl.setDisable(false);
 
         retryLbl.setText("");
@@ -113,7 +114,7 @@ public class TestController extends Controller {
 	/**
 	 * Sets up the screen for the next round
 	 */
-	private void	nextRound() {
+	private void		nextRound() {
 	    retryLbl.setText("");
         submitBtn.setDisable(true);
 
@@ -138,10 +139,7 @@ public class TestController extends Controller {
 	/**
 	 * Sets up the screen when complete
 	 */
-	private void	finish() {
-	    if(!_practice)
-	        _scoreKeeper.addScore(_name, _model.score());
-
+	private void		finish() {
         titleLbl.setFont(Font.font(TITLE_TEXT_SIZE));
 		titleLbl.setText(_model.score() + "/10");
 
@@ -155,7 +153,7 @@ public class TestController extends Controller {
 		submitBtn.setOnAction(e -> exit(ReturnState.FINISHED));
 	}
 
-	private void                    exit(ReturnState state) {
+	private void     	exit(ReturnState state) {
 	    _returnState = state;
 	    exit();
     }
@@ -167,10 +165,7 @@ public class TestController extends Controller {
 	private static final Paint      FAILURE_COLOUR = Color.color(240/255.0, 52/255.0, 52/255.0);
 
     private ReturnState         	_returnState;
-    private final String		    _name;
-    private final boolean           _practice;
     private Test    				_model;
-    private ScoreKeeper             _scoreKeeper;
 
 	// FXML controls
 	@FXML private Label             titleLbl;

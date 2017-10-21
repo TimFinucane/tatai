@@ -38,19 +38,5 @@
             </JFXButton>
          </children>
       </FlowPane>
-      <VBox alignment="CENTER_RIGHT">
-         <children>
-            <JFXButton fx:id="_btnCreateCustom" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" prefHeight="55.0" prefWidth="55.0" ripplerFill="#dddddd" textAlignment="CENTER" textFill="WHITE">
-               <graphic>
-                  <FontAwesomeIconView fill="WHITE" glyphName="PLUS" size="26" />
-               </graphic>
-            </JFXButton>
-            <JFXButton fx:id="_btnRemoveCustom" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" prefHeight="55.0" prefWidth="55.0" ripplerFill="#dddddd" text="-Custom" textAlignment="CENTER" textFill="WHITE">
-               <graphic>
-                  <FontAwesomeIconView fill="WHITE" glyphName="MINUS" size="26" />
-               </graphic>
-            </JFXButton>
-         </children>
-      </VBox>
    </children>
 </fx:root>

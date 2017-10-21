@@ -19,7 +19,10 @@ public abstract class Controller extends VBox {
      * Exits this controller
      */
     public void     exit() {
-        parent().getChildren().remove(this);
+        if(_child != null)
+            _child.exit();
+
+        pane().getChildren().remove(this);
 
         if(_onExit != null)
             _onExit.run();
@@ -33,12 +36,15 @@ public abstract class Controller extends VBox {
     }
 
     protected void  displayChild(Controller controller) {
-        Pane parent = parent();
+        _child = controller;
+
+        Pane parent = pane();
         Runnable childExit = controller._onExit;
 
         parent.getChildren().remove(this);
         controller.onExit(() -> {
-            childExit.run();
+            if(childExit != null)
+                childExit.run();
             display(parent);
         });
 
@@ -50,9 +56,10 @@ public abstract class Controller extends VBox {
         Views.load(name, this, this);
     }
 
-    protected Pane  parent() {
+    protected Pane  pane() {
         return (Pane)getParent();
     }
 
+    private Controller  _child;
     private Runnable    _onExit;
 }

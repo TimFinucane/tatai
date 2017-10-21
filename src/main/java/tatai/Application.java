@@ -8,6 +8,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import tatai.controls.Sidebar;
+import tatai.model.ScoreKeeper;
 
 /**
  * The top level class of this project. Is controller of the application/initial window
@@ -59,19 +60,19 @@ public class Application extends javafx.application.Application implements Sideb
     // Called when practice button pressed
     @Override
     public void practice() {
-        setScreen(new SelectTestController(true, false));
+        setScreen(new tatai.select.TestController.Practice());
     }
 
     // Called when test button pressed
     @Override
     public void test(){
-        setScreen(new SelectTestController());
+        setScreen(new tatai.select.TestController.Normal(new ScoreKeeper(_user)));
     }
 
     // Called when stats button pressed
     @Override
     public void stats(){
-        setScreen(new SelectTestController(false, true));
+        setScreen(new tatai.select.StatsController(new ScoreKeeper(_user)));
     }
 
     // Called when the info button has been pressed
@@ -99,8 +100,6 @@ public class Application extends javafx.application.Application implements Sideb
 
     /**
      * Set the main panel to the given screen, running the given runnable when it exits
-     * @param controller
-     * @param onExit
      */
     private void setScreen(Controller controller, Runnable onExit) {
         if(_curScreen != null)

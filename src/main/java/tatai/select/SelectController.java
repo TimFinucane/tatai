@@ -1,14 +1,12 @@
-package tatai;
+package tatai.select;
 
 import com.jfoenix.controls.JFXButton;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Paint;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-import tatai.model.ScoreKeeper;
+import tatai.Controller;
 import tatai.model.test.TestJson;
 import tatai.model.test.TestParser;
 
@@ -16,58 +14,35 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
- * A window where you can select which test you want to do
+ * A window in which the user can select a test
  */
-public class SelectTestController extends Controller {
-    public SelectTestController() {
-        this(false, false);
-    }
-    public SelectTestController(boolean practice, boolean stats) {
-        _practice = practice;
-        _stats = stats;
-
-        loadFxml("SelectTest");
+public abstract class SelectController extends Controller {
+    SelectController() {
+        loadFxml("select/Select");
         createBasicTests();
 
         refreshButtons();
-
-        _btnCreateCustom.setOnAction(event -> createCustom());
-        _btnRemoveCustom.setOnAction(event -> removeCustom());
     }
 
-    // Called when create custom button pressed
-    private void    createCustom() {
-        displayChild(new CreateCustomController());
-    }
-
-    // Called when remove custom button pressed
-    private void    removeCustom() {
-	    throw new NotImplementedException();
-	    //TODO: removes a custom test
-    }
+    abstract boolean    filter(TestJson test);
+    abstract void       buttonPressed(TestJson test);
 
     /**
      * Displays all tests in the flow pane
      */
-    private void    refreshButtons() {
-        // TODO: Locking and unlocking would go here
-
-        if(_practice == true || _stats == true) {
-            _btnCreateCustom.setVisible(false);
-            _btnRemoveCustom.setVisible(false);
-        }
-
+    private void        refreshButtons() {
         _paneFlow.getChildren().clear();
 
         for(String testName : TestParser.listTests()) {
             TestJson info;
             try {
                 info = TestParser.read(testName);
-            } catch(FileNotFoundException e) { continue; /* Skip */ }
-
-            if(_practice != info.practice) {
-                continue;
+            } catch(FileNotFoundException e) {
+                continue; /* Skip */
             }
+
+            if(!filter(info))
+                continue;
 
             JFXButton button = new JFXButton(testName);
 
@@ -77,15 +52,7 @@ public class SelectTestController extends Controller {
             button.setRipplerFill(Paint.valueOf("dddddd"));
             button.setTextFill(Paint.valueOf("ffffff"));
 
-            button.setOnAction(e -> {
-                if(!_stats) {
-                    _curTest = new TestController(new ScoreKeeper("scores"), info);
-                    Platform.runLater(() -> displayChild(_curTest));
-                } else {
-                    _curStats = new StatsController(new ScoreKeeper("scores"));
-                    Platform.runLater(() -> displayChild(_curStats));
-                }
-            });
+            button.setOnAction(e -> buttonPressed(info));
 
             // If this model asked to be put in a specific place, put it there
             if(!info.custom && info.order >= 0)
@@ -178,17 +145,10 @@ public class SelectTestController extends Controller {
         }
     }
 
-    private boolean         _practice;
-    private boolean         _stats;
-
-    private TestController  _curTest;
-    private StatsController _curStats;
-
     //    JavaFX controls
-    @FXML private FlowPane  _paneFlow;
-    @FXML private Button    _btnCreateCustom;
-    @FXML private Button    _btnRemoveCustom;
-
+    @FXML protected FlowPane    _paneFlow;
+    @FXML protected Button      _btnCreateCustom;
+    @FXML protected Button      _btnRemoveCustom;
 }
 
 
