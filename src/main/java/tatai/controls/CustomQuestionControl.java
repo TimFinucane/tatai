@@ -111,7 +111,7 @@ public class CustomQuestionControl extends Region {
                 updateFlow()
         );
 
-        //updateFlow(_root.tagProperty().getValue());
+        updateFlow();
 
         _addBtn.setOnAction(event -> addOperation());
         _deleteBtn.setOnAction(event -> remove());
