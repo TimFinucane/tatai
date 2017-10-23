@@ -1,7 +1,9 @@
 package tatai.controls;
 
 import javafx.beans.value.ObservableValue;
-import javafx.scene.control.Label;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -15,14 +17,23 @@ import tatai.model.question.QuestionReader;
  * Allows the user to create their own question
  */
 public class CustomQuestionControl extends Region {
+    /**
+     * Creates an all new question
+     */
     public CustomQuestionControl() {
         this(new QuestionPart.Range());
     }
+
+    /**
+     * Allows the user to modify the given question (in string form)
+     */
     public CustomQuestionControl(String original) {
         this(QuestionPart.generate(QuestionReader.read(original).head()));
     }
     private CustomQuestionControl(QuestionPart root) {
-        VBox left = new VBox(15, _textFlow, _infoLbl);
+        _root = root;
+
+        VBox left = new VBox(15, _textFlow, new HBox(20, _addBtn, _deleteBtn));
         _main.getChildren().addAll(left, _root);
 
         getChildren().add(_main);
@@ -32,6 +43,9 @@ public class CustomQuestionControl extends Region {
         _root.appearanceProperty().addListener(
                 (ObservableValue<? extends QuestionPart.Tag> a, QuestionPart.Tag b, QuestionPart.Tag newTag) ->
                         updateFlow());
+
+        _addBtn.setOnAction(event -> addOperation());
+        _deleteBtn.setOnAction(event -> remove());
     }
 
     /**
@@ -121,9 +135,67 @@ public class CustomQuestionControl extends Region {
         addText(tag, 0, tag.text.length(), depth);
     }
 
+    /**
+     * Adds an operation that takes the selected QuestionPart as the left child, and submits itself in its place
+     */
+    private void            addOperation() {
+        QuestionPart.Operation oldParent = _selected.parent();
+        oldParent.replace(
+                _selected,
+                new QuestionPart.Operation(_selected, new QuestionPart.Range(), false));
+    }
+
+    /**
+     * Removes the selected questionPart.
+     * If the part is a range, then the entire parent operation + that range is deleted
+     */
+    private void            remove() {
+        // Special care must be taken
+        if(_selected == _root) {
+            if(_selected instanceof QuestionPart.Range) {
+                new Alert(Alert.AlertType.ERROR,
+                        "Can't remove this or there won't be anything in your question!");
+            } else if(_selected instanceof QuestionPart.Operation) {
+                _root = ((QuestionPart.Operation)_selected).partChildren()[0];
+            }
+
+            select(_root);
+            return;
+        }
+
+        if(_selected instanceof QuestionPart.Range) {
+            // Warn user
+            new Alert(Alert.AlertType.WARNING,
+                    "Are you sure you want to delete this operation (and replace it with the other range)")
+                    .showAndWait()
+                    .filter(type -> type == ButtonType.YES)
+                    .ifPresent((type) -> {
+                        // Choose NOT selected to save
+                        QuestionPart saved = _selected.parent().partChildren()[0] == _selected ?
+                                _selected.parent().partChildren()[1] : _selected.parent().partChildren()[0];\
+
+                        QuestionPart.Operation op = _selected.parent();
+
+                        if(op == _root)
+                            _root = saved;
+                        else
+                            op.parent().replace(op, saved);
+
+                        select(saved);
+                    });
+        } else if(_selected instanceof QuestionPart.Operation) {
+            QuestionPart saved = ((QuestionPart.Operation)_selected).partChildren()[0];
+
+            _selected.parent().replace(_selected, saved);
+
+            select(saved);
+        }
+    }
+
     private HBox            _main = new HBox(15);
     private TextFlow        _textFlow = new TextFlow();
-    private Label           _infoLbl  = new Label();
+    private Button          _addBtn = new Button("Add");
+    private Button          _deleteBtn = new Button("Delete");
 
     private QuestionPart    _selected;
     private QuestionPart    _root;

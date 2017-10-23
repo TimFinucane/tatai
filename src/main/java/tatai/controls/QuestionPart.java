@@ -41,7 +41,7 @@ public abstract class QuestionPart extends Region {
         public Range() {
             this(1, 9);
         }
-        private Range(int min, int max) {
+        public Range(int min, int max) {
             _minFld = new Spinner<>(1, 99, min);
             _maxFld = new Spinner<>(1, 99, max);
 
@@ -84,7 +84,7 @@ public abstract class QuestionPart extends Region {
         public Operation() {
             this(new Range(), new Range(), false);
         }
-        private Operation(QuestionPart left, QuestionPart right, boolean parenthesised, Operator... operators) {
+        public Operation(QuestionPart left, QuestionPart right, boolean parenthesised, Operator... operators) {
             // Set operators
             for(Operator op : operators) {
                 for(CheckBox box : _operatorBoxes) {
@@ -115,15 +115,24 @@ public abstract class QuestionPart extends Region {
             right.parent = this;
         }
 
-        public void replaceChild(boolean left, QuestionPart part) {
-            if(left) {
-                _parts[0].parent = null;
-                _parts[0] = part;
-            } else {
-                _parts[1].parent = null;
-                _parts[1] = part;
-            }
+        /**
+         * Replaces the QuestionPart at child (0 = left, 1 = right for binary) with the new given part
+         */
+        public void replace(int child, QuestionPart part) {
+            if(_parts[child].parent == this)
+                _parts[child].parent = null;
+            _parts[child] = part;
+
             part.parent = this;
+        }
+
+        /**
+         * Replaces the old part with the newpart, if the old part exists as a direct child of this
+         */
+        public void replace(QuestionPart oldPart, QuestionPart newPart) {
+            for(int i = 0; i < _parts.length; ++i)
+                if(_parts[i] == oldPart)
+                    replace(i, newPart);
         }
 
         public Generatable  formQuestion() {
@@ -143,6 +152,10 @@ public abstract class QuestionPart extends Region {
             memento.enclosed = _parenthesisedBox.isSelected();
 
             return new tatai.model.question.Operation(memento);
+        }
+
+        public QuestionPart[]   partChildren() {
+            return _parts;
         }
 
         @Nonnull
