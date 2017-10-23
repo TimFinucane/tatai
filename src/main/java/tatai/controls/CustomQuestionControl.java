@@ -124,7 +124,7 @@ public class CustomQuestionControl extends Region {
 
     private void            addText(QuestionPart.Tag tag, int start, int end, int depth) {
         Text text = new Text(tag.text.substring(start, end));
-        text.setFill(colours[depth]);
+        text.setFill(colours[depth % colours.length]);
 
         // Ensure that when the user clicks this bit, we select it
         text.setOnMouseClicked(event -> select(tag.questionPart));
