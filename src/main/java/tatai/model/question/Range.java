@@ -1,25 +1,23 @@
 package tatai.model.question;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.util.Pair;
 import util.NumberConstraint;
+
+import javax.annotation.Nonnull;
 
 /**
  * Specifies generation of a random number between min and max (inclusive)
  */
-public class Range implements Generatable {
-    public static class Memento {
-        public Memento(int min, int max) {
-            this.min = min;
-            this.max = max;
-        }
-
-        public int min;
-        public int max;
+public class Range extends Generatable {
+    public Range() {
+        this(1, 9);
     }
-
-    public Range(Memento memento) {
-        _min = memento.min;
-        _max = memento.max;
+    public Range(int min, int max) {
+        setDependencies(_min, _max);
+        _min.setValue(min);
+        _max.setValue(max);
     }
 
     /**
@@ -27,14 +25,22 @@ public class Range implements Generatable {
      */
     @Override
     public Pair<String, Integer> generate(NumberConstraint constraint) {
-        int answer = constraint.generate(_min, _max);
+        int answer = constraint.generate(_min.getValue(), _max.getValue());
         return new Pair<>(Integer.toString(answer), answer);
     }
 
-    public Memento memento() {
-        return new Memento(_min, _max);
+    @Nonnull
+    public Tag      generateTag() {
+        return new Tag(this,"(" + Integer.toString(_min.get()) + ", " + Integer.toString(_max.get()) + ")");
     }
 
-    private int _min;
-    private int _max; // inclusive
+    public IntegerProperty  minProperty() {
+        return _min;
+    }
+    public IntegerProperty  maxProperty() {
+        return _max;
+    }
+
+    private IntegerProperty _min = new SimpleIntegerProperty();
+    private IntegerProperty _max = new SimpleIntegerProperty(); // inclusive
 }

@@ -24,7 +24,7 @@ public class QuestionReader {
         StringBuffer rangeless = new StringBuffer();
         while(matches.find()) {
             matches.appendReplacement(rangeless, Integer.toString(_elements.size()));
-            _elements.add(new Range(new Range.Memento(Integer.valueOf(matches.group(1)), Integer.valueOf(matches.group(2)))));
+            _elements.add(new Range(Integer.valueOf(matches.group(1)), Integer.valueOf(matches.group(2))));
         }
         matches.appendTail(rangeless);
 
@@ -47,11 +47,12 @@ public class QuestionReader {
                 Generatable right = _elements.get(Integer.valueOf(matches.group(3)));
 
                 // TODO: Remember parentheses
-                _elements.add(new Operation(new Operation.Memento(
+                _elements.add(new Operation(
                         left,
                         right,
-                        Operator.Type.createOperators(matches.group(2)),
-                        false)));
+                        false,
+                        Operator.Type.createOperators(matches.group(2))
+                ));
             }
             matches.appendTail(opLess);
 

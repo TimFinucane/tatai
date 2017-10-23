@@ -3,16 +3,18 @@ package tatai;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
 import tatai.controls.CustomQuestionControl;
+import tatai.model.question.Question;
 import tatai.model.test.TestJson;
 import tatai.model.test.TestParser;
 
@@ -27,21 +29,24 @@ public class CreateCustomController extends Controller{
         loadFxml("CreateCustom");
 
         questionList.setItems(_questions);
-        questionList.setCellFactory(customQuestionView -> new ListCell<CustomQuestionControl>(){
+
+        questionList.setCellFactory(questionView -> new ListCell<Question>(){
             @Override
-            protected void updateItem(CustomQuestionControl control, boolean bln) {
-                super.updateItem(control, bln);
-                if (control != null) {
-                    textProperty().bind(control.serializeProperty());
+            protected void updateItem(Question question, boolean bln) {
+                super.updateItem(question, bln);
+                if (question != null) {
+                    textProperty().bind(
+                            Bindings.createObjectBinding(() -> question.head().tagProperty().getValue().text)
+                    );
                 }
             }
         });
 
         questionList.getSelectionModel().selectedItemProperty().addListener(
-                (ObservableValue<? extends CustomQuestionControl> val,
-                 CustomQuestionControl oldVal,
-                 CustomQuestionControl newVal) ->
-                        Platform.runLater(() -> questionSelected(oldVal, newVal))
+                (ObservableValue<? extends Question> val,
+                 Question oldVal,
+                 Question newVal) ->
+                        Platform.runLater(() -> select(newVal))
         );
 
         addQuestionBtn.setOnAction(e -> addQuestion());
@@ -55,11 +60,7 @@ public class CreateCustomController extends Controller{
         newTest.practice = practiceCheck.isSelected();
         newTest.randomizeQuestions = randomizeCheck.isSelected();
 
-        newTest.questions = (TestJson.Question[])_questions.stream().map(control -> {
-            TestJson.Question question = new TestJson.Question();
-            question.question = control.serializeProperty().getValue();
-            return question;
-        }).toArray();
+        newTest.questions = (TestJson.Question[])_questions.toArray();
 
         try {
             TestParser.save(newTest);
@@ -68,23 +69,34 @@ public class CreateCustomController extends Controller{
         }
     }
 
-    private void questionSelected(CustomQuestionControl old, CustomQuestionControl next) {
-        this.getChildren().remove(old);
-        this.getChildren().add(next);
+    private void select(Question next) {
+        if(next == null) {
+            getChildren().remove(_selectedQuestion);
+            return;
+        }
+
+        if(_selectedQuestion == null)
+            _selectedQuestion = new CustomQuestionControl(next);
+        else
+            _selectedQuestion.switchQuestion(next);
+
+        if(!getChildren().contains(_selectedQuestion))
+            getChildren().add(_selectedQuestion);
     }
     private void addQuestion() {
-        _questions.add(new CustomQuestionControl());
+        _questions.add(new Question());
+        select(_questions.get(_questions.size() - 1));
     }
 
-    private static final String             NEW_ITEM = "New";
+    private ListProperty<Question>          _questions = new SimpleListProperty<>(FXCollections.observableArrayList());
 
-    private ObservableList<CustomQuestionControl>   _questions = new SimpleListProperty<>(FXCollections.observableArrayList());
+    private CustomQuestionControl           _selectedQuestion = null;
 
     // JavaFX controls
     @FXML private JFXTextField              nameTxt;
     @FXML private CheckBox                  practiceCheck;
     @FXML private CheckBox                  randomizeCheck;
     @FXML private TableView<Prerequisite>   prerequisiteTable;
-    @FXML private ListView<CustomQuestionControl>   questionList;
+    @FXML private ListView<Question>        questionList;
     @FXML private JFXButton                 addQuestionBtn;
 }

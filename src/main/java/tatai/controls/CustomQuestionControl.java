@@ -1,56 +1,119 @@
 package tatai.controls;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import javafx.util.Pair;
-import tatai.model.question.QuestionReader;
+import tatai.model.question.*;
 
 /**
  * Allows the user to create their own question
  */
 public class CustomQuestionControl extends Region {
-    public static final String  defaultQuestion = "(0 to 9)";
+    static class RangeControl extends Region {
+        public RangeControl(Range range) {
+            _minFld = new Spinner<>(1, 99, range.minProperty().get());
+            _maxFld = new Spinner<>(1, 99, range.maxProperty().get());
+
+            range.minProperty().bind(_minFld.valueProperty());
+            range.maxProperty().bind(_maxFld.valueProperty());
+        }
+
+        private Spinner<Integer> _minFld;
+        private Spinner<Integer> _maxFld;
+
+        private Range range;
+    }
+    static class OperationControl extends Region {
+        public OperationControl(Operation operation) {
+            _operation = operation;
+
+            _operation.enclosedProperty().bindBidirectional(_parenthesisedBox.selectedProperty());
+            _operation.operatorsProperty().bind(Bindings.createObjectBinding(() -> {
+                        ObservableList<Operator> ops = FXCollections.observableArrayList();
+                        for(CheckBox box : _operatorBoxes) {
+                            for(Operator.Type type : Operator.Type.values()) {
+                                if(box.getText().equals(type.symbol()))
+                                    ops.add(type.create());
+                            }
+                        }
+                        return ops;
+                    },
+                    _operatorBoxes[0].selectedProperty(),
+                    _operatorBoxes[1].selectedProperty(),
+                    _operatorBoxes[2].selectedProperty(),
+                    _operatorBoxes[3].selectedProperty()
+            ));
+        }
+
+        private Operation       _operation;
+
+        private CheckBox        _parenthesisedBox = new CheckBox("Brackets");
+        private CheckBox        _operatorBoxes[] = new CheckBox[]{
+                new CheckBox(Operator.Type.ADD.symbol()),
+                new CheckBox(Operator.Type.SUBTRACT.symbol()),
+                new CheckBox(Operator.Type.MULTIPLY.symbol()),
+                new CheckBox(Operator.Type.DIVIDE.symbol())};
+    }
 
     /**
      * Creates an all new question
      */
     public CustomQuestionControl() {
-        this(new QuestionPart.Range());
+        this(new Range());
     }
 
     /**
      * Allows the user to modify the given question (in string form)
      */
-    public CustomQuestionControl(String original) {
-        this(QuestionPart.generate(QuestionReader.read(original).head()));
+    public CustomQuestionControl(Question question) {
+        this(question.head());
     }
-    private CustomQuestionControl(QuestionPart root) {
+    private CustomQuestionControl(Generatable root) {
         _root = root;
 
         VBox left = new VBox(15, _textFlow, new HBox(20, _addBtn, _deleteBtn));
-        _main.getChildren().addAll(left, _root);
+        _main.getChildren().add(left);
 
         getChildren().add(_main);
 
-        updateFlow();
+        select(_root);
 
-        _root.appearanceProperty().addListener(
-                (ObservableValue<? extends QuestionPart.Tag> a, QuestionPart.Tag b, QuestionPart.Tag newTag) ->
-                        updateFlow());
+        // Ensure text flow is updated properly
+        _root.tagProperty().addListener(
+                (ObservableValue<? extends Generatable.Tag> obs,
+                 Generatable.Tag oldTag,
+                 Generatable.Tag newTag) ->
+                updateFlow(newTag)
+        );
+
+        //updateFlow(_root.tagProperty().getValue());
 
         _addBtn.setOnAction(event -> addOperation());
         _deleteBtn.setOnAction(event -> remove());
+    }
+
+    public void switchQuestion(Question question) {
+        _root = question.head();
+        select(_root);
+
+        // Ensure text flow is updated properly
+        _root.tagProperty().addListener(
+                (ObservableValue<? extends Generatable.Tag> obs,
+                 Generatable.Tag oldTag,
+                 Generatable.Tag newTag) ->
+                        updateFlow(newTag)
+        );
     }
 
     public Property<String> serializeProperty() {
@@ -60,15 +123,15 @@ public class CustomQuestionControl extends Region {
     /**
      * Updates the textflow with new tag structure
      */
-    private void            updateFlow() {
+    private void            updateFlow(Generatable.Tag tag) {
         _textFlow.getChildren().clear();
-        updateFlow(_root.appearanceProperty().getValue(), 0);
+        updateFlow(tag, 0);
     }
     /**
      * Updates the textflow with new tag structure
      * @param depth Used for colour coordination, determines colour of given text
      */
-    private void            updateFlow(QuestionPart.Tag rootTag, int depth) {
+    private void            updateFlow(Generatable.Tag rootTag, int depth) {
         if(rootTag.tags == null || rootTag.tags.length == 0) {
             addText(rootTag, depth);
             return;
@@ -105,42 +168,28 @@ public class CustomQuestionControl extends Region {
     /**
      * Switches to viewing the QuestionPart the user clicked on
      */
-    private void            select(QuestionPart part) {
-        _main.getChildren().remove(_selected);
+    private void            select(Generatable part) {
+        _main.getChildren().remove(_selectedControl);
         _selected = part;
-        _main.getChildren().add(_selected);
+
+        if(part instanceof Range)
+            _selectedControl = new RangeControl((Range)part);
+        else
+            _selectedControl = new OperationControl((Operation)part);
+
+        _main.getChildren().add(_selectedControl);
     }
 
-    /**
-     * Gets the QuestionPart at the index given in the text flow
-     */
-    private QuestionPart    getPartAt(int index) {
-        return getPartAt(index, _root.appearanceProperty().getValue());
-    }
-    /**
-     * Gets the QuestionPart at the specified index into the given parent QuestionPart
-     */
-    private QuestionPart    getPartAt(int index, QuestionPart.Tag part) {
-        for(Pair<QuestionPart.Tag, Integer> tag : _root.appearanceProperty().getValue().tags) {
-            // Check if the tag contains the index
-            if(index > tag.getValue() && index < (tag.getValue() + tag.getKey().text.length()))
-                return getPartAt(index - tag.getValue(), tag.getKey()); // Go deeper
-        }
-
-        // If it's not in any of the children, it must be in this
-        return part.questionPart;
-    }
-
-    private void            addText(QuestionPart.Tag tag, int start, int end, int depth) {
+    private void            addText(Generatable.Tag tag, int start, int end, int depth) {
         Text text = new Text(tag.text.substring(start, end));
         text.setFill(colours[depth % colours.length]);
 
         // Ensure that when the user clicks this bit, we select it
-        text.setOnMouseClicked(event -> select(tag.questionPart));
+        text.setOnMouseClicked(event -> select(tag.owner));
 
         _textFlow.getChildren().add(text);
     }
-    private void            addText(QuestionPart.Tag tag, int depth) {
+    private void            addText(Generatable.Tag tag, int depth) {
         addText(tag, 0, tag.text.length(), depth);
     }
 
@@ -148,10 +197,15 @@ public class CustomQuestionControl extends Region {
      * Adds an operation that takes the selected QuestionPart as the left child, and submits itself in its place
      */
     private void            addOperation() {
-        QuestionPart.Operation oldParent = _selected.parent();
-        oldParent.replace(
-                _selected,
-                new QuestionPart.Operation(_selected, new QuestionPart.Range(), false));
+        Operation oldParent = _selected.parent();
+        Operation newOp = new Operation(_selected, new Range(), false, Operator.Type.ADD.create());
+
+        if(_selected == _root)
+            _root = newOp;
+        else
+            oldParent.replace(_selected, newOp);
+
+        select(newOp);
     }
 
     /**
@@ -161,18 +215,21 @@ public class CustomQuestionControl extends Region {
     private void            remove() {
         // Special care must be taken
         if(_selected == _root) {
-            if(_selected instanceof QuestionPart.Range) {
+            if(_selected instanceof Range) {
                 new Alert(Alert.AlertType.ERROR,
                         "Can't remove this or there won't be anything in your question!");
-            } else if(_selected instanceof QuestionPart.Operation) {
-                _root = ((QuestionPart.Operation)_selected).partChildren()[0];
+            } else if(_selected instanceof Operation) {
+                _root = ((Operation)_selected).operandsProperty().get(0);
+
+                // Sever connection with new _root. Seems odd, but ensures _root has no parent and is top of structure
+                ((Operation)_selected).replace(0, new Range());
             }
 
             select(_root);
             return;
         }
 
-        if(_selected instanceof QuestionPart.Range) {
+        if(_selected instanceof Range) {
             // Warn user
             new Alert(Alert.AlertType.WARNING,
                     "Are you sure you want to delete this operation (and replace it with the other range)")
@@ -180,10 +237,11 @@ public class CustomQuestionControl extends Region {
                     .filter(type -> type == ButtonType.YES)
                     .ifPresent((type) -> {
                         // Choose NOT selected to save
-                        QuestionPart saved = _selected.parent().partChildren()[0] == _selected ?
-                                _selected.parent().partChildren()[1] : _selected.parent().partChildren()[0];
+                        Generatable saved = _selected.parent().operandsProperty().get(0) == _selected ?
+                                _selected.parent().operandsProperty().get(1) :
+                                _selected.parent().operandsProperty().get(0);
 
-                        QuestionPart.Operation op = _selected.parent();
+                        Operation op = _selected.parent();
 
                         if(op == _root)
                             _root = saved;
@@ -192,8 +250,8 @@ public class CustomQuestionControl extends Region {
 
                         select(saved);
                     });
-        } else if(_selected instanceof QuestionPart.Operation) {
-            QuestionPart saved = ((QuestionPart.Operation)_selected).partChildren()[0];
+        } else if(_selected instanceof Operation) {
+            Generatable saved = ((Operation)_selected).operandsProperty().get(0);
 
             _selected.parent().replace(_selected, saved);
 
@@ -208,8 +266,10 @@ public class CustomQuestionControl extends Region {
     private Button          _addBtn = new Button("Add");
     private Button          _deleteBtn = new Button("Delete");
 
-    private QuestionPart    _selected;
-    private QuestionPart    _root;
+    private Generatable     _selected;
+    private Region          _selectedControl;
+
+    private Generatable     _root;
 
     // TODO: Give to CSS to choose?
     // Colours for the text flow
