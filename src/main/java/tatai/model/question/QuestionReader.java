@@ -1,5 +1,6 @@
 package tatai.model.question;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -11,7 +12,8 @@ public class QuestionReader {
      * Reads the given string, assuming it is in question format.
      * TODO: Produce documentation for question format
      */
-    public static Question read(String question) {
+    @Nonnull
+    public static Question  read(String question) {
         // Stores the generatables that are created throughout
         ArrayList<Generatable> _elements = new ArrayList<>();
 
@@ -22,7 +24,7 @@ public class QuestionReader {
         StringBuffer rangeless = new StringBuffer();
         while(matches.find()) {
             matches.appendReplacement(rangeless, Integer.toString(_elements.size()));
-            _elements.add(new Range(Integer.valueOf(matches.group(1)), Integer.valueOf(matches.group(2))));
+            _elements.add(new Range(new Range.Memento(Integer.valueOf(matches.group(1)), Integer.valueOf(matches.group(2)))));
         }
         matches.appendTail(rangeless);
 
@@ -38,13 +40,18 @@ public class QuestionReader {
             matches = highPrecedence.matcher(sBuffer.toString());
 
             StringBuffer opLess = new StringBuffer();
-            while( matches.find() ) {
+            while(matches.find()) {
                 matches.appendReplacement(opLess, Integer.toString(_elements.size()));
                 // And create an op
                 Generatable left = _elements.get(Integer.valueOf(matches.group(1)));
                 Generatable right = _elements.get(Integer.valueOf(matches.group(3)));
 
-                _elements.add(new Operation(left, right, Operator.Type.createOperators(matches.group(2))));
+                // TODO: Remember parentheses
+                _elements.add(new Operation(new Operation.Memento(
+                        left,
+                        right,
+                        Operator.Type.createOperators(matches.group(2)),
+                        false)));
             }
             matches.appendTail(opLess);
 
@@ -62,7 +69,8 @@ public class QuestionReader {
     /**
      * Produces a pattern that searches for a use of any of the given ops in the form (operand OPERATOR operand)
      */
-    private static String                   opsPattern(List<Operator.Type> ops) {
+    @Nonnull
+    private static String   opsPattern(List<Operator.Type> ops) {
         StringBuilder output = new StringBuilder("\\(?(\\d+) \\[((?:");
         for(Operator.Type op : ops)
             output.append(Pattern.quote(op.symbol())).append("|");

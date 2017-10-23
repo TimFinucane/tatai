@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * This represents a variety of mathematical operations, all of which accept two arguments
  */
-abstract class Operator {
+public abstract class Operator {
     static class Add extends Operator {
         int                 precedence() { return 1; }
 
@@ -67,7 +67,7 @@ abstract class Operator {
     /**
      * The main way of accessing the operators. Has extra info as well
      */
-    enum Type {
+    public enum Type {
         ADD("+", 1, Add.class),
         SUBTRACT("\u2212", 1, Subtract.class),
         MULTIPLY("\u00D7", 2, Multiply.class),
@@ -82,7 +82,7 @@ abstract class Operator {
         /**
          * Creates an array containing all operators that have been found in the symbols string
          */
-        static Operator[]               createOperators(String symbols) {
+        public static Operator[]        createOperators(String symbols) {
             ArrayList<Operator> operators = new ArrayList<>();
             for(Type value : Type.values()) {
                 if(symbols.contains(value._symbol)) {
@@ -142,7 +142,7 @@ abstract class Operator {
         private Class<? extends Operator>   _class;
     }
 
-    String                      symbol() {
+    public String               symbol() {
         // Sneaky sneaky
         return Type.getSymbol(this.getClass());
     }

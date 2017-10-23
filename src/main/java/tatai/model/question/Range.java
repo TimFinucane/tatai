@@ -6,10 +6,20 @@ import util.NumberConstraint;
 /**
  * Specifies generation of a random number between min and max (inclusive)
  */
-class Range implements Generatable {
-    public Range(int min, int max) {
-        this.min = min;
-        this.max = max;
+public class Range implements Generatable {
+    public static class Memento {
+        public Memento(int min, int max) {
+            this.min = min;
+            this.max = max;
+        }
+
+        public int min;
+        public int max;
+    }
+
+    public Range(Memento memento) {
+        _min = memento.min;
+        _max = memento.max;
     }
 
     /**
@@ -17,10 +27,14 @@ class Range implements Generatable {
      */
     @Override
     public Pair<String, Integer> generate(NumberConstraint constraint) {
-        int answer = constraint.generate(min, max);
+        int answer = constraint.generate(_min, _max);
         return new Pair<>(Integer.toString(answer), answer);
     }
 
-    private int min;
-    private int max; // inclusive
+    public Memento memento() {
+        return new Memento(_min, _max);
+    }
+
+    private int _min;
+    private int _max; // inclusive
 }

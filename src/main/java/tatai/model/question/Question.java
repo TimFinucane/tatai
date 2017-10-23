@@ -21,6 +21,10 @@ public class Question {
         return pair.getKey();
     }
 
+    public Generatable  head() {
+        return _question;
+    }
+
     /**
      * Checks whether submission is correct
      */
