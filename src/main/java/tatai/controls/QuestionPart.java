@@ -2,6 +2,7 @@ package tatai.controls;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.Property;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
@@ -243,6 +244,6 @@ public abstract class QuestionPart extends Region {
         return parent;
     }
 
-    protected Property<Tag> appearance;
+    protected Property<Tag> appearance = new SimpleObjectProperty<>();
     protected Operation     parent = null;
 }

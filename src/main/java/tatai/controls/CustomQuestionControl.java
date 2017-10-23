@@ -1,5 +1,8 @@
 package tatai.controls;
 
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -17,6 +20,8 @@ import tatai.model.question.QuestionReader;
  * Allows the user to create their own question
  */
 public class CustomQuestionControl extends Region {
+    public static final String  defaultQuestion = "(0 to 9)";
+
     /**
      * Creates an all new question
      */
@@ -48,6 +53,10 @@ public class CustomQuestionControl extends Region {
         _deleteBtn.setOnAction(event -> remove());
     }
 
+    public Property<String> serializeProperty() {
+        return _serializeProperty;
+    }
+
     /**
      * Updates the textflow with new tag structure
      */
@@ -60,7 +69,7 @@ public class CustomQuestionControl extends Region {
      * @param depth Used for colour coordination, determines colour of given text
      */
     private void            updateFlow(QuestionPart.Tag rootTag, int depth) {
-        if(rootTag.tags == null) {
+        if(rootTag.tags == null || rootTag.tags.length == 0) {
             addText(rootTag, depth);
             return;
         }
@@ -191,6 +200,8 @@ public class CustomQuestionControl extends Region {
             select(saved);
         }
     }
+
+    private StringProperty  _serializeProperty = new SimpleStringProperty();
 
     private HBox            _main = new HBox(15);
     private TextFlow        _textFlow = new TextFlow();

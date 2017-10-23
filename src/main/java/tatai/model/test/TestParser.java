@@ -81,7 +81,7 @@ public class TestParser {
     /**
      * Writes the given test so that it can be retrievable later
      */
-    public static void          save(String user, TestJson testInfo) throws IOException {
+    public static void          save(TestJson testInfo) throws IOException {
         File file = Files.testFile(testInfo.name);
         file.createNewFile();
 
