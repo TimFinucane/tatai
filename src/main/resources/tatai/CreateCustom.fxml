@@ -6,7 +6,7 @@
 
 <fx:root alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="645.0" style="-fx-background-color: #29292D;" type="VBox" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <JFXTextField fx:id="_txtName" focusColor="#6622cc" promptText="Name" unFocusColor="#756f6f" />
+      <JFXTextField fx:id="nameTxt" focusColor="#6622cc" promptText="Name" unFocusColor="#756f6f" />
    </children>
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
