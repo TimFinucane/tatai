@@ -159,7 +159,7 @@ public class CustomQuestionControl extends Region {
 
         // Colour text after last tag
         if(endOf(rootTag.tags[rootTag.tags.length-1]) < rootTag.text.length())
-            addText(rootTag, rootTag.tags[rootTag.tags.length-1].getValue(), rootTag.text.length(), depth);
+            addText(rootTag, endOf(rootTag.tags[rootTag.tags.length-1]), rootTag.text.length(), depth);
     }
 
     /**
