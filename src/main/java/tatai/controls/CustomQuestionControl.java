@@ -172,7 +172,7 @@ public class CustomQuestionControl extends Region {
                     .ifPresent((type) -> {
                         // Choose NOT selected to save
                         QuestionPart saved = _selected.parent().partChildren()[0] == _selected ?
-                                _selected.parent().partChildren()[1] : _selected.parent().partChildren()[0];\
+                                _selected.parent().partChildren()[1] : _selected.parent().partChildren()[0];
 
                         QuestionPart.Operation op = _selected.parent();
 
