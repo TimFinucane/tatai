@@ -110,6 +110,20 @@ public abstract class QuestionPart extends Region {
                     _operatorBoxes[2].selectedProperty(),
                     _operatorBoxes[3].selectedProperty()
             ));
+
+            left.parent = this;
+            right.parent = this;
+        }
+
+        public void replaceChild(boolean left, QuestionPart part) {
+            if(left) {
+                _parts[0].parent = null;
+                _parts[0] = part;
+            } else {
+                _parts[1].parent = null;
+                _parts[1] = part;
+            }
+            part.parent = this;
         }
 
         public Generatable  formQuestion() {
@@ -178,7 +192,8 @@ public abstract class QuestionPart extends Region {
                 new CheckBox(Operator.Type.DIVIDE.symbol())};
     }
 
-    public static   QuestionPart generate(Generatable generatable) {
+    @Nonnull
+    public static   QuestionPart generate(@Nonnull Generatable generatable) {
         if(generatable instanceof tatai.model.question.Operation)
             return generate(((tatai.model.question.Operation) generatable).memento());
         else if(generatable instanceof tatai.model.question.Range)
@@ -186,10 +201,12 @@ public abstract class QuestionPart extends Region {
         else
             throw new IllegalArgumentException("Given generatable is not an operation or a range");
     }
-    private static  QuestionPart generate(tatai.model.question.Range.Memento memento) {
+    @Nonnull
+    private static  QuestionPart generate(@Nonnull tatai.model.question.Range.Memento memento) {
         return new Range(memento.min, memento.max);
     }
-    private static  QuestionPart generate(tatai.model.question.Operation.Memento memento) {
+    @Nonnull
+    private static  QuestionPart generate(@Nonnull tatai.model.question.Operation.Memento memento) {
         return new Operation(
                 generate(memento.first),
                 generate(memento.second),
@@ -209,5 +226,10 @@ public abstract class QuestionPart extends Region {
      */
     public abstract Generatable formQuestion();
 
+    public Operation            parent() {
+        return parent;
+    }
+
     protected Property<Tag> appearance;
+    protected Operation     parent = null;
 }
