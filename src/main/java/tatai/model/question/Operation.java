@@ -113,7 +113,7 @@ public class Operation extends Generatable {
     }
     public ListProperty<Generatable>    operandsProperty() { return _operands; }
 
-    private Operator                _op;
+    private Operator                    _op;
 
     private ListProperty<Generatable>   _operands;
     private BooleanProperty             _enclosed = new SimpleBooleanProperty();

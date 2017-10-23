@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.util.Pair;
 import tatai.model.question.*;
 
 /**
@@ -24,6 +25,8 @@ public class CustomQuestionControl extends Region {
         public RangeControl(Range range) {
             _minFld = new Spinner<>(1, 99, range.minProperty().get());
             _maxFld = new Spinner<>(1, 99, range.maxProperty().get());
+
+            getChildren().add(new VBox(10, _minFld, _maxFld));
 
             range.minProperty().bind(_minFld.valueProperty());
             range.maxProperty().bind(_maxFld.valueProperty());
@@ -36,14 +39,25 @@ public class CustomQuestionControl extends Region {
     }
     static class OperationControl extends Region {
         public OperationControl(Operation operation) {
+            getChildren().add(new VBox(10, _parenthesisedBox, new VBox(5, _operatorBoxes)));
+
             _operation = operation;
+
+            // Initialize check boxes
+            for(Operator op : operation.operatorsProperty()) {
+                for(CheckBox box : _operatorBoxes) {
+                    if(op.symbol().equals(box.getText())) {
+                        box.setSelected(true);
+                    }
+                }
+            }
 
             _operation.enclosedProperty().bindBidirectional(_parenthesisedBox.selectedProperty());
             _operation.operatorsProperty().bind(Bindings.createObjectBinding(() -> {
                         ObservableList<Operator> ops = FXCollections.observableArrayList();
                         for(CheckBox box : _operatorBoxes) {
                             for(Operator.Type type : Operator.Type.values()) {
-                                if(box.getText().equals(type.symbol()))
+                                if(box.getText().equals(type.symbol()) && box.isSelected())
                                     ops.add(type.create());
                             }
                         }
@@ -94,7 +108,7 @@ public class CustomQuestionControl extends Region {
                 (ObservableValue<? extends Generatable.Tag> obs,
                  Generatable.Tag oldTag,
                  Generatable.Tag newTag) ->
-                updateFlow(newTag)
+                updateFlow()
         );
 
         //updateFlow(_root.tagProperty().getValue());
@@ -104,16 +118,7 @@ public class CustomQuestionControl extends Region {
     }
 
     public void switchQuestion(Question question) {
-        _root = question.head();
-        select(_root);
-
-        // Ensure text flow is updated properly
-        _root.tagProperty().addListener(
-                (ObservableValue<? extends Generatable.Tag> obs,
-                 Generatable.Tag oldTag,
-                 Generatable.Tag newTag) ->
-                        updateFlow(newTag)
-        );
+        switchRoot(question.head());
     }
 
     public Property<String> serializeProperty() {
@@ -123,9 +128,10 @@ public class CustomQuestionControl extends Region {
     /**
      * Updates the textflow with new tag structure
      */
-    private void            updateFlow(Generatable.Tag tag) {
+    private void            updateFlow() {
         _textFlow.getChildren().clear();
-        updateFlow(tag, 0);
+
+        updateFlow(_root.tagProperty().getValue(), 0);
     }
     /**
      * Updates the textflow with new tag structure
@@ -138,31 +144,22 @@ public class CustomQuestionControl extends Region {
         }
 
         // Colour text before the first tag as the root tag
-        if(rootTag.tags[0].getValue() > 0)
-            addText(rootTag, 0, rootTag.tags[0].getValue(), depth);
+        if(startOf(rootTag.tags[0]) > 0)
+            addText(rootTag, 0, startOf(rootTag.tags[0]), depth);
 
         updateFlow(rootTag.tags[0].getKey(), depth + 1);
 
         for(int i = 1; i < rootTag.tags.length; i++) {
             // Colour space between previous and this tag as root
-            if(rootTag.tags[i-1].getValue() + rootTag.tags[i-1].getKey().text.length() < rootTag.tags[i].getValue()) {
-                addText(
-                    rootTag,
-                    rootTag.tags[i-1].getValue() + rootTag.tags[i-1].getKey().text.length(),
-                    rootTag.tags[i].getValue(),
-                    depth);
-            }
+            if(endOf(rootTag.tags[i-1]) < startOf(rootTag.tags[i]))
+                addText(rootTag, endOf(rootTag.tags[i-1]), startOf(rootTag.tags[i]), depth);
+
             updateFlow(rootTag.tags[i].getKey(), depth + 1);
         }
 
         // Colour text after last tag
-        if(rootTag.tags[rootTag.tags.length-1].getValue() < rootTag.text.length()) {
-            addText(
-                rootTag,
-                rootTag.tags[rootTag.tags.length-1].getValue(),
-                rootTag.text.length(),
-                depth);
-        }
+        if(endOf(rootTag.tags[rootTag.tags.length-1]) < rootTag.text.length())
+            addText(rootTag, rootTag.tags[rootTag.tags.length-1].getValue(), rootTag.text.length(), depth);
     }
 
     /**
@@ -201,11 +198,24 @@ public class CustomQuestionControl extends Region {
         Operation newOp = new Operation(_selected, new Range(), false, Operator.Type.ADD.create());
 
         if(_selected == _root)
-            _root = newOp;
+            switchRoot(newOp);
         else
             oldParent.replace(_selected, newOp);
 
         select(newOp);
+    }
+
+    public void             switchRoot(Generatable root) {
+        _root = root;
+        select(_root);
+
+        // Ensure text flow is updated properly
+        _root.tagProperty().addListener(
+                (ObservableValue<? extends Generatable.Tag> obs,
+                 Generatable.Tag oldTag,
+                 Generatable.Tag newTag) ->
+                        updateFlow()
+        );
     }
 
     /**
@@ -219,13 +229,12 @@ public class CustomQuestionControl extends Region {
                 new Alert(Alert.AlertType.ERROR,
                         "Can't remove this or there won't be anything in your question!");
             } else if(_selected instanceof Operation) {
-                _root = ((Operation)_selected).operandsProperty().get(0);
+                switchRoot(((Operation)_selected).operandsProperty().get(0));
 
                 // Sever connection with new _root. Seems odd, but ensures _root has no parent and is top of structure
                 ((Operation)_selected).replace(0, new Range());
             }
 
-            select(_root);
             return;
         }
 
@@ -244,7 +253,7 @@ public class CustomQuestionControl extends Region {
                         Operation op = _selected.parent();
 
                         if(op == _root)
-                            _root = saved;
+                            switchRoot(saved);
                         else
                             op.parent().replace(op, saved);
 
@@ -257,6 +266,13 @@ public class CustomQuestionControl extends Region {
 
             select(saved);
         }
+    }
+
+    private int             startOf(Pair<Generatable.Tag, Integer> tag) {
+        return tag.getValue();
+    }
+    private int             endOf(Pair<Generatable.Tag, Integer> tag) {
+        return tag.getValue() + tag.getKey().text.length();
     }
 
     private StringProperty  _serializeProperty = new SimpleStringProperty();
