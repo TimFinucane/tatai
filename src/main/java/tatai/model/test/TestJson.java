@@ -30,6 +30,7 @@ public class TestJson {
     public static class Prerequisite {
         public String   name;
         public int      score;
+        public int      times;
     }
 
     public String           name;
