@@ -38,7 +38,8 @@ public class Question {
         if(_tries-- == 0)
             throw new IllegalStateException("Can't try to answer this question, you have no tries left!");
 
-        return submission.equalsIgnoreCase(Translator.convert(_curAnswer));
+        _correct = submission.equalsIgnoreCase(Translator.convert(_curAnswer));
+        return _correct;
     }
 
     /**
@@ -55,6 +56,10 @@ public class Question {
 
     public void             reset() {
         _tries = _maxTries;
+    }
+
+    public boolean          correct() {
+        return _correct;
     }
 
     /**
@@ -84,6 +89,8 @@ public class Question {
     public Generatable      head() {
         return _question;
     }
+
+    private boolean         _correct = false;
 
     private double          _timelimit;
     private int             _tries;

@@ -25,6 +25,9 @@ public class Test {
 	 * Gives the next question to display
 	 */
 	public Question		            nextRound() {
+        if(_curQuestion.correct())
+	        _score++;
+
 	    if(_curRound == _questions[_curIndex].rounds) { // Next question
             _curIndex++;
             _curRound = 0;
