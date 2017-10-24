@@ -53,26 +53,27 @@ public class CustomQuestionControl extends TitledPane {
      */
     private void                                switchQuestion(TestJson.Question question) {
         if(_question != null)
-            _question.headTagProperty().removeListener(_tagListener);
+            _question.tagProperty().removeListener(_tagListener);
 
-        _question = QuestionReader.read(question.question);
-        _question.headTagProperty().addListener(_tagListener);
+        _question = new Question(question);
+        switchRoot(_question.head());
 
         // Set question values
         triesSpinner.getValueFactory().setValue(question.tries);
         roundsSpinner.getValueFactory().setValue(question.rounds);
-        timelimitTxt.setText(question.timelimit < 1.0 ? "" : Double.toString(question.timelimit));
+
+        _question.tagProperty().addListener(_tagListener);
 
         _output.unbind();
         _output.bind(Bindings.createObjectBinding(
                 // Create the question info
                 () ->new TestJson.Question(
-                        _question.headTagProperty().getValue().text,
+                        _question.tagProperty().getValue().text,
                         triesSpinner.getValue(),
                         roundsSpinner.getValue(),
                         timelimitTxt.getText().equals("") ? -1.0 : Double.parseDouble(timelimitTxt.getText())),
                 // Relies on these properties
-                _question.headTagProperty(),
+                _question.tagProperty(),
                 triesSpinner.valueProperty(),
                 roundsSpinner.valueProperty())
         );
@@ -89,7 +90,7 @@ public class CustomQuestionControl extends TitledPane {
      */
     private void            updateFlow() {
         textFlow.getChildren().clear();
-        updateFlow(_question.headTagProperty().getValue(), 0);
+        updateFlow(_question.tagProperty().getValue(), 0);
     }
 
     /**

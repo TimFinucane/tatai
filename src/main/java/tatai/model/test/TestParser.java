@@ -1,16 +1,11 @@
 package tatai.model.test;
 
 import com.google.gson.Gson;
-import tatai.model.question.Question;
-import tatai.model.question.QuestionReader;
 import util.Files;
 
-import javax.annotation.Nonnull;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class TestParser {
     /**
@@ -46,36 +41,6 @@ public class TestParser {
         Gson gson = new Gson();
 
         return gson.fromJson(reader, TestJson.class);
-    }
-
-    /**
-     * Makes a test from a testJson
-     */
-    @Nonnull
-    public static Test          make(TestJson testJson) {
-        if(testJson.practice) {
-            ArrayList<Question> questions = new ArrayList<>();
-
-            for(TestJson.Question question : testJson.questions)
-                questions.add(QuestionReader.read(question.question));
-
-            return new PracticeTest(questions);
-        } else {
-            // Create questions
-            ArrayList<ScoredTest.QuestionInfo> questions = new ArrayList<>();
-            for( TestJson.Question question : testJson.questions ) {
-                questions.add(
-                        new ScoredTest.QuestionInfo(
-                                question.rounds,
-                                question.tries,
-                                QuestionReader.read(question.question)));
-            }
-
-            if(testJson.randomizeQuestions)
-                Collections.shuffle(questions, new Random());
-
-            return new ScoredTest(questions);
-        }
     }
 
     /**
