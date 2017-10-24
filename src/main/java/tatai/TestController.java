@@ -2,6 +2,8 @@ package tatai;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -55,6 +57,24 @@ public class TestController extends Controller {
 	 */
 	public int			score() {
 		return _model.score();
+	}
+
+    /**
+     * Asks user whether they want to exit, just to make sure
+     */
+	@Override
+	protected boolean   exit(ReturnState state) {
+		if(state != ReturnState.FINISHED) {
+			boolean willReturn = new Alert(Alert.AlertType.WARNING,
+					"Are you sure you want to exit this test?",
+					ButtonType.YES, ButtonType.NO)
+					.showAndWait()
+					.filter(type -> type == ButtonType.YES).isPresent();
+
+			return willReturn && super.exit(state); // Will only try to exit if willReturn is true. KEEP THAT IN MIND PLS.
+		} else {
+			return super.exit(state);
+		}
 	}
 
 	/**
