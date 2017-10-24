@@ -11,7 +11,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.layout.Pane;
 import javafx.util.converter.IntegerStringConverter;
 import tatai.controls.CustomQuestionControl;
 import tatai.model.test.TestJson;
@@ -217,7 +216,7 @@ public class CreateCustomController extends Controller {
 
     private void selectQuestion(int next) {
         if(next < 0) {
-            customPane.getChildren().clear();
+            getChildren().remove(_selectedQuestion);
             return;
         }
 
@@ -230,7 +229,7 @@ public class CreateCustomController extends Controller {
         _questionListener = (observable, oldValue, newValue) -> _questions.set(next, newValue);
         _selectedQuestion.outputProperty().addListener(_questionListener);
 
-        customPane.getChildren().setAll(_selectedQuestion);
+        getChildren().add(getChildren().indexOf(createBtn), _selectedQuestion);
     }
     private void addQuestion() {
         _questions.add(new TestJson.Question());
@@ -251,7 +250,7 @@ public class CreateCustomController extends Controller {
             else if(_questions.size() > 0)  // Or the first question
                 selectQuestion(0);
             else {                          // Or nothing
-                customPane.getChildren().clear();
+                getChildren().remove(_selectedQuestion);
                 _selectedQuestion = null;
             }
         }
@@ -298,6 +297,5 @@ public class CreateCustomController extends Controller {
     @FXML private JFXButton                     deleteQuestionBtn;
     @FXML private JFXButton                     addPrerequisiteBtn;
     @FXML private JFXButton                     deletePrerequisiteBtn;
-    @FXML private Pane                          customPane;
     @FXML private JFXButton                     createBtn;
 }
