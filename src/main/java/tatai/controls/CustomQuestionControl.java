@@ -15,6 +15,8 @@ import javafx.scene.paint.Color;
 import javafx.util.Pair;
 import tatai.model.question.*;
 
+import java.util.Optional;
+
 /**
  * Allows the user to create their own question
  */
@@ -259,25 +261,26 @@ public class CustomQuestionControl extends TitledPane {
 
         if(_selected instanceof Range) {
             // Warn user
-            new Alert(Alert.AlertType.WARNING,
-                    "Are you sure you want to delete this operation (and replace it with the other range)")
-                    .showAndWait()
-                    .filter(type -> type == ButtonType.YES)
-                    .ifPresent((type) -> {
-                        // Choose NOT selected to save
-                        Generatable saved = _selected.parent().operandsProperty().get(0) == _selected ?
-                                _selected.parent().operandsProperty().get(1) :
-                                _selected.parent().operandsProperty().get(0);
+            Optional<ButtonType> button = new Alert(Alert.AlertType.WARNING,
+                    "This will delete the operation too. Are you sure?",
+                    ButtonType.YES, ButtonType.NO)
+                    .showAndWait();
 
-                        Operation op = _selected.parent();
+            if(button.isPresent() && button.get() == ButtonType.YES) {
+                // Choose NOT selected to save
+                Generatable saved = _selected.parent().operandsProperty().get(0) == _selected ?
+                        _selected.parent().operandsProperty().get(1) :
+                        _selected.parent().operandsProperty().get(0);
 
-                        if(op == _root)
-                            switchRoot(saved);
-                        else
-                            op.parent().replace(op, saved);
+                Operation op = _selected.parent();
 
-                        select(saved);
-                    });
+                if(op == _root)
+                    switchRoot(saved);
+                else
+                    op.parent().replace(op, saved);
+
+                select(saved);
+            }
         } else if(_selected instanceof Operation) {
             Generatable saved = ((Operation)_selected).operandsProperty().get(0);
 
