@@ -1,12 +1,12 @@
 package tatai.controls;
 
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.Property;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
@@ -20,7 +20,7 @@ import tatai.model.question.*;
 /**
  * Allows the user to create their own question
  */
-public class CustomQuestionControl extends Region {
+public class CustomQuestionControl extends TitledPane {
     static class RangeControl extends Region {
         public RangeControl(Range range) {
             _minFld = new Spinner<>(1, 99, range.minProperty().get());
@@ -94,12 +94,18 @@ public class CustomQuestionControl extends Region {
         this(question.head());
     }
     private CustomQuestionControl(Generatable root) {
+        setText("Question");
+        setCollapsible(false);
+
         _root = root;
+
+        setAlignment(Pos.CENTER);
+        _main.setAlignment(Pos.CENTER);
 
         VBox left = new VBox(15, _textFlow, new HBox(20, _addBtn, _deleteBtn));
         _main.getChildren().add(left);
 
-        getChildren().add(_main);
+        setContent(_main);
 
         select(_root);
 
@@ -119,10 +125,6 @@ public class CustomQuestionControl extends Region {
 
     public void switchQuestion(Question question) {
         switchRoot(question.head());
-    }
-
-    public Property<String> serializeProperty() {
-        return _serializeProperty;
     }
 
     /**
