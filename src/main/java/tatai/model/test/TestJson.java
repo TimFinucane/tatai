@@ -1,5 +1,7 @@
 package tatai.model.test;
 
+import tatai.model.question.Range;
+
 /**
  * JSon format for a test
  */
@@ -9,7 +11,7 @@ public class TestJson {
             rounds = 1;
             tries = 2;
             timelimit = -1.0;
-            question = new tatai.model.question.Question().headTagProperty().getValue().text;
+            question = new Range().tagProperty().getValue().text;
         }
         public Question(String question, int rounds, int tries, double timelimit) {
             this.question = question;

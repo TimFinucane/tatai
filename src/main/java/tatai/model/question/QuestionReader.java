@@ -13,7 +13,7 @@ public class QuestionReader {
      * TODO: Produce documentation for question format
      */
     @Nonnull
-    public static Question  read(String question) {
+    public static Generatable  read(String question) {
         // Stores the generatables that are created throughout
         ArrayList<Generatable> _elements = new ArrayList<>();
 
@@ -69,7 +69,7 @@ public class QuestionReader {
 
         // TODO: Read other info at this point, like tries=(int) and time=(double)...
         try {
-            return new Question(_elements.get(Integer.valueOf(sBuffer.toString())));
+            return _elements.get(Integer.valueOf(sBuffer.toString()));
         } catch(NumberFormatException e) {
             throw new IllegalArgumentException("Could not read question, wrong format for string: " + sBuffer.toString());
         }

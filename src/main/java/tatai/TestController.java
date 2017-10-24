@@ -10,9 +10,9 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import tatai.controls.PlaybackControl;
 import tatai.controls.RecorderControl;
+import tatai.model.question.Question;
 import tatai.model.test.Test;
 import tatai.model.test.TestJson;
-import tatai.model.test.TestParser;
 
 /**
  * A test window, to which you can pass specifications for the type of test
@@ -24,7 +24,8 @@ public class TestController extends Controller {
 	 * with the appropriate ReturnState.
      */
 	public TestController(TestJson model) {
-		_model = TestParser.make(model);
+		_model = new Test(model);
+		_practice = model.practice;
 
 	    // Load fxml, set self to act as controller and root
 		loadFxml("Test");
@@ -101,14 +102,17 @@ public class TestController extends Controller {
             recognitionLbl.setText(text);
         }
 
-    	if(_model.tryAnswer(text)) {
+    	if(_question.tryAnswer(text)) {
             recognitionLbl.setTextFill(SUCCESS_COLOUR);
             recorderControl.setDisable(true);
         } else {
-			if(_model.hasAnotherTry()) {
+			if(_question.hasAnotherTry()) {
 			    retryLbl.setText("You can try again by re-clicking the record button");
             } else {
-                recorderControl.setDisable(true);
+			    if(_practice)
+                    _question.reset();
+			    else
+                    recorderControl.setDisable(true);
             }
             recognitionLbl.setTextFill(FAILURE_COLOUR);
 		}
@@ -129,15 +133,21 @@ public class TestController extends Controller {
 		recognitionLbl.setText("");
 		playbackControl.dispose();
 
-		titleLbl.setText(_model.nextRound());
+		_question = _model.nextRound();
+
+		titleLbl.setText(_question.generate());
 
         // Prepare user submit options
         if(_model.hasAnotherRound()) {
             submitBtn.setText("Next");
             submitBtn.setOnAction(e -> nextRound());
         } else {
-            submitBtn.setText("Finish");
-            submitBtn.setOnAction(e -> finish());
+            if(_practice)
+                _model.reset();
+            else {
+                submitBtn.setText("Finish");
+                submitBtn.setOnAction(e -> finish());
+            }
         }
 	}
 
@@ -164,6 +174,8 @@ public class TestController extends Controller {
     private static final Paint      SUCCESS_COLOUR = Color.color(0/255.0, 230/255.0, 64/255.0);
 	private static final Paint      FAILURE_COLOUR = Color.color(240/255.0, 52/255.0, 52/255.0);
 
+	private Question                _question;
+	private boolean                 _practice;
     private Test    				_model;
 
 	// FXML controls

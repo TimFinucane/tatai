@@ -2,59 +2,72 @@ package tatai.model.test;
 
 import tatai.model.question.Question;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
 /**
  * Base model class for testing.
  */
-public abstract class Test {
+public class Test {
+    public Test(TestJson info) {
+        _questions = info.questions;
+        _randomize = info.randomizeQuestions;
+
+        reset();
+    }
+
 	public int          			score() {
 	    return _score;
     }
 
 	/**
-	 * Generates a _random question.
-	 * @return the question generated for that round.
+	 * Gives the next question to display
 	 */
-	public String			        nextRound() {
-	    _curQuestion = nextQuestion();
-	    return _curQuestion.generate();
+	public Question		            nextRound() {
+	    if(_curRound == _questions[_curIndex].rounds) { // Next question
+            _curIndex++;
+            _curRound = 0;
+            _curQuestion = new Question(_questions[_curIndex]);
+        } else { // Current question
+            _curRound++;
+            _curQuestion.reset();
+        }
+
+        return _curQuestion;
     }
 	
 	/**
-	 * Method which returns whether or not there are any more rounds
+	 * Returns whether or not there are any more rounds
 	 * @return true if there is at least one round remaining
 	 */
-	public abstract boolean 		hasAnotherRound();
-
-	/**
-	 * Method which compares the users answer to the expected result.
-	 * @param answer the user's response 
-	 * @return true if the answer is equal to the expected result.
-	 */
-	public boolean 					tryAnswer(String answer) {
-        if(!hasAnotherTry())
-            throw new IllegalStateException("No more tries left, cannot try again!");
-
-		if(_curQuestion.verify(answer)) {
-			_score++;
-
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	/**
-	 * Method which returns whether or not the user has more tries
-	 * @return true if they have more tries, false if they don't
-	 */
-	public abstract boolean 		hasAnotherTry();
+	public boolean                  hasAnotherRound() {
+	    return !(_curIndex == _questions.length - 1 && _curRound == _questions[_curIndex].rounds);
+    }
 
     /**
-     * Calculates the next question to use
+     * Resets the test, ready for another go.
      */
-	protected abstract Question     nextQuestion();
+    public void                     reset() {
+	    _curIndex = 0;
+	    _curRound = 0;
 
-	private int                     _tries = 0;
-    private Question                _curQuestion = null;
+        if(_randomize) {
+            ArrayList<TestJson.Question> list = new ArrayList<>(Arrays.asList(_questions));
+            Collections.shuffle(list);
+
+            _questions = list.toArray(new TestJson.Question[0]);
+        }
+
+        _curQuestion = new Question(_questions[0]);
+    }
+
     private int 	    			_score = 0;
+
+    private Question                _curQuestion;
+    private int                     _curIndex = 0;
+    private int                     _curRound = 0;
+
+    private boolean                 _randomize;
+    private TestJson.Question       _questions[];
 }

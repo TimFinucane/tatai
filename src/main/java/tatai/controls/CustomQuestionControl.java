@@ -166,20 +166,20 @@ public class CustomQuestionControl extends TitledPane {
      */
     public void                                 switchQuestion(TestJson.Question question) {
         if(_question != null)
-            _question.headTagProperty().removeListener(_tagListener);
+            _question.tagProperty().removeListener(_tagListener);
 
-        _question = QuestionReader.read(question.question);
+        _question = new Question(question);
         switchRoot(_question.head());
 
         triesSpinner.getValueFactory().setValue(question.tries);
         roundsSpinner.getValueFactory().setValue(question.rounds);
 
-        _question.headTagProperty().addListener(_tagListener);
+        _question.tagProperty().addListener(_tagListener);
 
         _output.unbind();
         _output.bind(Bindings.createObjectBinding(
                 this::createQuestion,
-                _question.headTagProperty(),
+                _question.tagProperty(),
                 triesSpinner.valueProperty(),
                 roundsSpinner.valueProperty()));
     }
@@ -193,7 +193,7 @@ public class CustomQuestionControl extends TitledPane {
     private void            updateFlow() {
         textFlow.getChildren().clear();
 
-        updateFlow(_question.headTagProperty().getValue(), 0);
+        updateFlow(_question.tagProperty().getValue(), 0);
     }
 
     /**
@@ -360,7 +360,7 @@ public class CustomQuestionControl extends TitledPane {
      */
     public TestJson.Question                createQuestion() {
         TestJson.Question output = new TestJson.Question();
-        output.question = _question.headTagProperty().getValue().text;
+        output.question = _question.tagProperty().getValue().text;
         output.tries = triesSpinner.getValue();
         output.rounds = roundsSpinner.getValue();
 
