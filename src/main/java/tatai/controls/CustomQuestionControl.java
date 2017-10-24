@@ -158,6 +158,7 @@ public class CustomQuestionControl extends TitledPane {
 
         addBtn.setOnAction(event -> addOperation());
         deleteBtn.setOnAction(event -> remove());
+        generateBtn.setOnAction(event -> generate());
     }
 
     /**
@@ -228,7 +229,7 @@ public class CustomQuestionControl extends TitledPane {
      * Switches to viewing the QuestionPart the user clicked on
      */
     private void            select(Generatable part) {
-        mainBox.getChildren().remove(_selectedControl);
+        opBox.getChildren().remove(_selectedControl);
         _selected = part;
 
         if(part instanceof Range)
@@ -236,7 +237,7 @@ public class CustomQuestionControl extends TitledPane {
         else
             _selectedControl = new OperationControl((Operation)part);
 
-        mainBox.getChildren().add(_selectedControl);
+        opBox.getChildren().add(_selectedControl);
     }
 
     private void            addText(Generatable.Tag tag, int start, int end, int depth) {
@@ -270,13 +271,6 @@ public class CustomQuestionControl extends TitledPane {
             select(newOp);
         }
     }
-
-    private void            switchRoot(Generatable root) {
-        _question.switchHead(root);
-
-        updateFlow();
-    }
-
     /**
      * Removes the selected questionPart.
      * If the part is a range, then the entire parent operation + that range is deleted
@@ -328,6 +322,23 @@ public class CustomQuestionControl extends TitledPane {
         }
     }
 
+    private void            generate() {
+        generateLbl.setText(_question.generate());
+    }
+
+    private void            switchRoot(Generatable root) {
+        _question.switchHead(root);
+
+        updateFlow();
+    }
+
+    private int             startOf(Pair<Generatable.Tag, Integer> tag) {
+        return tag.getValue();
+    }
+    private int             endOf(Pair<Generatable.Tag, Integer> tag) {
+        return tag.getValue() + tag.getKey().text.length();
+    }
+
     /**
      * Creates the new/modified TestJson Question
      */
@@ -339,14 +350,6 @@ public class CustomQuestionControl extends TitledPane {
 
         return output;
     }
-
-    private int             startOf(Pair<Generatable.Tag, Integer> tag) {
-        return tag.getValue();
-    }
-    private int             endOf(Pair<Generatable.Tag, Integer> tag) {
-        return tag.getValue() + tag.getKey().text.length();
-    }
-
 
     // TODO: Give to CSS to choose?
     // Colours for the text flow
@@ -367,10 +370,12 @@ public class CustomQuestionControl extends TitledPane {
     private Region          _selectedControl;
     private Question        _question;
 
-    @FXML private HBox              mainBox;
+    @FXML private VBox              opBox;
     @FXML private FlowPane          textFlow;
     @FXML private JFXButton         addBtn;
     @FXML private JFXButton         deleteBtn ;
     @FXML private Spinner<Integer>  triesSpinner;
     @FXML private Spinner<Integer>  roundsSpinner;
+    @FXML private JFXButton         generateBtn;
+    @FXML private Label             generateLbl;
 }
