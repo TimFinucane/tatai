@@ -65,7 +65,9 @@ public class CustomQuestionControl extends TitledPane {
                 }
             }
 
-            _operation.enclosedProperty().bindBidirectional(_parenthesisedBox.selectedProperty());
+            _parenthesisedBox.setSelected(_operation.enclosedProperty().getValue());
+
+            _operation.enclosedProperty().bind(_parenthesisedBox.selectedProperty());
             _operation.operatorsProperty().bind(Bindings.createObjectBinding(() -> {
                         ObservableList<Operator> ops = FXCollections.observableArrayList();
                         for(CheckBox box : _operatorBoxes) {
@@ -213,7 +215,7 @@ public class CustomQuestionControl extends TitledPane {
      */
     private void            addOperation() {
         Operation oldParent = _selected.parent();
-        Operation newOp = new Operation(_selected, new Range(), false, Operator.Type.ADD.create());
+        Operation newOp = new Operation(_selected, new Range(), true, Operator.Type.ADD.create());
 
         if(_selected == _question.head())
             switchRoot(newOp);
