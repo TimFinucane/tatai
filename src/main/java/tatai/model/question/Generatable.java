@@ -1,6 +1,6 @@
 package tatai.model.question;
 
-import javafx.beans.binding.Bindings;
+import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.util.Pair;
@@ -30,9 +30,8 @@ public abstract class Generatable {
         public Pair<Tag, Integer>   tags[];
     }
 
-    protected void setDependencies(Property<?>... tagDependencies) {
-        tag.unbind();
-        tag.bind(Bindings.createObjectBinding(this::generateTag, tagDependencies));
+    protected void bindGeneratable(ObjectBinding<Tag> tagRelation) {
+        tag.bind(tagRelation);
     }
 
     public Property<Tag>                    tagProperty() {
@@ -43,8 +42,7 @@ public abstract class Generatable {
     }
     public abstract Pair<String, Integer>   generate(NumberConstraint number);
 
-    protected abstract Tag                  generateTag();
-
     protected Operation     parent;
-    private Property<Tag>   tag = new SimpleObjectProperty<>();
+
+    private Property<Tag>       tag = new SimpleObjectProperty<>();
 }

@@ -1,5 +1,6 @@
 package tatai.model.question;
 
+import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -15,12 +16,27 @@ import java.util.stream.Collectors;
  * A generatable part of a question that uses an operator on two input operands
  */
 public class Operation extends Generatable {
+    private class TagBinding extends ObjectBinding<Tag> {
+        public Tag computeValue() {
+            return generateTag();
+        }
+
+        public void rebind() {
+            getDependencies().clear();
+            bind(_operands.get(0).tagProperty(), _operands.get(1).tagProperty(), _operators, _enclosed);
+        }
+    }
+
     public Operation(Generatable first, Generatable second, boolean enclosed, Operator... ops) {
+        first.parent = this;
+        second.parent = this;
+
         _operands = new SimpleListProperty<>(FXCollections.observableArrayList(first, second));
         _operators = new SimpleListProperty<>(FXCollections.observableArrayList(ops));
         _enclosed.setValue(enclosed);
 
-        setDependencies(first.tagProperty(), second.tagProperty(), _operators, _enclosed);
+        _binding.rebind();
+        bindGeneratable(_binding);
     }
 
     @Override
@@ -43,8 +59,8 @@ public class Operation extends Generatable {
         int firstIndex = 0;
         int secondIndex = 0;
 
-        Tag firstTag = _operands.get(0).generateTag();
-        Tag secondTag = _operands.get(1).generateTag();
+        Tag firstTag = _operands.get(0).tagProperty().getValue();
+        Tag secondTag = _operands.get(1).tagProperty().getValue();
 
         StringBuilder builder = new StringBuilder();
 
@@ -55,9 +71,9 @@ public class Operation extends Generatable {
         firstIndex = builder.length();
         builder.append(firstTag.text);
 
-        builder.append('[');
+        builder.append(" [");
         builder.append(_operators.stream().map(Operator::symbol).collect(Collectors.joining(", ")));
-        builder.append(']');
+        builder.append("] ");
 
         // Second part
         secondIndex = builder.length();
@@ -82,7 +98,7 @@ public class Operation extends Generatable {
 
         part.parent = this;
 
-        setDependencies(_operands.get(0).tagProperty(), _operands.get(1).tagProperty(), _operators, _enclosed);
+        _binding.rebind();
     }
 
     /**
@@ -114,6 +130,8 @@ public class Operation extends Generatable {
     public ListProperty<Generatable>    operandsProperty() { return _operands; }
 
     private Operator                    _op;
+
+    private TagBinding                  _binding = new TagBinding();
 
     private ListProperty<Generatable>   _operands;
     private BooleanProperty             _enclosed = new SimpleBooleanProperty();

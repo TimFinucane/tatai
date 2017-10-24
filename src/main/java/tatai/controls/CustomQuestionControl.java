@@ -3,6 +3,7 @@ package tatai.controls;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -110,7 +111,7 @@ public class CustomQuestionControl extends TitledPane {
         setText("Question");
         setCollapsible(false);
 
-        _root = root;
+        _textFlow.setAlignment(Pos.CENTER);
 
         setAlignment(Pos.CENTER);
         _main.setAlignment(Pos.CENTER);
@@ -122,15 +123,12 @@ public class CustomQuestionControl extends TitledPane {
 
         setContent(_main);
 
-        select(_root);
+        _tagListener = (ObservableValue<? extends Generatable.Tag> obs,
+                        Generatable.Tag oldTag,
+                        Generatable.Tag newTag) ->
+                            updateFlow();
 
-        // Ensure text flow is updated properly
-        _root.tagProperty().addListener(
-                (ObservableValue<? extends Generatable.Tag> obs,
-                 Generatable.Tag oldTag,
-                 Generatable.Tag newTag) ->
-                updateFlow()
-        );
+        switchRoot(root);
 
         updateFlow();
 
@@ -220,23 +218,23 @@ public class CustomQuestionControl extends TitledPane {
 
         if(_selected == _root)
             switchRoot(newOp);
-        else
+        else {
             oldParent.replace(_selected, newOp);
-
-        select(newOp);
+            select(newOp);
+        }
     }
 
     public void             switchRoot(Generatable root) {
+        if(_root != null)
+            _root.tagProperty().removeListener(_tagListener);
+
         _root = root;
         select(_root);
 
         // Ensure text flow is updated properly
-        _root.tagProperty().addListener(
-                (ObservableValue<? extends Generatable.Tag> obs,
-                 Generatable.Tag oldTag,
-                 Generatable.Tag newTag) ->
-                        updateFlow()
-        );
+        _root.tagProperty().addListener(_tagListener);
+
+        updateFlow();
     }
 
     /**
@@ -297,6 +295,8 @@ public class CustomQuestionControl extends TitledPane {
     }
 
     private StringProperty  _serializeProperty = new SimpleStringProperty();
+
+    private ChangeListener<Generatable.Tag>   _tagListener;
 
     private HBox            _main = new HBox(15);
     private FlowPane        _textFlow = new FlowPane();
