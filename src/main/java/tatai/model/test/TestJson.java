@@ -8,7 +8,7 @@ public class TestJson {
         public Question() {
             rounds = 1;
             tries = 2;
-            timelimit = 0.0;
+            timelimit = -1.0;
             question = new tatai.model.question.Question().headTagProperty().getValue().text;
         }
         public Question(String question, int rounds, int tries, double timelimit) {

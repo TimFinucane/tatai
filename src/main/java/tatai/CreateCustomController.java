@@ -163,8 +163,8 @@ public class CreateCustomController extends Controller {
         newTest.practice = practiceCheck.isSelected();
         newTest.randomizeQuestions = randomizeCheck.isSelected();
 
-        newTest.questions = (TestJson.Question[])_questions.toArray();
-        newTest.prerequisites = (TestJson.Prerequisite[])_prerequisites.stream().map(Prerequisite::output).toArray();
+        newTest.questions = _questions.toArray(new TestJson.Question[0]);
+        newTest.prerequisites = _prerequisites.stream().map(Prerequisite::output).toArray(TestJson.Prerequisite[]::new);
 
         try {
             TestParser.save(newTest);
