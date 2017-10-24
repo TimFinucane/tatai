@@ -57,10 +57,10 @@ public abstract class Controller extends VBox {
 
         parent.getChildren().remove(this);
         controller.onExit((state) -> {
+            display(parent);
+
             if(childExit != null)
                 childExit.accept(state);
-
-            display(parent);
         });
 
         controller.display(parent);

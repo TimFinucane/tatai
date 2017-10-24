@@ -16,9 +16,12 @@ import java.io.IOException;
  * A window in which the user can select a test
  */
 public abstract class SelectController extends Controller {
-    SelectController() {
+    SelectController(String user, String title) {
         loadFxml("select/Select");
         createBasicTests();
+
+        this.user = user;
+        this.titleLbl.setText(title);
 
         refreshButtons();
     }
@@ -140,6 +143,8 @@ public abstract class SelectController extends Controller {
             throw new RuntimeException(e.getMessage());
         }
     }
+
+    protected final String  user;
 
     //    JavaFX controls
     @FXML private Label     titleLbl;

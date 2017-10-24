@@ -7,7 +7,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import tatai.controls.Sidebar;
-import tatai.model.ScoreKeeper;
+import tatai.select.SelectStatsController;
+import tatai.select.SelectTestController;
 
 import java.util.function.Consumer;
 
@@ -63,19 +64,19 @@ public class Application extends javafx.application.Application implements Sideb
     // Called when practice button pressed
     @Override
     public void practice() {
-        setScreen(new tatai.select.TestController.Practice());
+        setScreen(new SelectTestController.Practice());
     }
 
     // Called when test button pressed
     @Override
     public void test(){
-        setScreen(new tatai.select.TestController.Normal(new ScoreKeeper(_user)));
+        setScreen(new SelectTestController.Normal(_user));
     }
 
     // Called when stats button pressed
     @Override
     public void stats(){
-        setScreen(new tatai.select.StatsController(new ScoreKeeper(_user)));
+        setScreen(new SelectStatsController(_user));
     }
 
     // Called when the info button has been pressed
