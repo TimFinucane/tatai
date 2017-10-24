@@ -14,7 +14,6 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
 import tatai.controls.CustomQuestionControl;
-import tatai.model.question.Generatable;
 import tatai.model.test.TestJson;
 import tatai.model.test.TestParser;
 
@@ -78,11 +77,11 @@ public class CreateCustomController extends Controller{
         else
             _selectedQuestion.switchQuestion(_questions.get(next));
 
-        if(_tagListener != null)
-            _selectedQuestion.questionTextProperty().removeListener(_tagListener);
+        if(_questionListener != null)
+            _selectedQuestion.outputProperty().removeListener(_questionListener);
 
-        _tagListener = (observable, oldValue, newValue) -> updateText(next, newValue);
-        _selectedQuestion.questionTextProperty().addListener(_tagListener);
+        _questionListener = (observable, oldValue, newValue) -> _questions.set(next, newValue);
+        _selectedQuestion.outputProperty().addListener(_questionListener);
 
         if(!getChildren().contains(_selectedQuestion))
             getChildren().add(_selectedQuestion);
@@ -92,15 +91,9 @@ public class CreateCustomController extends Controller{
         select(_questions.size() - 1);
     }
 
-    private void updateText(int index, Generatable.Tag newVal) {
-        TestJson.Question question = _questions.get(index);
-        question.question = newVal.text;
-        _questions.set(index, question);
-    }
-
     private ListProperty<TestJson.Question>     _questions = new SimpleListProperty<>(FXCollections.observableArrayList());
     private CustomQuestionControl               _selectedQuestion = null;
-    private ChangeListener<Generatable.Tag>     _tagListener = null;
+    private ChangeListener<TestJson.Question>   _questionListener = null;
 
     // JavaFX controls
     @FXML private JFXTextField                  nameTxt;

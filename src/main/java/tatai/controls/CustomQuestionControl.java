@@ -3,6 +3,7 @@ package tatai.controls;
 import com.jfoenix.controls.JFXButton;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -138,7 +139,7 @@ public class CustomQuestionControl extends TitledPane {
     /**
      * Changes to represent given question
      */
-    public void                             switchQuestion(TestJson.Question question) {
+    public void                                 switchQuestion(TestJson.Question question) {
         if(_question != null)
             _question.headTagProperty().removeListener(_tagListener);
 
@@ -149,21 +150,16 @@ public class CustomQuestionControl extends TitledPane {
         roundsSpinner.getValueFactory().setValue(question.rounds);
 
         _question.headTagProperty().addListener(_tagListener);
-    }
 
-    /**
-     * Creates the new/modified TestJson Question
-     */
-    public TestJson.Question                createQuestion() {
-        TestJson.Question output = new TestJson.Question();
-        output.question = _question.headTagProperty().getValue().text;
-        output.tries = triesSpinner.getValue();
-        output.rounds = roundsSpinner.getValue();
-
-        return output;
+        _output.unbind();
+        _output.bind(Bindings.createObjectBinding(
+                this::createQuestion,
+                _question.headTagProperty(),
+                triesSpinner.valueProperty(),
+                roundsSpinner.valueProperty()));
     }
-    public ObjectProperty<Generatable.Tag>  questionTextProperty() {
-        return _question.headTagProperty();
+    public ObjectProperty<TestJson.Question>    outputProperty() {
+        return _output;
     }
 
     /**
@@ -308,6 +304,18 @@ public class CustomQuestionControl extends TitledPane {
         }
     }
 
+    /**
+     * Creates the new/modified TestJson Question
+     */
+    public TestJson.Question                createQuestion() {
+        TestJson.Question output = new TestJson.Question();
+        output.question = _question.headTagProperty().getValue().text;
+        output.tries = triesSpinner.getValue();
+        output.rounds = roundsSpinner.getValue();
+
+        return output;
+    }
+
     private int             startOf(Pair<Generatable.Tag, Integer> tag) {
         return tag.getValue();
     }
@@ -329,10 +337,10 @@ public class CustomQuestionControl extends TitledPane {
                                                             Generatable.Tag oldTag,
                                                             Generatable.Tag newTag) ->
                                                                 updateFlow();
+    private ObjectProperty<TestJson.Question> _output = new SimpleObjectProperty<>();
 
     private Generatable     _selected;
     private Region          _selectedControl;
-
     private Question        _question;
 
     @FXML private HBox              mainBox;
