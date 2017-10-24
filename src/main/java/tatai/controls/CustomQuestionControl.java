@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -21,12 +22,15 @@ import tatai.model.question.*;
  * Allows the user to create their own question
  */
 public class CustomQuestionControl extends TitledPane {
-    static class RangeControl extends Region {
+    static class RangeControl extends VBox {
         public RangeControl(Range range) {
+            setSpacing(10);
+            setAlignment(Pos.CENTER);
+
             _minFld = new Spinner<>(1, 99, range.minProperty().get());
             _maxFld = new Spinner<>(1, 99, range.maxProperty().get());
 
-            getChildren().add(new VBox(10, _minFld, _maxFld));
+            getChildren().addAll(_minFld, _maxFld);
 
             range.minProperty().bind(_minFld.valueProperty());
             range.maxProperty().bind(_maxFld.valueProperty());
@@ -37,9 +41,22 @@ public class CustomQuestionControl extends TitledPane {
 
         private Range range;
     }
-    static class OperationControl extends Region {
+    static class OperationControl extends HBox {
         public OperationControl(Operation operation) {
-            getChildren().add(new VBox(10, _parenthesisedBox, new VBox(5, _operatorBoxes)));
+            setSpacing(10);
+            setAlignment(Pos.CENTER);
+
+            GridPane grid = new GridPane();
+            grid.setVgap(5);
+            grid.setHgap(5);
+            grid.setAlignment(Pos.CENTER);
+
+            grid.add(_operatorBoxes[0], 0, 0);
+            grid.add(_operatorBoxes[1], 1, 0);
+            grid.add(_operatorBoxes[2], 0, 1);
+            grid.add(_operatorBoxes[3], 1, 1);
+
+            getChildren().addAll(_parenthesisedBox, grid);
 
             _operation = operation;
 
@@ -103,6 +120,8 @@ public class CustomQuestionControl extends TitledPane {
         _main.setAlignment(Pos.CENTER);
 
         VBox left = new VBox(15, _textFlow, new HBox(20, _addBtn, _deleteBtn));
+        left.setAlignment(Pos.CENTER);
+
         _main.getChildren().add(left);
 
         setContent(_main);
