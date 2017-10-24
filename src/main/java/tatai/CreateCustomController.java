@@ -75,10 +75,7 @@ public class CreateCustomController extends Controller{
             return;
         }
 
-        if(_selectedQuestion == null)
-            _selectedQuestion = new CustomQuestionControl(_questions.get(next));
-        else
-            _selectedQuestion.switchQuestion(_questions.get(next));
+        _selectedQuestion = new CustomQuestionControl(_questions.get(next));
 
         if(_questionListener != null)
             _selectedQuestion.outputProperty().removeListener(_questionListener);
@@ -86,8 +83,7 @@ public class CreateCustomController extends Controller{
         _questionListener = (observable, oldValue, newValue) -> _questions.set(next, newValue);
         _selectedQuestion.outputProperty().addListener(_questionListener);
 
-        if(!customPane.getChildren().contains(_selectedQuestion))
-            customPane.getChildren().setAll(_selectedQuestion);
+        customPane.getChildren().setAll(_selectedQuestion);
     }
     private void addQuestion() {
         _questions.add(new TestJson.Question());
