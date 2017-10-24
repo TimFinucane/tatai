@@ -240,6 +240,8 @@ public class CreateCustomController extends Controller {
         if(_questionListener != null)
             _selectedQuestion.outputProperty().removeListener(_questionListener);
 
+        getChildren().remove(_selectedQuestion);
+
         _selectedQuestion = new CustomQuestionControl(_questions.get(next));
 
         // Change the list view text when the selected question changes
