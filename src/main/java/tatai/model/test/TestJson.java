@@ -5,9 +5,22 @@ package tatai.model.test;
  */
 public class TestJson {
     public static class Question {
+        public Question() {
+            rounds = 1;
+            tries = 2;
+            timelimit = 0.0;
+            question = new tatai.model.question.Question().headTagProperty().getValue().text;
+        }
+        public Question(String question, int rounds, int tries, double timelimit) {
+            this.question = question;
+            this.rounds = rounds;
+            this.tries = tries;
+            this.timelimit = timelimit;
+        }
+
         public int      rounds;
-        public int      tries = 0;
-        public int      timelimit = 0;
+        public int      tries;
+        public double   timelimit;
         public String   question;
     }
 

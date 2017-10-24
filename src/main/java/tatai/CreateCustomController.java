@@ -3,9 +3,9 @@ package tatai;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -14,7 +14,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
 import tatai.controls.CustomQuestionControl;
-import tatai.model.question.Question;
+import tatai.model.question.Generatable;
 import tatai.model.test.TestJson;
 import tatai.model.test.TestParser;
 
@@ -30,24 +30,21 @@ public class CreateCustomController extends Controller{
 
         questionList.setItems(_questions);
 
-        questionList.setCellFactory(questionView -> new ListCell<Question>(){
+        questionList.setCellFactory(questionView -> new ListCell<TestJson.Question>(){
             @Override
-            protected void updateItem(Question question, boolean bln) {
+            protected void updateItem(TestJson.Question question, boolean bln) {
                 super.updateItem(question, bln);
                 if (question != null) {
-                    textProperty().bind(Bindings.createObjectBinding(
-                            () -> question.headTagProperty().getValue().text,
-                            question.headTagProperty()
-                    ));
+                    setText(question.question);
                 }
             }
         });
 
-        questionList.getSelectionModel().selectedItemProperty().addListener(
-                (ObservableValue<? extends Question> val,
-                 Question oldVal,
-                 Question newVal) ->
-                        Platform.runLater(() -> select(newVal))
+        questionList.getSelectionModel().selectedIndexProperty().addListener(
+                (ObservableValue<? extends Number> val,
+                 Number oldVal,
+                 Number newVal) ->
+                    Platform.runLater(() -> select(newVal.intValue()))
         );
 
         addQuestionBtn.setOnAction(e -> addQuestion());
@@ -70,34 +67,46 @@ public class CreateCustomController extends Controller{
         }
     }
 
-    private void select(Question next) {
-        if(next == null) {
+    private void select(int next) {
+        if(next < 0) {
             getChildren().remove(_selectedQuestion);
             return;
         }
 
         if(_selectedQuestion == null)
-            _selectedQuestion = new CustomQuestionControl(next);
+            _selectedQuestion = new CustomQuestionControl(_questions.get(next));
         else
-            _selectedQuestion.switchQuestion(next);
+            _selectedQuestion.switchQuestion(_questions.get(next));
+
+        if(_tagListener != null)
+            _selectedQuestion.questionTextProperty().removeListener(_tagListener);
+
+        _tagListener = (observable, oldValue, newValue) -> updateText(next, newValue);
+        _selectedQuestion.questionTextProperty().addListener(_tagListener);
 
         if(!getChildren().contains(_selectedQuestion))
             getChildren().add(_selectedQuestion);
     }
     private void addQuestion() {
-        _questions.add(new Question());
-        select(_questions.get(_questions.size() - 1));
+        _questions.add(new TestJson.Question());
+        select(_questions.size() - 1);
     }
 
-    private ListProperty<Question>          _questions = new SimpleListProperty<>(FXCollections.observableArrayList());
+    private void updateText(int index, Generatable.Tag newVal) {
+        TestJson.Question question = _questions.get(index);
+        question.question = newVal.text;
+        _questions.set(index, question);
+    }
 
-    private CustomQuestionControl           _selectedQuestion = null;
+    private ListProperty<TestJson.Question>     _questions = new SimpleListProperty<>(FXCollections.observableArrayList());
+    private CustomQuestionControl               _selectedQuestion = null;
+    private ChangeListener<Generatable.Tag>     _tagListener = null;
 
     // JavaFX controls
-    @FXML private JFXTextField              nameTxt;
-    @FXML private CheckBox                  practiceCheck;
-    @FXML private CheckBox                  randomizeCheck;
-    @FXML private TableView<Prerequisite>   prerequisiteTable;
-    @FXML private ListView<Question>        questionList;
-    @FXML private JFXButton                 addQuestionBtn;
+    @FXML private JFXTextField                  nameTxt;
+    @FXML private CheckBox                      practiceCheck;
+    @FXML private CheckBox                      randomizeCheck;
+    @FXML private TableView<Prerequisite>       prerequisiteTable;
+    @FXML private ListView<TestJson.Question>   questionList;
+    @FXML private JFXButton                     addQuestionBtn;
 }

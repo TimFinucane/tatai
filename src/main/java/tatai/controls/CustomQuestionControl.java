@@ -1,9 +1,13 @@
 package tatai.controls;
 
+import com.jfoenix.controls.JFXButton;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -11,6 +15,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
 import tatai.model.question.*;
+import tatai.model.test.TestJson;
+import util.Views;
 
 import java.util.Optional;
 
@@ -18,15 +24,25 @@ import java.util.Optional;
  * Allows the user to create their own question
  */
 public class CustomQuestionControl extends TitledPane {
-    static class RangeControl extends VBox {
+    static class RangeControl extends TitledPane {
         public RangeControl(Range range) {
-            setSpacing(10);
+            setText("Range");
             setAlignment(Pos.CENTER);
+
+            GridPane main = new GridPane();
+            main.setVgap(10);
+            main.setHgap(5);
+            main.setAlignment(Pos.CENTER);
 
             _minFld = new Spinner<>(1, 99, range.minProperty().get());
             _maxFld = new Spinner<>(1, 99, range.maxProperty().get());
 
-            getChildren().addAll(_minFld, _maxFld);
+            main.add(new Label("Min"), 0, 0);
+            main.add(new Label("Max"), 0, 1);
+            main.add(_minFld, 1, 0);
+            main.add(_maxFld, 1, 1);
+
+            setContent(main);
 
             range.minProperty().bind(_minFld.valueProperty());
             range.maxProperty().bind(_maxFld.valueProperty());
@@ -37,10 +53,13 @@ public class CustomQuestionControl extends TitledPane {
 
         private Range range;
     }
-    static class OperationControl extends HBox {
+    static class OperationControl extends TitledPane {
         public OperationControl(Operation operation) {
-            setSpacing(10);
             setAlignment(Pos.CENTER);
+            setText("Operation");
+
+            HBox main = new HBox(10);
+            main.setAlignment(Pos.CENTER);
 
             GridPane grid = new GridPane();
             grid.setVgap(5);
@@ -52,7 +71,9 @@ public class CustomQuestionControl extends TitledPane {
             grid.add(_operatorBoxes[2], 0, 1);
             grid.add(_operatorBoxes[3], 1, 1);
 
-            getChildren().addAll(_parenthesisedBox, grid);
+            main.getChildren().addAll(_parenthesisedBox, grid);
+
+            setContent(main);
 
             _operation = operation;
 
@@ -96,55 +117,60 @@ public class CustomQuestionControl extends TitledPane {
     }
 
     /**
-     * Creates an all new question
-     */
-    public CustomQuestionControl() {
-        this(new Question());
-    }
-
-    /**
      * Allows the user to modify the given question (in string form)
      */
-    public CustomQuestionControl(Question question) {
-        _question = question;
+    public CustomQuestionControl(TestJson.Question question) {
+        Views.load("CustomQuestion", this, this);
 
-        setText("Question");
-        setCollapsible(false);
+        // Initialize allowable range for spinner
+        triesSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 2));
+        roundsSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 1));
 
-        _textFlow.setAlignment(Pos.CENTER);
-
-        setAlignment(Pos.CENTER);
-        _main.setAlignment(Pos.CENTER);
-
-        VBox left = new VBox(15, _textFlow, new HBox(20, _addBtn, _deleteBtn));
-        left.setAlignment(Pos.CENTER);
-
-        _main.getChildren().add(left);
-
-        setContent(_main);
-
-        question.headTagProperty().addListener(
-                (ObservableValue<? extends Generatable.Tag> obs,
-                 Generatable.Tag oldTag,
-                 Generatable.Tag newTag) ->
-                    updateFlow());
+        switchQuestion(question);
 
         updateFlow();
         select(_question.head());
 
-        _addBtn.setOnAction(event -> addOperation());
-        _deleteBtn.setOnAction(event -> remove());
+        addBtn.setOnAction(event -> addOperation());
+        deleteBtn.setOnAction(event -> remove());
     }
 
-    public void             switchQuestion(Question question) {
-        switchRoot(question.head());
+    /**
+     * Changes to represent given question
+     */
+    public void                             switchQuestion(TestJson.Question question) {
+        if(_question != null)
+            _question.headTagProperty().removeListener(_tagListener);
+
+        _question = QuestionReader.read(question.question);
+        switchRoot(_question.head());
+
+        triesSpinner.getValueFactory().setValue(question.tries);
+        roundsSpinner.getValueFactory().setValue(question.rounds);
+
+        _question.headTagProperty().addListener(_tagListener);
+    }
+
+    /**
+     * Creates the new/modified TestJson Question
+     */
+    public TestJson.Question                createQuestion() {
+        TestJson.Question output = new TestJson.Question();
+        output.question = _question.headTagProperty().getValue().text;
+        output.tries = triesSpinner.getValue();
+        output.rounds = roundsSpinner.getValue();
+
+        return output;
+    }
+    public ObjectProperty<Generatable.Tag>  questionTextProperty() {
+        return _question.headTagProperty();
     }
 
     /**
      * Updates the textflow with new tag structure
      */
     private void            updateFlow() {
-        _textFlow.getChildren().clear();
+        textFlow.getChildren().clear();
 
         updateFlow(_question.headTagProperty().getValue(), 0);
     }
@@ -182,7 +208,7 @@ public class CustomQuestionControl extends TitledPane {
      * Switches to viewing the QuestionPart the user clicked on
      */
     private void            select(Generatable part) {
-        _main.getChildren().remove(_selectedControl);
+        mainBox.getChildren().remove(_selectedControl);
         _selected = part;
 
         if(part instanceof Range)
@@ -190,7 +216,7 @@ public class CustomQuestionControl extends TitledPane {
         else
             _selectedControl = new OperationControl((Operation)part);
 
-        _main.getChildren().add(_selectedControl);
+        mainBox.getChildren().add(_selectedControl);
     }
 
     private void            addText(Generatable.Tag tag, int start, int end, int depth) {
@@ -204,7 +230,7 @@ public class CustomQuestionControl extends TitledPane {
         // Ensure that when the user clicks this bit, we select it
         text.setOnMouseClicked(event -> select(tag.owner));
 
-        _textFlow.getChildren().add(text);
+        textFlow.getChildren().add(text);
     }
     private void            addText(Generatable.Tag tag, int depth) {
         addText(tag, 0, tag.text.length(), depth);
@@ -225,7 +251,7 @@ public class CustomQuestionControl extends TitledPane {
         }
     }
 
-    public void             switchRoot(Generatable root) {
+    private void            switchRoot(Generatable root) {
         _question.switchHead(root);
 
         updateFlow();
@@ -289,15 +315,6 @@ public class CustomQuestionControl extends TitledPane {
         return tag.getValue() + tag.getKey().text.length();
     }
 
-    private HBox            _main = new HBox(15);
-    private FlowPane        _textFlow = new FlowPane();
-    private Button          _addBtn = new Button("Add");
-    private Button          _deleteBtn = new Button("Delete");
-
-    private Generatable     _selected;
-    private Region          _selectedControl;
-
-    private Question        _question;
 
     // TODO: Give to CSS to choose?
     // Colours for the text flow
@@ -307,4 +324,21 @@ public class CustomQuestionControl extends TitledPane {
             Color.ROSYBROWN,
             Color.AZURE
     };
+
+    private ChangeListener<Generatable.Tag> _tagListener = (ObservableValue<? extends Generatable.Tag> obs,
+                                                            Generatable.Tag oldTag,
+                                                            Generatable.Tag newTag) ->
+                                                                updateFlow();
+
+    private Generatable     _selected;
+    private Region          _selectedControl;
+
+    private Question        _question;
+
+    @FXML private HBox              mainBox;
+    @FXML private FlowPane          textFlow;
+    @FXML private JFXButton         addBtn;
+    @FXML private JFXButton         deleteBtn ;
+    @FXML private Spinner<Integer>  triesSpinner;
+    @FXML private Spinner<Integer>  roundsSpinner;
 }
