@@ -206,18 +206,20 @@ public class CustomQuestionControl extends TitledPane {
             return;
         }
 
+        depth += 1;
+
         // Colour text before the first tag as the root tag
         if(startOf(rootTag.tags[0]) > 0)
             addText(rootTag, 0, startOf(rootTag.tags[0]), depth);
 
-        updateFlow(rootTag.tags[0].getKey(), depth + 1);
+        updateFlow(rootTag.tags[0].getKey(), depth);
 
         for(int i = 1; i < rootTag.tags.length; i++) {
             // Colour space between previous and this tag as root
             if(endOf(rootTag.tags[i-1]) < startOf(rootTag.tags[i]))
                 addText(rootTag, endOf(rootTag.tags[i-1]), startOf(rootTag.tags[i]), depth);
 
-            updateFlow(rootTag.tags[i].getKey(), depth + 1);
+            updateFlow(rootTag.tags[i].getKey(), depth);
         }
 
         // Colour text after last tag
