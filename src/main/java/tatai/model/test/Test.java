@@ -10,11 +10,26 @@ import java.util.Collections;
  * Base model class for testing.
  */
 public class Test {
+    public static class Memento {
+        private Memento(int index, int round) {
+            this.index = index;
+            this.round = round;
+        }
+
+        public int index;
+        public int round;
+    }
+
     public Test(TestJson info) {
         _questions = info.questions;
         _randomize = info.randomizeQuestions;
 
         reset();
+    }
+    public Test(TestJson info, Memento memento) {
+        this(info);
+        _curIndex = memento.index;
+        _curRound = memento.round;
     }
 
 	public int          			score() {
@@ -63,6 +78,10 @@ public class Test {
         }
 
         _curQuestion = new Question(_questions[0]);
+    }
+
+    public Memento                  memento() {
+        return new Memento(_curIndex, _curRound);
     }
 
     private int 	    			_score = 0;
