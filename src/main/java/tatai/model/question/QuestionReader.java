@@ -1,5 +1,6 @@
 package tatai.model.question;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -11,7 +12,8 @@ public class QuestionReader {
      * Reads the given string, assuming it is in question format.
      * TODO: Produce documentation for question format
      */
-    public static Question read(String question) {
+    @Nonnull
+    public static Question  read(String question) {
         // Stores the generatables that are created throughout
         ArrayList<Generatable> _elements = new ArrayList<>();
 
@@ -33,22 +35,36 @@ public class QuestionReader {
         StringBuffer sBuffer = rangeless;
         for(List<Operator.Type> operatorList : operators) {
             precedencesList.addAll(operatorList);
-            Pattern highPrecedence = Pattern.compile(opsPattern(precedencesList));
+            Pattern precedence = Pattern.compile(opsPattern(precedencesList));
 
-            matches = highPrecedence.matcher(sBuffer.toString());
+            while(true){
+                matches = precedence.matcher(sBuffer.toString());
 
-            StringBuffer opLess = new StringBuffer();
-            while( matches.find() ) {
-                matches.appendReplacement(opLess, Integer.toString(_elements.size()));
-                // And create an op
-                Generatable left = _elements.get(Integer.valueOf(matches.group(1)));
-                Generatable right = _elements.get(Integer.valueOf(matches.group(3)));
+                if(!matches.find())
+                    break;
+                else
+                    matches.reset();
 
-                _elements.add(new Operation(left, right, Operator.Type.createOperators(matches.group(2))));
+                StringBuffer opLess = new StringBuffer();
+                while(matches.find()) {
+                    // Add text to opLess
+                    matches.appendReplacement(opLess, Integer.toString(_elements.size()));
+
+                    // And create an op
+                    Generatable left = _elements.get(Integer.valueOf(matches.group(1)));
+                    Generatable right = _elements.get(Integer.valueOf(matches.group(3)));
+
+                    _elements.add(new Operation(
+                            left,
+                            right,
+                            !matches.group(4).isEmpty(), // Parentheses
+                            Operator.Type.createOperators(matches.group(2))
+                    ));
+                }
+                // Finish replacement
+                matches.appendTail(opLess);
+                sBuffer = opLess;
             }
-            matches.appendTail(opLess);
-
-            sBuffer = opLess;
         }
 
         // TODO: Read other info at this point, like tries=(int) and time=(double)...
@@ -62,12 +78,13 @@ public class QuestionReader {
     /**
      * Produces a pattern that searches for a use of any of the given ops in the form (operand OPERATOR operand)
      */
-    private static String                   opsPattern(List<Operator.Type> ops) {
+    @Nonnull
+    private static String   opsPattern(List<Operator.Type> ops) {
         StringBuilder output = new StringBuilder("\\(?(\\d+) \\[((?:");
         for(Operator.Type op : ops)
             output.append(Pattern.quote(op.symbol())).append("|");
 
-        output.append(",\\s)+)\\] (\\d+)\\)?");
+        output.append(",\\s)+)\\] (\\d+)(\\)?)");
 
         return output.toString();
     }

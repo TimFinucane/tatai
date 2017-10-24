@@ -16,9 +16,12 @@ import java.io.IOException;
  * A window in which the user can select a test
  */
 public abstract class SelectController extends Controller {
-    SelectController() {
+    SelectController(String user, String title) {
         loadFxml("select/Select");
         createBasicTests();
+
+        this.user = user;
+        this.titleLbl.setText(title);
 
         refreshButtons();
     }
@@ -79,7 +82,7 @@ public abstract class SelectController extends Controller {
         basic.questions[0].question = "(5 to 9) [+] (1 to 4)";
 
         try {
-            TestParser.save("", basic);
+            TestParser.save(basic);
         } catch(IOException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -104,7 +107,7 @@ public abstract class SelectController extends Controller {
         basic.questions[2].question = "(10 to 99) [\u00F7] (1 to 9)";
 
         try {
-            TestParser.save("", basic);
+            TestParser.save(basic);
         } catch(IOException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -121,7 +124,7 @@ public abstract class SelectController extends Controller {
         basic.questions[0].question = "(1 to 9)";
 
         try {
-            TestParser.save("", basic);
+            TestParser.save(basic);
         } catch(IOException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -135,11 +138,13 @@ public abstract class SelectController extends Controller {
         basic.questions[0].question = "(1 to 99)";
 
         try {
-            TestParser.save("", basic);
+            TestParser.save(basic);
         } catch(IOException e) {
             throw new RuntimeException(e.getMessage());
         }
     }
+
+    protected final String  user;
 
     //    JavaFX controls
     @FXML private Label     titleLbl;

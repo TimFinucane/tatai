@@ -1,46 +1,139 @@
 package tatai.model.question;
 
+import javafx.beans.binding.ObjectBinding;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
 import javafx.util.Pair;
 import util.NumberConstraint;
+
+import javax.annotation.Nonnull;
+import java.util.stream.Collectors;
 
 /**
  * A generatable part of a question that uses an operator on two input operands
  */
-class Operation implements Generatable {
-    Operation(Generatable first, Generatable second, Operator[] ops) {
-        _first = first;
-        _operators = ops;
-        _second = second;
+public class Operation extends Generatable {
+    private class TagBinding extends ObjectBinding<Tag> {
+        public Tag computeValue() {
+            return generateTag();
+        }
+
+        public void rebind() {
+            getDependencies().clear();
+            bind(_operands.get(0).tagProperty(), _operands.get(1).tagProperty(), _operators, _enclosed);
+        }
+    }
+
+    public Operation(Generatable first, Generatable second, boolean enclosed, Operator... ops) {
+        first.parent = this;
+        second.parent = this;
+
+        _operands = new SimpleListProperty<>(FXCollections.observableArrayList(first, second));
+        _operators = new SimpleListProperty<>(FXCollections.observableArrayList(ops));
+        _enclosed.setValue(enclosed);
+
+        _binding.rebind();
+        bindGeneratable(_binding);
     }
 
     @Override
     public Pair<String, Integer>    generate(NumberConstraint constraint) {
         // Choose op to use
-        _op = _operators[(int)(Math.random() * _operators.length)];
+        _op = _operators.get((int)(Math.random() * _operators.size()));
 
         // Start generation
-        Pair<String, Integer> right = _second.generate(_op.chooseRight(constraint));
-        Pair<String, Integer> left = _first.generate(_op.chooseLeft(constraint, right.getValue()));
+        Pair<String, Integer> right = _operands.get(1).generate(_op.chooseRight(constraint));
+        Pair<String, Integer> left = _operands.get(0).generate(_op.chooseLeft(constraint, right.getValue()));
 
-        String question = tryEnclose(_first, left.getKey()) + _op.symbol() +
-                          tryEnclose(_second, right.getKey());
+        String question = tryEnclose(_operands.get(0), left.getKey()) + _op.symbol() +
+                          tryEnclose(_operands.get(1), right.getKey());
 
         return new Pair<>(question, _op.apply(left.getValue(), right.getValue()));
+    }
+
+    @Nonnull
+    public Tag                      generateTag() {
+        int firstIndex = 0;
+        int secondIndex = 0;
+
+        Tag firstTag = _operands.get(0).tagProperty().getValue();
+        Tag secondTag = _operands.get(1).tagProperty().getValue();
+
+        StringBuilder builder = new StringBuilder();
+
+        if(_enclosed.get())
+            builder.append('(');
+
+        // First part
+        firstIndex = builder.length();
+        builder.append(firstTag.text);
+
+        builder.append(" [");
+        builder.append(_operators.stream().map(Operator::symbol).collect(Collectors.joining(", ")));
+        builder.append("] ");
+
+        // Second part
+        secondIndex = builder.length();
+        builder.append(secondTag.text);
+
+        if(_enclosed.get())
+            builder.append(')');
+
+        return new Tag(this, builder.toString(),
+                new Pair<>(firstTag, firstIndex),
+                new Pair<>(secondTag, secondIndex));
+    }
+
+    /**
+     * Replaces the Generatable at operand index (0 = left, 1 = right for binary) with the new given part
+     */
+    public void replace(int operand, Generatable part) {
+        if(_operands.get(operand).parent == this)
+            _operands.get(operand).parent = null;
+
+        _operands.set(operand, part);
+
+        part.parent = this;
+
+        _binding.rebind();
+    }
+
+    /**
+     * Replaces the old with the new, if the old exists as a direct child of this
+     */
+    public void replace(Generatable oldPart, Generatable newPart) {
+        for(int i = 0; i < _operands.size(); ++i)
+            if(_operands.get(i) == oldPart)
+                replace(i, newPart);
     }
 
     /**
      * Encloses the op string in brackets if the operation generating it has lower precedence than this one
      */
-    private String                  tryEnclose(Generatable generatable, String op) {
-        if( generatable instanceof Operation && ((Operation) generatable)._op.precedence() < _op.precedence())
+    private String                      tryEnclose(Generatable generatable, String op) {
+        if(generatable instanceof Operation && ((Operation) generatable)._op.precedence() < _op.precedence() ||
+           _enclosed.getValue())
             return "(" + op + ")";
         else
             return op;
     }
 
-    private Generatable _first;
-    private Generatable _second;
+    public BooleanProperty              enclosedProperty() {
+        return _enclosed;
+    }
+    public ListProperty<Operator>       operatorsProperty() {
+        return _operators;
+    }
+    public ListProperty<Generatable>    operandsProperty() { return _operands; }
 
-    private Operator    _op;
-    private Operator[]  _operators;
+    private Operator                    _op;
+
+    private TagBinding                  _binding = new TagBinding();
+
+    private ListProperty<Generatable>   _operands;
+    private BooleanProperty             _enclosed = new SimpleBooleanProperty();
+    private ListProperty<Operator>      _operators;
 }
