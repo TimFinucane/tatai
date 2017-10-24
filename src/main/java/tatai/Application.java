@@ -94,7 +94,7 @@ public class Application extends javafx.application.Application implements Sideb
                 setUserAgentStylesheet("/tatai/stylesheets/LightMode.css");
             else if(type == dark)
                 setUserAgentStylesheet("/tatai/stylesheets/DarkMode.css");
-        });;
+        });
     }
 
     /**
@@ -108,8 +108,9 @@ public class Application extends javafx.application.Application implements Sideb
      * Set the main panel to the given screen, running the given runnable when it exits
      */
     private void setScreen(Controller controller, Consumer<Controller.ReturnState> onExit) {
-        if(_curScreen != null)
-            _curScreen.exit();
+        // Try to exit previous screen. If we can't, then dont bother
+        if(_curScreen != null && !_curScreen.exit())
+            return;
 
         _curScreen = controller;
 

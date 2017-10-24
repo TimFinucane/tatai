@@ -27,19 +27,23 @@ public abstract class Controller extends VBox {
     }
 
     /**
-     * Exits this controller
+     * Exits this controller.
+     * @return whether or not the controller actually relinquished control
      */
-    public void     exit() {
-        exit(ReturnState.QUIT);
+    public boolean      exit() {
+        return exit(ReturnState.QUIT);
     }
-    protected void  exit(ReturnState state) {
-        if(_child != null)
-            _child.exit();
+    protected boolean   exit(ReturnState state) {
+        // Try to exit child screen. If we can't, then don't bother
+        if(_child != null && !_child.exit(state))
+            return false;
 
         pane().getChildren().remove(this);
 
         if(_onExit != null)
             _onExit.accept(state);
+
+        return true;
     }
 
     /**
@@ -58,6 +62,7 @@ public abstract class Controller extends VBox {
         parent.getChildren().remove(this);
         controller.onExit((state) -> {
             display(parent);
+            _child = null;
 
             if(childExit != null)
                 childExit.accept(state);

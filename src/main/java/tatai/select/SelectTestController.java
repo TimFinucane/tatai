@@ -6,7 +6,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import tatai.Controller;
 import tatai.CreateCustomController;
 import tatai.model.ScoreKeeper;
 import tatai.model.test.TestJson;
@@ -89,9 +88,7 @@ public abstract class SelectTestController extends SelectController {
             }
             @Override
             void        buttonPressed(TestJson json) {
-                Controller controller = new CreateCustomController(user, json);
-                controller.onExit((state) -> exit(ReturnState.FINISHED));
-                displayChild(controller);
+                displayChild(new CreateCustomController(user, json));
             }
         });
     }

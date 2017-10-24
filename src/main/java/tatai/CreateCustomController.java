@@ -161,6 +161,21 @@ public class CreateCustomController extends Controller {
         _prerequisites.setAll(Arrays.stream(test.prerequisites).map(Prerequisite::new).toArray(Prerequisite[]::new));
     }
 
+    @Override
+    protected boolean exit(ReturnState state) {
+        if(state != ReturnState.FINISHED) {
+            boolean willReturn = new Alert(Alert.AlertType.WARNING,
+                    "Are you sure you want to exit and lose all modifications?",
+                    ButtonType.YES, ButtonType.NO)
+                    .showAndWait()
+                    .filter(type -> type == ButtonType.YES).isPresent();
+
+            return willReturn && super.exit(state); // Will only try to exit if willReturn is true. KEEP THAT IN MIND PLS.
+        } else {
+            return super.exit(state);
+        }
+    }
+
     private void createTest() {
         // Check constraints
         if(nameTxt.getText().isEmpty()) {
@@ -212,6 +227,8 @@ public class CreateCustomController extends Controller {
         } catch(IOException e) {
             throw new RuntimeException(e.getMessage());
         }
+
+        exit(ReturnState.FINISHED);
     }
 
     private void selectQuestion(int next) {
