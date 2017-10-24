@@ -6,15 +6,11 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.util.Pair;
 import tatai.model.question.*;
 
@@ -199,8 +195,12 @@ public class CustomQuestionControl extends TitledPane {
     }
 
     private void            addText(Generatable.Tag tag, int start, int end, int depth) {
-        Text text = new Text(tag.text.substring(start, end));
-        text.setFill(colours[depth % colours.length]);
+        Label text = new Label(tag.text.substring(start, end));
+        text.setPrefWidth(text.getMinWidth());
+        text.setPrefHeight(text.getMinHeight());
+
+        Color c = colours[depth % colours.length];
+        text.setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
 
         // Ensure that when the user clicks this bit, we select it
         text.setOnMouseClicked(event -> select(tag.owner));
@@ -299,7 +299,7 @@ public class CustomQuestionControl extends TitledPane {
     private StringProperty  _serializeProperty = new SimpleStringProperty();
 
     private HBox            _main = new HBox(15);
-    private TextFlow        _textFlow = new TextFlow();
+    private FlowPane        _textFlow = new FlowPane();
     private Button          _addBtn = new Button("Add");
     private Button          _deleteBtn = new Button("Delete");
 
