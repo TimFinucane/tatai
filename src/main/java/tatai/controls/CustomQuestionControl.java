@@ -1,6 +1,8 @@
 package tatai.controls;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -33,6 +35,12 @@ public class CustomQuestionControl extends TitledPane {
         triesSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 2));
         roundsSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 1));
 
+        // Don't know whether JavaFX 8u40 is supported. Enforces a number only
+        timelimitTxt.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[\\d.]*"))
+                Platform.runLater(() -> timelimitTxt.setText(oldValue));
+        });
+
         switchQuestion(question);
 
         addBtn.setOnAction(event -> addOperation());
@@ -48,12 +56,12 @@ public class CustomQuestionControl extends TitledPane {
             _question.headTagProperty().removeListener(_tagListener);
 
         _question = QuestionReader.read(question.question);
-        switchRoot(_question.head());
+        _question.headTagProperty().addListener(_tagListener);
 
+        // Set question values
         triesSpinner.getValueFactory().setValue(question.tries);
         roundsSpinner.getValueFactory().setValue(question.rounds);
-
-        _question.headTagProperty().addListener(_tagListener);
+        timelimitTxt.setText(question.timelimit < 1.0 ? "" : Double.toString(question.timelimit));
 
         _output.unbind();
         _output.bind(Bindings.createObjectBinding(
@@ -62,7 +70,7 @@ public class CustomQuestionControl extends TitledPane {
                         _question.headTagProperty().getValue().text,
                         triesSpinner.getValue(),
                         roundsSpinner.getValue(),
-                        -1.0),
+                        timelimitTxt.getText().equals("") ? -1.0 : Double.parseDouble(timelimitTxt.getText())),
                 // Relies on these properties
                 _question.headTagProperty(),
                 triesSpinner.valueProperty(),
@@ -180,9 +188,10 @@ public class CustomQuestionControl extends TitledPane {
                 new Alert(Alert.AlertType.ERROR,
                         "Can't remove this or there won't be anything in your question!");
             } else if(_selected instanceof Operation) {
-                switchRoot(((Operation)_selected).operandsProperty().get(0));
+                Generatable newRoot = ((Operation)_selected).operandsProperty().get(0);
                 // Sever connection with new _root. Seems odd, but ensures _root has no parent and is top of structure
                 ((Operation)_selected).replace(0, new Range());
+                switchRoot(newRoot);
             }
         } else {
             if(_selected instanceof Range) {
@@ -261,6 +270,7 @@ public class CustomQuestionControl extends TitledPane {
     @FXML private JFXButton         deleteBtn ;
     @FXML private Spinner<Integer>  triesSpinner;
     @FXML private Spinner<Integer>  roundsSpinner;
+    @FXML private JFXTextField      timelimitTxt;
     @FXML private JFXButton         generateBtn;
     @FXML private Label             generateLbl;
 }
