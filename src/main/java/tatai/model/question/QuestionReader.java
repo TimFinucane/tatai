@@ -35,28 +35,36 @@ public class QuestionReader {
         StringBuffer sBuffer = rangeless;
         for(List<Operator.Type> operatorList : operators) {
             precedencesList.addAll(operatorList);
-            Pattern highPrecedence = Pattern.compile(opsPattern(precedencesList));
+            Pattern precedence = Pattern.compile(opsPattern(precedencesList));
 
-            matches = highPrecedence.matcher(sBuffer.toString());
+            while(true){
+                matches = precedence.matcher(sBuffer.toString());
 
-            StringBuffer opLess = new StringBuffer();
-            while(matches.find()) {
-                matches.appendReplacement(opLess, Integer.toString(_elements.size()));
-                // And create an op
-                Generatable left = _elements.get(Integer.valueOf(matches.group(1)));
-                Generatable right = _elements.get(Integer.valueOf(matches.group(3)));
+                if(!matches.find())
+                    break;
+                else
+                    matches.reset();
 
-                // TODO: Remember parentheses
-                _elements.add(new Operation(
-                        left,
-                        right,
-                        false,
-                        Operator.Type.createOperators(matches.group(2))
-                ));
+                StringBuffer opLess = new StringBuffer();
+                while(matches.find()) {
+                    // Add text to opLess
+                    matches.appendReplacement(opLess, Integer.toString(_elements.size()));
+
+                    // And create an op
+                    Generatable left = _elements.get(Integer.valueOf(matches.group(1)));
+                    Generatable right = _elements.get(Integer.valueOf(matches.group(3)));
+
+                    _elements.add(new Operation(
+                            left,
+                            right,
+                            !matches.group(4).isEmpty(), // Parentheses
+                            Operator.Type.createOperators(matches.group(2))
+                    ));
+                }
+                // Finish replacement
+                matches.appendTail(opLess);
+                sBuffer = opLess;
             }
-            matches.appendTail(opLess);
-
-            sBuffer = opLess;
         }
 
         // TODO: Read other info at this point, like tries=(int) and time=(double)...
@@ -76,7 +84,7 @@ public class QuestionReader {
         for(Operator.Type op : ops)
             output.append(Pattern.quote(op.symbol())).append("|");
 
-        output.append(",\\s)+)\\] (\\d+)\\)?");
+        output.append(",\\s)+)\\] (\\d+)(\\)?)");
 
         return output.toString();
     }
