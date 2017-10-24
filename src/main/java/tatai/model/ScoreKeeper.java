@@ -39,7 +39,7 @@ public class ScoreKeeper {
     public ScoreKeeper(String username) {
         _username = username;
         // Read JSON
-        try(FileReader reader = new FileReader(Files.scoreFile(_username))) {
+        try(FileReader reader = new FileReader(Files.userFile(_username))) {
             Collections.addAll(_tests, _gson.fromJson(reader, Test[].class));
         } catch(FileNotFoundException e) {
             /* Do nothing. Doesnt exist yet */
@@ -80,11 +80,11 @@ public class ScoreKeeper {
     // Removes all scores
     public void             clear() {
         _tests.clear();
-        Files.scoreFile(_username).delete();
+        Files.userFile(_username).delete();
     }
 
     private void            save() {
-        try(FileWriter writer = new FileWriter(Files.scoreFile(_username))) {
+        try(FileWriter writer = new FileWriter(Files.userFile(_username))) {
             _gson.toJson(_tests, writer);
         } catch(IOException e) {
             Logger.logMsg(Logger.ERROR, "Error writing to " + _username + " score file");

@@ -11,6 +11,7 @@ import tatai.Controller;
 import tatai.model.ScoreKeeper;
 import tatai.model.test.TestJson;
 import tatai.model.test.TestParser;
+import util.Files;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -39,7 +40,7 @@ public abstract class SelectController extends Controller {
     private void        refreshButtons() {
         flowPane.getChildren().clear();
 
-        for(String testName : TestParser.listTests()) {
+        for(String testName : Files.listTests()) {
             TestJson info;
             try {
                 info = TestParser.read(testName);
@@ -92,7 +93,7 @@ public abstract class SelectController extends Controller {
      * Temporary method for creating basic tests if they are not already made
      */
     private static void createBasicTests() {
-        if(TestParser.listTests().contains("Easy"))
+        if( Files.listTests().contains("Easy"))
             return;
 
         TestJson basic = new TestJson();

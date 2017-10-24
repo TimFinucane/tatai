@@ -8,26 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TestParser {
-    /**
-     * Lists the names of all tests available to choose from
-     */
-    public static List<String>  listTests() {
-        ArrayList<String> list = new ArrayList<>();
-
-        File files[] = Files.testFolder().listFiles();
-
-        if(files == null) {
-            return list; // Nothing exists, that's ok
-        }
-
-        for(File file : files) {
-            String name = file.getName();
-            name = name.substring(0, name.lastIndexOf('.'));
-            list.add(name);
-        }
-
-        return list;
-    }
 
     /**
      * Reads a test with the given name. This name must have come from the above

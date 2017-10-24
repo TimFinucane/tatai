@@ -47,7 +47,7 @@ public class LoginController extends Controller {
         }
 
         // Check whether user wants to create a new profile
-        if(!Files.scoreFile(_name).exists())
+        if(!Files.userFile(_name).exists())
             new Alert(Alert.AlertType.CONFIRMATION,
                     "You will be creating a new account. Is this what you want?",
                     ButtonType.YES, ButtonType.NO).showAndWait().filter(response -> ButtonType.YES == response)
