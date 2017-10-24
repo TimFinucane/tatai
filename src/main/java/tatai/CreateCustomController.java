@@ -19,6 +19,8 @@ import tatai.model.test.TestParser;
 import util.Files;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Optional;
 
 public class CreateCustomController extends Controller {
     /**
@@ -77,8 +79,12 @@ public class CreateCustomController extends Controller {
         public IntegerProperty  times = new SimpleIntegerProperty();
     }
 
-    public CreateCustomController() {
+    /**
+     * Creates a new test
+     */
+    public CreateCustomController(String author) {
         loadFxml("CreateCustom");
+        _author = author;
 
         // Questions setup
         questionList.setItems(_questions);
@@ -136,8 +142,37 @@ public class CreateCustomController extends Controller {
         addQuestion(); // Start with one question
     }
 
+    /**
+     * Modifies the given test
+     */
+    public CreateCustomController(String author, TestJson test) {
+        this(author);
+
+        randomizeCheck.setSelected(test.randomizeQuestions);
+        practiceCheck.setSelected(test.practice);
+        nameTxt.setText(test.name);
+
+        _questions.setAll(test.questions);
+        _prerequisites.setAll(Arrays.stream(test.prerequisites).map(Prerequisite::new).toArray(Prerequisite[]::new));
+    }
+
     private void createTest() {
         // Check constraints
+        if(nameTxt.getText().isEmpty()) {
+            new Alert(Alert.AlertType.ERROR, "You haven't named your test!").show();
+            return;
+        }
+
+        if(Files.testFile(nameTxt.getText()).exists()) {
+            Optional<ButtonType> type = new Alert(Alert.AlertType.WARNING,
+                    "This will overwrite a previous test. Are you sure you want to do this?",
+                    ButtonType.YES, ButtonType.NO)
+                    .showAndWait();
+
+            if(!type.isPresent() || type.get() != ButtonType.YES)
+                return;
+        }
+
         if(_questions.size() == 0) {
             new Alert(Alert.AlertType.ERROR, "Can't create a test with no questions!").show();
             return;
@@ -158,8 +193,9 @@ public class CreateCustomController extends Controller {
         // Make it
         TestJson newTest = new TestJson();
         newTest.name = nameTxt.getText();
+        newTest.author = _author;
         newTest.custom = true;
-        newTest.order = -1;
+        newTest.order = -1; // Is custom so no order
         newTest.practice = practiceCheck.isSelected();
         newTest.randomizeQuestions = randomizeCheck.isSelected();
 
@@ -211,6 +247,8 @@ public class CreateCustomController extends Controller {
     private ListProperty<TestJson.Question>     _questions = new SimpleListProperty<>(FXCollections.observableArrayList());
     private CustomQuestionControl               _selectedQuestion = null;
     private ChangeListener<TestJson.Question>   _questionListener = null;
+
+    private String                              _author;
 
     // JavaFX controls
     @FXML private JFXTextField                  nameTxt;
