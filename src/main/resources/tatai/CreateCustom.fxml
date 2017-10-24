@@ -45,8 +45,10 @@
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy></TableView>
-            <JFXButton fx:id="addPrerequisiteBtn" mnemonicParsing="false" text="Add Requisite" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-            <JFXButton fx:id="addQuestionBtn" mnemonicParsing="false" text="Add Question" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+            <JFXButton fx:id="addPrerequisiteBtn" mnemonicParsing="false" text="Add Requisite" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
+            <JFXButton fx:id="addQuestionBtn" mnemonicParsing="false" text="Add Question" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
+            <JFXButton fx:id="deletePrerequisiteBtn" mnemonicParsing="false" text="Delete Requisite" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+            <JFXButton fx:id="deleteQuestionBtn" mnemonicParsing="false" text="Delete Question" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
          </children>
       </GridPane>
       <Pane fx:id="customPane" />

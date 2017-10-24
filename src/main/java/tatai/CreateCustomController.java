@@ -94,6 +94,8 @@ public class CreateCustomController extends Controller {
                 super.updateItem(question, bln);
                 if (question != null) {
                     setText(question.question);
+                } else {
+                    setText("");
                 }
             }
         });
@@ -136,7 +138,11 @@ public class CreateCustomController extends Controller {
         prerequisiteTable.getColumns().addAll(nameCol, scoreCol, timesCol);
 
         addPrerequisiteBtn.setOnAction(e -> addPrerequisite());
+        deletePrerequisiteBtn.setOnAction(e -> deletePrerequisite());
+
         addQuestionBtn.setOnAction(e -> addQuestion());
+        deleteQuestionBtn.setOnAction(e -> deleteQuestion());
+
         createBtn.setOnAction(e -> createTest());
 
         addQuestion(); // Start with one question
@@ -220,6 +226,7 @@ public class CreateCustomController extends Controller {
 
         _selectedQuestion = new CustomQuestionControl(_questions.get(next));
 
+        // Change the list view text when the selected question changes
         _questionListener = (observable, oldValue, newValue) -> _questions.set(next, newValue);
         _selectedQuestion.outputProperty().addListener(_questionListener);
 
@@ -229,10 +236,41 @@ public class CreateCustomController extends Controller {
         _questions.add(new TestJson.Question());
         selectQuestion(_questions.size() - 1);
     }
+    private void deleteQuestion() {
+        int index = questionList.getSelectionModel().getSelectedIndex();
+        if(index >= 0) {
+            _questions.remove(index);
+
+            // Stop listening to it
+            _selectedQuestion.outputProperty().removeListener(_questionListener);
+            _questionListener = null;
+
+            // Display another question if possible
+            if(_questions.size() > index)  // The next question
+                selectQuestion(index);
+            else if(_questions.size() > 0)  // Or the first question
+                selectQuestion(0);
+            else {                          // Or nothing
+                customPane.getChildren().clear();
+                _selectedQuestion = null;
+            }
+        }
+    }
+
     private void addPrerequisite() {
         _prerequisites.add(new Prerequisite());
     }
+    private void deletePrerequisite() {
+        int index = prerequisiteTable.getSelectionModel().getSelectedIndex();
+        if(index >= 0) {
+            _prerequisites.remove(index);
+        }
+    }
 
+    /**
+     * Does a safe check for whether the edited cell remains an integer. If it doesn't, the cell is reverted to it's
+     * previous value and the property is not updated.
+     */
     private void intEditCommit(TableColumn.CellEditEvent<Prerequisite, Integer> cell, IntegerProperty property) {
         if(cell.getNewValue() < 0) { // Indicates an invalid result
             // workaround for refreshing rendered values
@@ -257,7 +295,9 @@ public class CreateCustomController extends Controller {
     @FXML private TableView<Prerequisite>       prerequisiteTable;
     @FXML private ListView<TestJson.Question>   questionList;
     @FXML private JFXButton                     addQuestionBtn;
+    @FXML private JFXButton                     deleteQuestionBtn;
     @FXML private JFXButton                     addPrerequisiteBtn;
+    @FXML private JFXButton                     deletePrerequisiteBtn;
     @FXML private Pane                          customPane;
     @FXML private JFXButton                     createBtn;
 }

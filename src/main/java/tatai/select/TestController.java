@@ -11,7 +11,7 @@ import tatai.model.test.TestJson;
 import util.Views;
 
 /**
- * A SelectController which adds functionality for
+ * A SelectController which adds functionality for choosing a test to run
  */
 public abstract class TestController extends SelectController {
     public static class Practice extends TestController {
@@ -61,7 +61,7 @@ public abstract class TestController extends SelectController {
      */
     @FXML
     void    createCustom(ActionEvent ignored) {
-        displayChild(new CreateCustomController());
+        displayChild(new CreateCustomController("")); // TODO: Author
     }
 
     /**
