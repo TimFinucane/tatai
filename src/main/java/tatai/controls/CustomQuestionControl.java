@@ -1,6 +1,7 @@
 package tatai.controls;
 
 import com.jfoenix.controls.JFXButton;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -105,6 +106,29 @@ public class CustomQuestionControl extends TitledPane {
                     _operatorBoxes[2].selectedProperty(),
                     _operatorBoxes[3].selectedProperty()
             ));
+
+            // Add constraints to boxes
+            for(CheckBox box : _operatorBoxes)
+                box.selectedProperty().addListener((observed, old, newVal) -> applyCheckConstraints(box, newVal));
+        }
+
+        /**
+         * Ensures that the user can never have no checkboxes selected
+         */
+        private void    applyCheckConstraints(CheckBox box, Boolean newVal) {
+            // If the user is turning a box on the constraint holds
+            if(newVal)
+                return;
+
+            // If another box is checked then the constraint holds
+            for(CheckBox opBox : _operatorBoxes) {
+                if(opBox.isSelected() && opBox != box)
+                    return;
+            }
+
+            // The constraint doesnt hold. Block the user action
+            // TODO: Message user?
+            Platform.runLater(() -> box.setSelected(true));
         }
 
         private Operation       _operation;
