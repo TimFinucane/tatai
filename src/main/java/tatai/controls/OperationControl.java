@@ -13,7 +13,7 @@ import tatai.model.question.Operation;
 import tatai.model.question.Operator;
 
 class OperationControl extends TitledPane {
-    public OperationControl(Operation operation) {
+    OperationControl(Operation operation) {
         setAlignment(Pos.CENTER);
         setText("Operation");
 
@@ -30,11 +30,10 @@ class OperationControl extends TitledPane {
         grid.add(_operatorBoxes[2], 0, 1);
         grid.add(_operatorBoxes[3], 1, 1);
 
-        main.getChildren().addAll(_parenthesisedBox, grid);
+        CheckBox parenthesisedBox = new CheckBox("Brackets");
+        main.getChildren().addAll(parenthesisedBox, grid);
 
         setContent(main);
-
-        _operation = operation;
 
         // Initialize check boxes
         for(Operator op : operation.operatorsProperty()) {
@@ -45,10 +44,10 @@ class OperationControl extends TitledPane {
             }
         }
 
-        _parenthesisedBox.setSelected(_operation.enclosedProperty().getValue());
+        parenthesisedBox.setSelected(operation.enclosedProperty().getValue());
 
-        _operation.enclosedProperty().bind(_parenthesisedBox.selectedProperty());
-        _operation.operatorsProperty().bind(Bindings.createObjectBinding(() -> {
+        operation.enclosedProperty().bind(parenthesisedBox.selectedProperty());
+        operation.operatorsProperty().bind(Bindings.createObjectBinding(() -> {
                     ObservableList<Operator> ops = FXCollections.observableArrayList();
                     for(CheckBox box : _operatorBoxes) {
                         for(Operator.Type type : Operator.Type.values()) {
@@ -88,9 +87,6 @@ class OperationControl extends TitledPane {
         Platform.runLater(() -> box.setSelected(true));
     }
 
-    private Operation       _operation;
-
-    private CheckBox        _parenthesisedBox = new CheckBox("Brackets");
     private CheckBox        _operatorBoxes[] = new CheckBox[]{
             new CheckBox(Operator.Type.ADD.symbol()),
             new CheckBox(Operator.Type.SUBTRACT.symbol()),

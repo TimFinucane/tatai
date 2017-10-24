@@ -1,5 +1,6 @@
 package tatai.controls;
 
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
@@ -8,10 +9,11 @@ import javafx.scene.layout.GridPane;
 import tatai.model.question.Range;
 
 class RangeControl extends TitledPane {
-    public RangeControl(Range range) {
+    RangeControl(Range range) {
         setText("Range");
         setAlignment(Pos.CENTER);
 
+        // Formatting stuff
         GridPane main = new GridPane();
         main.setVgap(10);
         main.setHgap(5);
@@ -27,12 +29,21 @@ class RangeControl extends TitledPane {
 
         setContent(main);
 
+
         range.minProperty().bind(_minFld.valueProperty());
         range.maxProperty().bind(_maxFld.valueProperty());
+
+        // Ensure that min is never greater than max
+        _maxFld.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue < _minFld.getValue())
+                Platform.runLater(() -> _maxFld.increment());
+        });
+        _minFld.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue > _maxFld.getValue())
+                Platform.runLater(() -> _minFld.decrement());
+        });
     }
 
     private Spinner<Integer> _minFld;
     private Spinner<Integer> _maxFld;
-
-    private Range range;
 }
