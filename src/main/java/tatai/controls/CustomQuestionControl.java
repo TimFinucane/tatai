@@ -240,6 +240,17 @@ public class CustomQuestionControl extends TitledPane {
         opBox.getChildren().add(_selectedControl);
     }
 
+    /**
+     * Appends the given tag to the textFlow
+     * @param depth Used for colour coordination
+     */
+    private void            addText(Generatable.Tag tag, int depth) {
+        addText(tag, 0, tag.text.length(), depth);
+    }
+    /**
+     * Appends the text from start to end in the given tag to the textFlow
+     * @param depth Used for colour coordination
+     */
     private void            addText(Generatable.Tag tag, int start, int end, int depth) {
         Label text = new Label(tag.text.substring(start, end));
         text.setPrefWidth(text.getMinWidth());
@@ -252,9 +263,6 @@ public class CustomQuestionControl extends TitledPane {
         text.setOnMouseClicked(event -> select(tag.owner));
 
         textFlow.getChildren().add(text);
-    }
-    private void            addText(Generatable.Tag tag, int depth) {
-        addText(tag, 0, tag.text.length(), depth);
     }
 
     /**
@@ -322,10 +330,16 @@ public class CustomQuestionControl extends TitledPane {
         }
     }
 
+    /**
+     * Generates an example question for the user
+     */
     private void            generate() {
         generateLbl.setText(_question.generate());
     }
 
+    /**
+     * Changes the question's root Generatable part
+     */
     private void            switchRoot(Generatable root) {
         _question.switchHead(root);
 
