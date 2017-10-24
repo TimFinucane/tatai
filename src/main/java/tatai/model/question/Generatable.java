@@ -42,7 +42,7 @@ public abstract class Generatable {
     }
     public abstract Pair<String, Integer>   generate(NumberConstraint number);
 
-    protected Operation     parent;
+    protected Operation         parent = null;
 
     private Property<Tag>       tag = new SimpleObjectProperty<>();
 }

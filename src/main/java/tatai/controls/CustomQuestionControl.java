@@ -1,7 +1,6 @@
 package tatai.controls;
 
 import javafx.beans.binding.Bindings;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -98,16 +97,15 @@ public class CustomQuestionControl extends TitledPane {
      * Creates an all new question
      */
     public CustomQuestionControl() {
-        this(new Range());
+        this(new Question());
     }
 
     /**
      * Allows the user to modify the given question (in string form)
      */
     public CustomQuestionControl(Question question) {
-        this(question.head());
-    }
-    private CustomQuestionControl(Generatable root) {
+        _question = question;
+
         setText("Question");
         setCollapsible(false);
 
@@ -123,14 +121,14 @@ public class CustomQuestionControl extends TitledPane {
 
         setContent(_main);
 
-        _tagListener = (ObservableValue<? extends Generatable.Tag> obs,
-                        Generatable.Tag oldTag,
-                        Generatable.Tag newTag) ->
-                            updateFlow();
-
-        switchRoot(root);
+        question.headTagProperty().addListener(
+                (ObservableValue<? extends Generatable.Tag> obs,
+                 Generatable.Tag oldTag,
+                 Generatable.Tag newTag) ->
+                    updateFlow());
 
         updateFlow();
+        select(_question.head());
 
         _addBtn.setOnAction(event -> addOperation());
         _deleteBtn.setOnAction(event -> remove());
@@ -146,8 +144,9 @@ public class CustomQuestionControl extends TitledPane {
     private void            updateFlow() {
         _textFlow.getChildren().clear();
 
-        updateFlow(_root.tagProperty().getValue(), 0);
+        updateFlow(_question.headTagProperty().getValue(), 0);
     }
+
     /**
      * Updates the textflow with new tag structure
      * @param depth Used for colour coordination, determines colour of given text
@@ -216,7 +215,7 @@ public class CustomQuestionControl extends TitledPane {
         Operation oldParent = _selected.parent();
         Operation newOp = new Operation(_selected, new Range(), false, Operator.Type.ADD.create());
 
-        if(_selected == _root)
+        if(_selected == _question.head())
             switchRoot(newOp);
         else {
             oldParent.replace(_selected, newOp);
@@ -225,14 +224,7 @@ public class CustomQuestionControl extends TitledPane {
     }
 
     public void             switchRoot(Generatable root) {
-        if(_root != null)
-            _root.tagProperty().removeListener(_tagListener);
-
-        _root = root;
-        select(_root);
-
-        // Ensure text flow is updated properly
-        _root.tagProperty().addListener(_tagListener);
+        _question.switchHead(root);
 
         updateFlow();
     }
@@ -243,7 +235,7 @@ public class CustomQuestionControl extends TitledPane {
      */
     private void            remove() {
         // Special care must be taken
-        if(_selected == _root) {
+        if(_selected == _question.head()) {
             if(_selected instanceof Range) {
                 new Alert(Alert.AlertType.ERROR,
                         "Can't remove this or there won't be anything in your question!");
@@ -272,7 +264,7 @@ public class CustomQuestionControl extends TitledPane {
 
                 Operation op = _selected.parent();
 
-                if(op == _root)
+                if(op == _question.head())
                     switchRoot(saved);
                 else
                     op.parent().replace(op, saved);
@@ -295,8 +287,6 @@ public class CustomQuestionControl extends TitledPane {
         return tag.getValue() + tag.getKey().text.length();
     }
 
-    private ChangeListener<Generatable.Tag>   _tagListener;
-
     private HBox            _main = new HBox(15);
     private FlowPane        _textFlow = new FlowPane();
     private Button          _addBtn = new Button("Add");
@@ -305,7 +295,7 @@ public class CustomQuestionControl extends TitledPane {
     private Generatable     _selected;
     private Region          _selectedControl;
 
-    private Generatable     _root;
+    private Question        _question;
 
     // TODO: Give to CSS to choose?
     // Colours for the text flow
