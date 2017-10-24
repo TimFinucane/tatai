@@ -28,6 +28,13 @@ public class TestJson {
      * Info about a prerequisite for the game
      */
     public static class Prerequisite {
+        public Prerequisite() {}
+        public Prerequisite(String name, int score, int times) {
+            this.name = name;
+            this.score = score;
+            this.times = times;
+        }
+
         public String   name;
         public int      score;
         public int      times;

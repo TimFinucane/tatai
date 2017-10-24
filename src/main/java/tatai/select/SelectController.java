@@ -3,14 +3,18 @@ package tatai.select;
 import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import tatai.Controller;
+import tatai.model.ScoreKeeper;
 import tatai.model.test.TestJson;
 import tatai.model.test.TestParser;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * A window in which the user can select a test
@@ -47,11 +51,34 @@ public abstract class SelectController extends Controller {
                 continue;
 
             JFXButton button = new JFXButton(testName);
-
             button.setRipplerFill(Paint.valueOf("dddddd"));
             button.setTextFill(Paint.valueOf("ffffff"));
 
             button.setOnAction(e -> buttonPressed(info));
+
+            // Check whether prerequisites have been fulfilled
+            if(!info.practice && info.prerequisites != null) {
+                int prerequisitesUnfulfilled = 0;
+                TestJson.Prerequisite lastUnfulfilled = null;
+                ScoreKeeper scores = new ScoreKeeper(user);
+                for( TestJson.Prerequisite prerequisite : info.prerequisites ) {
+                    ScoreKeeper.Score[] prereqScores = scores.getScores(prerequisite.name);
+                    if( Arrays.stream(prereqScores).filter(score -> score.score >= prerequisite.score).count() <
+                            prerequisite.times ) {
+                        prerequisitesUnfulfilled++;
+                        lastUnfulfilled = prerequisite;
+                    }
+                }
+
+                if( prerequisitesUnfulfilled > 1 ) // Skip it
+                    continue;
+                else if( prerequisitesUnfulfilled == 1 ) { // Let them see that they dont have to do much more to get it
+                    button.setOnAction((e) -> {});
+                    button.setTextFill(Paint.valueOf("555555"));
+                    button.setRipplerFill(Color.TRANSPARENT);
+                    button.setTooltip(new Tooltip("You only need to get better on the " + lastUnfulfilled.name + " test!"));
+                }
+            }
 
             // If this model asked to be put in a specific place, put it there
             if(!info.custom && info.order >= 0)
@@ -73,7 +100,7 @@ public abstract class SelectController extends Controller {
         basic.author = "Tatai";
         basic.practice = false;
 
-        basic.name = "Easy Test";
+        basic.name = "Easy";
         basic.order = 0;
         basic.questions = new TestJson.Question[1];
         basic.questions[0] = new TestJson.Question();
@@ -87,7 +114,7 @@ public abstract class SelectController extends Controller {
             throw new RuntimeException(e.getMessage());
         }
 
-        basic.name = "Hard Test";
+        basic.name = "Hard";
         basic.order = 1;
         basic.randomizeQuestions = true;
         basic.questions = new TestJson.Question[3];
@@ -106,6 +133,8 @@ public abstract class SelectController extends Controller {
         basic.questions[2].tries = 2;
         basic.questions[2].question = "(10 to 99) [\u00F7] (1 to 9)";
 
+        basic.prerequisites = new TestJson.Prerequisite[] { new TestJson.Prerequisite("Easy", 8, 1) };
+
         try {
             TestParser.save(basic);
         } catch(IOException e) {
@@ -115,7 +144,7 @@ public abstract class SelectController extends Controller {
         basic.randomizeQuestions = false;
         basic.practice = true;
 
-        basic.name = "Easy Practice";
+        basic.name = "Simple";
         basic.order = 0;
         basic.questions = new TestJson.Question[1];
         basic.questions[0] = new TestJson.Question();
@@ -129,7 +158,7 @@ public abstract class SelectController extends Controller {
             throw new RuntimeException(e.getMessage());
         }
 
-        basic.name = "Advanced Practice";
+        basic.name = "Advanced";
         basic.order = 1;
         basic.questions = new TestJson.Question[1];
         basic.questions[0] = new TestJson.Question();
