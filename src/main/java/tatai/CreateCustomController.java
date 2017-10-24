@@ -13,6 +13,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.Pane;
 import tatai.controls.CustomQuestionControl;
 import tatai.model.test.TestJson;
 import tatai.model.test.TestParser;
@@ -43,10 +44,12 @@ public class CreateCustomController extends Controller{
                 (ObservableValue<? extends Number> val,
                  Number oldVal,
                  Number newVal) ->
-                    Platform.runLater(() -> select(newVal.intValue()))
+                    Platform.runLater(() -> selectQuestion(newVal.intValue()))
         );
 
         addQuestionBtn.setOnAction(e -> addQuestion());
+
+        addQuestion(); // Start with one question
     }
 
     private void createTest() {
@@ -66,9 +69,9 @@ public class CreateCustomController extends Controller{
         }
     }
 
-    private void select(int next) {
+    private void selectQuestion(int next) {
         if(next < 0) {
-            getChildren().remove(_selectedQuestion);
+            customPane.getChildren().clear();
             return;
         }
 
@@ -83,12 +86,12 @@ public class CreateCustomController extends Controller{
         _questionListener = (observable, oldValue, newValue) -> _questions.set(next, newValue);
         _selectedQuestion.outputProperty().addListener(_questionListener);
 
-        if(!getChildren().contains(_selectedQuestion))
-            getChildren().add(_selectedQuestion);
+        if(!customPane.getChildren().contains(_selectedQuestion))
+            customPane.getChildren().setAll(_selectedQuestion);
     }
     private void addQuestion() {
         _questions.add(new TestJson.Question());
-        select(_questions.size() - 1);
+        selectQuestion(_questions.size() - 1);
     }
 
     private ListProperty<TestJson.Question>     _questions = new SimpleListProperty<>(FXCollections.observableArrayList());
@@ -102,4 +105,5 @@ public class CreateCustomController extends Controller{
     @FXML private TableView<Prerequisite>       prerequisiteTable;
     @FXML private ListView<TestJson.Question>   questionList;
     @FXML private JFXButton                     addQuestionBtn;
+    @FXML private Pane                          customPane;
 }
