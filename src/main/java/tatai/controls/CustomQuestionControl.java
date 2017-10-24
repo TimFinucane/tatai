@@ -1,8 +1,6 @@
 package tatai.controls;
 
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -138,7 +136,7 @@ public class CustomQuestionControl extends TitledPane {
         _deleteBtn.setOnAction(event -> remove());
     }
 
-    public void switchQuestion(Question question) {
+    public void             switchQuestion(Question question) {
         switchRoot(question.head());
     }
 
@@ -296,8 +294,6 @@ public class CustomQuestionControl extends TitledPane {
     private int             endOf(Pair<Generatable.Tag, Integer> tag) {
         return tag.getValue() + tag.getKey().text.length();
     }
-
-    private StringProperty  _serializeProperty = new SimpleStringProperty();
 
     private ChangeListener<Generatable.Tag>   _tagListener;
 
