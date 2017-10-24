@@ -3,6 +3,7 @@ package tatai;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.value.ObservableValue;
@@ -34,7 +35,10 @@ public class CreateCustomController extends Controller{
             protected void updateItem(Question question, boolean bln) {
                 super.updateItem(question, bln);
                 if (question != null) {
-                    setText(question.head().tagProperty().getValue().text);
+                    textProperty().bind(Bindings.createObjectBinding(
+                            () -> question.headTagProperty().getValue().text,
+                            question.headTagProperty()
+                    ));
                 }
             }
         });
