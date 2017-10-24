@@ -4,8 +4,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import tatai.CreateCustomController;
 import tatai.model.ScoreKeeper;
 import tatai.model.test.TestJson;
@@ -61,8 +62,6 @@ public abstract class SelectTestController extends SelectController {
 
         HBox bottom = new HBox(0, width, Views.load("select/TestAdditions", this, null));
         HBox.setHgrow(width, Priority.SOMETIMES);
-
-        bottom.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, new CornerRadii(2), new BorderWidths(2))));
 
         getChildren().addAll(height, bottom);
         setVgrow(height, Priority.SOMETIMES);
