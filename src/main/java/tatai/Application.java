@@ -32,7 +32,7 @@ public class Application extends javafx.application.Application implements Sideb
         pane.setLeft(_sidebar);
         pane.setCenter(_centre);
 
-        stage.setScene(new Scene(pane, 600, 400));
+        stage.setScene(new Scene(pane, 700, 400));
 
         stage.setTitle(APP_NAME);
         stage.show();
