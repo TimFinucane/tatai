@@ -228,7 +228,8 @@ public class CustomQuestionControl extends TitledPane {
      * Generates an example question for the user
      */
     private void            generate() {
-        generateLbl.setText(_question.generate());
+        _question.generate();
+        generateLbl.setText(_question.text());
     }
 
     /**

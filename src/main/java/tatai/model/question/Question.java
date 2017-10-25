@@ -11,22 +11,39 @@ import util.NumberConstraint;
  * A question uses a specification to generate a specific string for the user to answer
  */
 public class Question {
-    public Question(TestJson.Question questionInfo) {
-        _question = QuestionReader.read(questionInfo.question);
-        _maxTries = questionInfo.tries;
-        _tries = _maxTries;
-        _timelimit = questionInfo.timelimit;
+    static public class Memento {
+        private Memento(String text, int answer, int tries) {
+            this.text = text;
+            this.answer = answer;
+            this.tries = tries;
+        }
 
-        _headTag.bind(_question.tagProperty());
+        private String  text;
+        private int     answer;
+        private int     tries;
     }
 
-    /**
-     * Generates a question string and waits for answer
+    public Question(TestJson.Question questionInfo) {
+        setup(questionInfo);
+        generate();
+    }
+    public Question(TestJson.Question questionInfo, Memento memento) {
+        setup(questionInfo);
+
+        _tries = memento.tries;
+        _curText = memento.text;
+        _curAnswer = memento.answer;
+    }
+
+    /***
+     * Generates a new text and answer
      */
-    public String           generate() {
+    public void             generate() {
+        _tries = _maxTries;
+
         Pair<String, Integer> pair = _question.generate(new NumberConstraint());
         _curAnswer = pair.getValue();
-        return pair.getKey();
+        _curText = pair.getKey();
     }
 
     /**
@@ -50,16 +67,18 @@ public class Question {
         return _tries != 0;
     }
 
+    public String           text() {
+        return _curText;
+    }
     public double           timelimit() {
         return _timelimit;
     }
-
-    public void             reset() {
-        _tries = _maxTries;
-    }
-
     public boolean          correct() {
         return _correct;
+    }
+
+    public Memento          memento() {
+        return new Memento(_curText, _curAnswer, _tries);
     }
 
     /**
@@ -90,14 +109,23 @@ public class Question {
         return _question;
     }
 
+    private void             setup(TestJson.Question questionInfo) {
+        _question = QuestionReader.read(questionInfo.question);
+        _maxTries = questionInfo.tries;
+        _timelimit = questionInfo.timelimit;
+
+        _headTag.bind(_question.tagProperty());
+    }
+
     private boolean         _correct = false;
 
-    private double          _timelimit;
+    private int             _curAnswer;
+    private String          _curText = "";
     private int             _tries;
 
-    private int             _maxTries;
-
     private ObjectProperty<Generatable.Tag> _headTag = new SimpleObjectProperty<>();
-    private int                             _curAnswer;
-    private Generatable                     _question;
+
+    private double          _timelimit;
+    private int             _maxTries;
+    private Generatable     _question;
 }

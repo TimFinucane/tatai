@@ -12,6 +12,7 @@ import tatai.controls.PlaybackControl;
 import tatai.controls.RecorderControl;
 import tatai.model.question.Question;
 import tatai.model.test.Test;
+import tatai.model.test.TestJson;
 
 /**
  * A test window, to which you can pass specifications for the type of test
@@ -22,9 +23,9 @@ public class TestController extends Controller {
 	 * When the user is ready to finish the test, notifyReturn is called
 	 * with the appropriate ReturnState.
      */
-	public TestController(Test model, boolean practice) {
-		_model = model;
-		_practice = practice;
+	public TestController(TestJson model) {
+		_model = new Test(model);
+		_practice = model.practice;
 
 	    // Load fxml, set self to act as controller and root
 		loadFxml("Test");
@@ -40,16 +41,21 @@ public class TestController extends Controller {
 
 		submitBtn.setText("Start");
 		submitBtn.setOnAction(e -> {
-            titleLbl.setFont(Font.font(TITLE_NUMBERS_SIZE));
+			playbackControl.setVisible(true);
+			recorderControl.setVisible(true);
 
-		    playbackControl.setVisible(true);
-		    recorderControl.setVisible(true);
-
-			nextRound();
+			nextRound(_model.curQuestion());
 		});
 
 		recorderControl.onMediaAvailable(this::mediaAvailable);
 		recorderControl.onRecognitionComplete(this::recognize);
+	}
+	public TestController(TestJson model, Test.Memento memento) {
+		this(model);
+		_model = new Test(model, memento);
+
+		titleLbl.setText("Continue the " + model.name + " test");
+		submitBtn.setText("Continue");
 	}
 
 	/**
@@ -115,10 +121,7 @@ public class TestController extends Controller {
 			if(_question.hasAnotherTry()) {
 			    retryLbl.setText("You can try again by re-clicking the record button");
             } else {
-			    if(_practice)
-                    _question.reset();
-			    else
-                    recorderControl.setDisable(true);
+				recorderControl.setDisable(true);
             }
             recognitionLbl.setTextFill(FAILURE_COLOUR);
 		}
@@ -129,9 +132,11 @@ public class TestController extends Controller {
 	/**
 	 * Sets up the screen for the next round
 	 */
-	private void		nextRound() {
-	    retryLbl.setText("");
-        submitBtn.setDisable(true);
+	private void		nextRound(Question question) {
+		titleLbl.setFont(Font.font(TITLE_NUMBERS_SIZE));
+
+		retryLbl.setText("");
+		submitBtn.setDisable(true);
 
 		playbackControl.setDisable(true);
 		recorderControl.setDisable(false);
@@ -139,14 +144,14 @@ public class TestController extends Controller {
 		recognitionLbl.setText("");
 		playbackControl.dispose();
 
-		_question = _model.nextRound();
+		_question = question;
 
-		titleLbl.setText(_question.generate());
+		titleLbl.setText(_question.text());
 
         // Prepare user submit options
         if(_model.hasAnotherRound()) {
             submitBtn.setText("Next");
-            submitBtn.setOnAction(e -> nextRound());
+            submitBtn.setOnAction(e -> nextRound(_model.nextRound()));
         } else {
             if(_practice)
                 _model.reset();
