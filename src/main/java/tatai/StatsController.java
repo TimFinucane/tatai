@@ -29,13 +29,18 @@ public class StatsController extends Controller {
 
         titleLbl.setText("Statistics for " + testName);
 
-        if(_scores.length > 0)
+
+        if(_scores.length > 0) {
+            dateBox.getChildren().add(new Label("Date"));
+            scoreBox.getChildren().add(new Label("Score"));
             displayScores();
+        }
         else
             titleLbl.setText("You have not completed any tests yet!");
     }
 >>>>>>> Fix case when no tests completed yet
 
+<<<<<<< HEAD
         if(_scores.length > 0) {
             dateBox.getChildren().add(new Label("Date"));
             scoreBox.getChildren().add(new Label("Score"));
@@ -51,6 +56,10 @@ public class StatsController extends Controller {
 =======
 
 >>>>>>> Fix case when no tests completed yet
+=======
+    private void displayScores() {
+
+>>>>>>> Fix label sizing when changing colour mode.
         double average = 0.0;
         int i;
         int min = _scores[0].score;
