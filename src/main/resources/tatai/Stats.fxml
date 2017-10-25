@@ -18,7 +18,7 @@
             <Region prefHeight="400.0" prefWidth="97.0" />
             <VBox fx:id="progessBox" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="200.0" >
             <children>
-               <Gauge fx:id="gaugeValue" animated="true" areaTextVisible="true"  lcdFont="ELEKTRA" skinType="SLIM" />
+               <Gauge fx:id="gaugeValue" title="Average Score" ledColor="#22A7F0" animated="true" animationDuration="500" areaTextVisible="true"  lcdFont="ELEKTRA" skinType="SLIM" />
             </children>
             </VBox>
          </children>

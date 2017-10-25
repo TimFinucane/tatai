@@ -5,6 +5,7 @@ import eu.hansolo.medusa.GaugeBuilder;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import tatai.model.ScoreKeeper;
 
 import java.util.Calendar;
@@ -17,10 +18,8 @@ import java.util.Date;
 // TODO: Add other stats such as if the user is better at multiplication than addition etc.
 public class StatsController extends Controller {
     public StatsController(ScoreKeeper scoreKeeper, String testName){
-
         loadFxml("Stats");
         _scores = scoreKeeper.getScores(testName);
-
         titleLbl.setText("Statistics for " + testName);
 
         displayScores();
@@ -36,8 +35,8 @@ public class StatsController extends Controller {
             Label score = new Label(Integer.toString(_scores[i].score));
             Label date = new Label(_scores[i].date.toString());
 
-            score.getStyleClass().add("scores-label");
-            date.getStyleClass().add("scores-label");
+            score.getStyleClass().add(CSS_CLASS);
+            date.getStyleClass().add(CSS_CLASS);
             dateBox.getChildren().add(date);
             scoreBox.getChildren().add(score);
 
@@ -46,16 +45,20 @@ public class StatsController extends Controller {
             if(_scores[i].score <= min)
                 min = _scores[i].score;
 
-            average += _scores[i].score;
+            average += ((_scores[i].score)*1000)/1000;
         }
         average /= i;
 
-        gaugeValue.setMaxValue(12.0);
-        gaugeValue.setMinValue(10.0);
+        gaugeValue.valueColorProperty().setValue(Color.valueOf(COLOUR_VALUE));
+        gaugeValue.setMaxValue(max);
+        gaugeValue.setMinValue(min);
         gaugeValue.setValue(average);
     }
 
-    private static          ScoreKeeper.Score[] _scores;
+    private static final String CSS_CLASS =     "scores-label";
+    private static final String COLOUR_VALUE =  "#22A7F0";
+
+    private static ScoreKeeper.Score[]  _scores;
 
     private ScoreKeeper     _scoreKeeper;
     private String          _testName;
