@@ -91,7 +91,7 @@ public class Test {
 
     private Question                _curQuestion;
     private int                     _curIndex = 0;
-    private int                     _curRound = 0;
+    private int                     _curRound = -1;
 
     private boolean                 _randomize;
     private TestJson.Question       _questions[];

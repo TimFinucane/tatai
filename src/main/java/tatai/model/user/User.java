@@ -114,8 +114,9 @@ public class User {
         UserInf userInf = new UserInf();
         userInf.savedTest = _savedTest;
         userInf.tests = _testScores.toArray(new TestScores[0]);
-        try {
-            _gson.toJson(userInf, new BufferedWriter(new FileWriter(Files.userFile(username))));
+        try(FileWriter fileWriter = new FileWriter(Files.userFile(username));
+            BufferedWriter writer = new BufferedWriter(fileWriter)) {
+            _gson.toJson(userInf, writer);
         } catch(IOException e) {
             Logger.logMsg(Logger.ERROR, "Unable to save user state: " + e.getMessage());
         }

@@ -63,6 +63,7 @@ public abstract class SelectTestController extends SelectController {
                 controller = new TestController(new Test(test, user.getUnfinishedTest().memento), test.practice);
             else
                 controller = new TestController(new Test(test), test.practice);
+
             controller.onExit((state) -> {
                 if(state == ReturnState.FINISHED)
                     new ScoreKeeper(user, test.name).addScore(controller.score());
