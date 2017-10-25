@@ -3,6 +3,7 @@ package tatai;
 import eu.hansolo.medusa.Gauge;
 import eu.hansolo.medusa.GaugeBuilder;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -20,13 +21,19 @@ public class StatsController extends Controller {
     public StatsController(ScoreKeeper scoreKeeper, String testName){
         loadFxml("Stats");
         _scores = scoreKeeper.getScores(testName);
+
         titleLbl.setText("Statistics for " + testName);
 
-        displayScores();
+        if(_scores.length > 0)
+            displayScores();
+        else
+            titleLbl.setText("You have not completed any tests yet!");
     }
 
 
     private void displayScores() {
+
+
         double average = 0.0;
         int i;
         int min = _scores[0].score;
