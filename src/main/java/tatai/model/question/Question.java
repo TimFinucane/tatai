@@ -114,6 +114,9 @@ public class Question {
         _maxTries = questionInfo.tries;
         _timelimit = questionInfo.timelimit;
 
+        _max = questionInfo.max;
+        _min = questionInfo.min;
+
         _headTag.bind(_question.tagProperty());
     }
 
