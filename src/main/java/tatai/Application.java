@@ -23,7 +23,7 @@ public class Application extends javafx.application.Application implements Sideb
 
     @Override
     public void start(Stage stage) {
-        //setUserAgentStylesheet("/tatai/stylesheets/DarkMode.css");
+        setUserAgentStylesheet("/tatai/stylesheets/DarkMode.css");
 
         // Have a sidebar on the left, and a pane in the centre to add our screens
         _sidebar = new Sidebar(this);

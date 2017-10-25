@@ -1,17 +1,21 @@
 .root{
     -fx-background-color: #29292D;
 }
+
 .button {
     -fx-font-size: 20;
 }
+
 .label {
     -fx-text-fill: #ffffff;
     -fx-font-size: 36;
 }
+
 .text-input {
     -fx-text-fill: #ffffff;
     -fx-prompt-text-fill: #ffffff;
 }
+
 .jfx-text-field {
     -jfx-unfocus-color: #ffffff;
 }
