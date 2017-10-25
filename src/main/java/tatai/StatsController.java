@@ -24,22 +24,24 @@ public class StatsController extends Controller {
 
         titleLbl.setText("Statistics for " + testName);
 
-        if(_scores.length > 0)
+
+        if(_scores.length > 0) {
+            dateBox.getChildren().add(new Label("Date"));
+            scoreBox.getChildren().add(new Label("Score"));
             displayScores();
+        }
         else
             titleLbl.setText("You have not completed any tests yet!");
     }
 
-
     private void displayScores() {
-
 
         double average = 0.0;
         int i;
         int min = _scores[0].score;
         int max = _scores[0].score;
         for(i = 0; i < _scores.length; i++) {
-            Label score = new Label(Integer.toString(_scores[i].score));
+            Label score = new Label(Integer.toString(_scores[i].score) );
             Label date = new Label(_scores[i].date.toString());
 
             score.getStyleClass().add(CSS_CLASS);

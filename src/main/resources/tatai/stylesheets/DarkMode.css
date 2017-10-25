@@ -3,6 +3,7 @@
 }
 .button {
     -fx-font-size: 20;
+    -fx-text-fill: #ffffff;
 }
 .label {
     -fx-text-fill: #ffffff;
