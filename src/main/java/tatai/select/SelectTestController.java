@@ -116,6 +116,7 @@ public abstract class SelectTestController extends SelectController {
             button.setOnAction((e) -> {});
             button.setTextFill(Paint.valueOf("555555"));
             button.setRipplerFill(Color.TRANSPARENT);
+            button.setStyle("-fx-background-color: #c0deed");
             button.setTooltip(new Tooltip("You only need to get better on the " + lastUnfulfilled.name + " test!"));
         }
 

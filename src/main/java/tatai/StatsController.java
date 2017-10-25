@@ -39,8 +39,6 @@ public class StatsController extends Controller {
             Label score = new Label(Integer.toString(_scores[i].score) );
             Label date = new Label(_scores[i].date.toString());
 
-            score.getStyleClass().add(CSS_CLASS);
-            date.getStyleClass().add(CSS_CLASS);
             dateBox.getChildren().add(date);
             scoreBox.getChildren().add(score);
 
@@ -59,12 +57,8 @@ public class StatsController extends Controller {
         gaugeValue.setValue(average);
     }
 
-    private static final String CSS_CLASS =     "scores-label";
     private static final String COLOUR_VALUE =  "#22A7F0";
-
-
     private static User.Score[]  _scores;
-
 
     // JavaFx controls
     @FXML private Gauge     gaugeValue;

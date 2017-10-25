@@ -1,17 +1,11 @@
 .root{
     -fx-background-color: #29292D;
 }
-.button {
-    -fx-font-size: 20;
-    -fx-text-fill: #ffffff;
-}
 .label {
     -fx-text-fill: #ffffff;
-    -fx-font-size: 36;
 }
-.scores-label {
+.button {
     -fx-text-fill: #ffffff;
-    -fx-font-size: 20;
 }
 .text-input {
     -fx-text-fill: #ffffff;
