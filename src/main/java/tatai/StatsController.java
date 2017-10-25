@@ -1,46 +1,23 @@
 package tatai;
 
 import eu.hansolo.medusa.Gauge;
-import eu.hansolo.medusa.GaugeBuilder;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import tatai.model.ScoreKeeper;
-
-import java.util.Calendar;
-import java.util.Date;
+import tatai.model.user.ScoreKeeper;
+import tatai.model.user.User;
 
 /**
  * Class which displays the scores for the current test selected
  */
-// TODO: Better way of displaying stats. Maybe add some gauges/graphs ??
-// TODO: Add other stats such as if the user is better at multiplication than addition etc.
 public class StatsController extends Controller {
     public StatsController(ScoreKeeper scoreKeeper){
         loadFxml("Stats");
-<<<<<<< HEAD
         _scores = scoreKeeper.getScores();
 
         titleLbl.setText("Statistics for ");
-=======
-        _scores = scoreKeeper.getScores(testName);
 
-        titleLbl.setText("Statistics for " + testName);
-
-
-        if(_scores.length > 0) {
-            dateBox.getChildren().add(new Label("Date"));
-            scoreBox.getChildren().add(new Label("Score"));
-            displayScores();
-        }
-        else
-            titleLbl.setText("You have not completed any tests yet!");
-    }
->>>>>>> Fix case when no tests completed yet
-
-<<<<<<< HEAD
         if(_scores.length > 0) {
             dateBox.getChildren().add(new Label("Date"));
             scoreBox.getChildren().add(new Label("Score"));
@@ -52,14 +29,6 @@ public class StatsController extends Controller {
 
     private void displayScores() {
 
-<<<<<<< HEAD
-=======
-
->>>>>>> Fix case when no tests completed yet
-=======
-    private void displayScores() {
-
->>>>>>> Fix label sizing when changing colour mode.
         double average = 0.0;
         int i;
         int min = _scores[0].score;
