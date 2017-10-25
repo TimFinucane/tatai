@@ -9,7 +9,7 @@ import java.util.*;
  * This represents a variety of mathematical operations, all of which accept two arguments
  */
 public enum Operator {
-    ADD         ("+",       1) {
+    ADD         ("\uFF0B",   1) {
         @Override
         int                 apply(int left, int right) {
             return left + right;
@@ -20,7 +20,7 @@ public enum Operator {
             return original.applyConstraint(original.mod, original.eqClass - right);
         }
     },
-    SUBTRACT    ("\u2212",  1) {
+    SUBTRACT    ("\u2212",   1) {
         @Override
         int                 apply(int left, int right) {
             return left - right;
@@ -31,7 +31,7 @@ public enum Operator {
             return original.applyConstraint(original.mod, original.eqClass + right);
         }
     },
-    MULTIPLY    ("\u00D7",  2) {
+    MULTIPLY    ("\u00D7",   2) {
         @Override
         int                 apply(int left, int right) {
             return left * right;
@@ -50,7 +50,7 @@ public enum Operator {
             return original.applyConstraint(original.mod, 1);
         }
     },
-    DIVIDE      ("\u00F7",  2) {
+    DIVIDE      ("\u00F7",   2) {
         @Override
         int                 apply(int left, int right) {
             return left / right;
@@ -94,7 +94,7 @@ public enum Operator {
             if(map.containsKey(value.precedence))
                 map.get(value.precedence).add(value);
             else
-                map.put(value.precedence, new ArrayList<>(Arrays.asList(value)));
+                map.put(value.precedence, new ArrayList<>(Collections.singletonList(value)));
         }
 
         return map.values();
