@@ -17,7 +17,6 @@ import tatai.model.user.User;
 import util.Files;
 import util.SafeTextFieldTableCellIntegerFormatter;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -192,11 +191,7 @@ public class CreateCustomController extends Controller {
         newTest.questions = _questions.toArray(new TestJson.Question[0]);
         newTest.prerequisites = _prerequisites.stream().map(Prerequisite::output).toArray(TestJson.Prerequisite[]::new);
 
-        try {
-            TestParser.save(newTest);
-        } catch(IOException e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        TestParser.save(newTest);
 
         exit(ReturnState.FINISHED);
     }

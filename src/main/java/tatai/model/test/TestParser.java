@@ -1,6 +1,7 @@
 package tatai.model.test;
 
 import com.google.gson.Gson;
+import com.sun.media.jfxmedia.logging.Logger;
 import util.Files;
 
 import java.io.*;
@@ -24,13 +25,14 @@ public class TestParser {
     /**
      * Writes the given test so that it can be retrievable later
      */
-    public static void          save(TestJson testInfo) throws IOException {
+    public static void          save(TestJson testInfo) {
         try(Writer writer = new FileWriter(Files.testFile(testInfo.name))) {
             // Thank you again holy Gson
             Gson gson = new Gson();
 
             gson.toJson(testInfo, writer);
+        } catch (IOException e) {
+            Logger.logMsg(Logger.ERROR, "Unable to save test: " + e.getMessage());
         }
-
     }
 }
