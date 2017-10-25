@@ -7,44 +7,36 @@ import java.util.Random;
  */
 public class NumberConstraint {
     public NumberConstraint() {
-        this(1);
-    }
-    public NumberConstraint(int mod) {
-        this(mod, 0);
+        this(1, 0);
     }
     public NumberConstraint(int mod, int eqClass) {
-        assert(eqClass < mod);
-
-        this._mod = mod;
-        this._eqClass = eqClass % mod;
+        this.mod = mod;
+        this.eqClass = Math.floorMod(eqClass, mod);
     }
 
     /**
      * Generates a number following all constraints that fits within the given range
      */
     public int      generate(int min, int max) {
-        int smallestMin = (int)(Math.ceil(min/_mod) * _mod);
-        int largestMax = (int)(Math.floor(max-_eqClass)/_mod) * _mod;
+        int smallestMin = (int)(Math.ceil(min/mod) * mod);
+        int largestMax = (int)(Math.floor(max-eqClass)/mod) * mod;
 
-        return smallestMin + _random.nextInt((largestMax - smallestMin)/ _mod + 1) * _mod + _eqClass;
+        return smallestMin + _random.nextInt((largestMax - smallestMin)/ mod + 1) * mod + eqClass;
+    }
+
+    public NumberConstraint     applyConstraint(int mod, int eqClass) {
+        return new NumberConstraint(mod, eqClass);
     }
 
     /**
      * The modulus on the constraint
      */
-    public int      mod() {
-        return _mod;
-    }
+    public final int    mod;
 
     /**
      * The equivalence class in the modulus of the constraint
      */
-    public int      eqClass() {
-        return _eqClass;
-    }
-
-    private int  _mod = 1;
-    private int  _eqClass = 0;
+    public final int    eqClass;
 
     private static Random _random = new Random();
 }

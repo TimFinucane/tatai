@@ -17,9 +17,7 @@ public enum Operator {
 
         @Override
         NumberConstraint    chooseLeft(NumberConstraint original, int right) {
-            int eq = Math.floorMod(original.eqClass() - right, original.mod());
-
-            return new NumberConstraint(original.mod(), eq);
+            return original.applyConstraint(original.mod, original.eqClass - right);
         }
     },
     SUBTRACT    ("\u2212",  1) {
@@ -30,9 +28,7 @@ public enum Operator {
 
         @Override
         NumberConstraint    chooseLeft(NumberConstraint original, int right) {
-            int eq = Math.floorMod(original.eqClass() + right, original.mod());
-
-            return new NumberConstraint(original.mod(), eq);
+            return original.applyConstraint(original.mod, original.eqClass + right);
         }
     },
     MULTIPLY    ("\u00D7",  2) {
@@ -51,7 +47,7 @@ public enum Operator {
         @Override
         NumberConstraint    chooseLeft(NumberConstraint original, int right) {
             // As right side has Eq of original Eq, this has to have Eq of 1
-            return new NumberConstraint(original.mod(), 1);
+            return original.applyConstraint(original.mod, 1);
         }
     },
     DIVIDE      ("\u00F7",  2) {
@@ -65,7 +61,7 @@ public enum Operator {
         @Override
         NumberConstraint    chooseLeft(NumberConstraint original, int right) {
             // Both are multiplied as the number will be divided to produce the requested equivalence class
-            return new NumberConstraint(original.mod() * right, original.eqClass() * right);
+            return original.applyConstraint(original.mod * right, original.eqClass * right);
         }
     };
 
