@@ -27,6 +27,10 @@ public class TestController extends Controller {
 		_model = new Test(model);
 		_practice = model.practice;
 
+		if(!_practice)
+			for(TestJson.Question q : model.questions)
+				_maxQuestions += q.rounds;
+
 	    // Load fxml, set self to act as controller and root
 		loadFxml("Test");
 
@@ -41,6 +45,8 @@ public class TestController extends Controller {
 
 		submitBtn.setText("Start");
 		submitBtn.setOnAction(e -> {
+			titleLbl.setFont(Font.font(TITLE_NUMBERS_SIZE));
+
 			playbackControl.setVisible(true);
 			recorderControl.setVisible(true);
 
@@ -109,8 +115,7 @@ public class TestController extends Controller {
 
     	if(text.equals("")) {
             recognitionLbl.setText("Nothing was recognized");
-        }
-		else {
+        } else {
             recognitionLbl.setText(text);
         }
 
@@ -133,8 +138,6 @@ public class TestController extends Controller {
 	 * Sets up the screen for the next round
 	 */
 	private void		nextRound(Question question) {
-		titleLbl.setFont(Font.font(TITLE_NUMBERS_SIZE));
-
 		retryLbl.setText("");
 		submitBtn.setDisable(true);
 
@@ -147,6 +150,11 @@ public class TestController extends Controller {
 		_question = question;
 
 		titleLbl.setText(_question.text());
+
+		if(_practice)
+			questionNumberLbl.setText(Integer.toString(_questionNumber++) + "/\u221E");
+		else
+			questionNumberLbl.setText(Integer.toString(_questionNumber++) + "/" + Integer.toString(_maxQuestions));
 
         // Prepare user submit options
         if(_model.hasAnotherRound()) {
@@ -166,6 +174,8 @@ public class TestController extends Controller {
 	 * Sets up the screen when complete
 	 */
 	private void		finish() {
+		questionNumberLbl.setVisible(false);
+
         titleLbl.setFont(Font.font(TITLE_TEXT_SIZE));
 		titleLbl.setText(_model.score() + "/10");
 
@@ -185,7 +195,10 @@ public class TestController extends Controller {
     private static final Paint      SUCCESS_COLOUR = Color.color(0/255.0, 230/255.0, 64/255.0);
 	private static final Paint      FAILURE_COLOUR = Color.color(240/255.0, 52/255.0, 52/255.0);
 
-	private Question                _question;
+	private int						_questionNumber = 0;
+	private int						_maxQuestions;
+
+	private Question 				_question;
 	private boolean                 _practice;
     private Test    				_model;
 
@@ -196,4 +209,5 @@ public class TestController extends Controller {
 	@FXML private JFXButton         submitBtn;
 	@FXML private RecorderControl 	recorderControl;
 	@FXML private PlaybackControl 	playbackControl;
+	@FXML private Label				questionNumberLbl;
 }

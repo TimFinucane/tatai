@@ -8,7 +8,6 @@
 <?import tatai.controls.PlaybackControl?>
 <?import tatai.controls.RecorderControl?>
 
-
 <fx:root alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="645.0" spacing="15.0" style="-fx-background-color: #29292D;" type="VBox" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="titleLbl" text="5" textFill="WHITE">
@@ -37,5 +36,7 @@
             <JFXButton fx:id="submitBtn" text="Submit" textFill="WHITE" />
          </children>
       </HBox>
+      <Label fx:id="timeLbl" text="Label" />
+      <Label fx:id="questionNumberLbl" text="Label" />
    </children>
 </fx:root>
