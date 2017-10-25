@@ -26,7 +26,7 @@ public class User {
         public Date date = new Date();
     }
     static class            TestScores {
-        public TestScores(String test) {
+        TestScores(String test) {
             this.test = test;
             this.scores = new Score[0];
         }
@@ -61,14 +61,8 @@ public class User {
 
         this.username = username;
 
-        // Create new file if one doesnt exist
-        if(!Files.listUsers().contains(this.username)) {
-            try {
-                Files.userFile(username).createNewFile();
-            } catch(IOException e) {
-                Logger.logMsg(Logger.ERROR, "Can't create a new user file: " + e.getMessage());
-            }
-        } else {
+        // Read file, or if it doesn't exist create it
+        if(Files.listUsers().contains(this.username)) {
             try {
                 UserInf inf = _gson.fromJson(new BufferedReader(new FileReader(Files.userFile(username))), UserInf.class);
 
@@ -79,10 +73,12 @@ public class User {
             } catch(FileNotFoundException e) {
                 // Can't happen.
             }
+        } else {
+            save();
         }
 
         // Save on updates
-        _testScores.addListener(((observable, oldValue, newValue) -> Platform.runLater(() ->save())));
+        _testScores.addListener(((observable, oldValue, newValue) -> Platform.runLater(this::save)));
     }
 
     /**
@@ -114,8 +110,9 @@ public class User {
         UserInf userInf = new UserInf();
         userInf.savedTest = _savedTest;
         userInf.tests = _testScores.toArray(new TestScores[0]);
-        try {
-            _gson.toJson(userInf, new BufferedWriter(new FileWriter(Files.userFile(username))));
+        try(FileWriter fileWriter = new FileWriter(Files.userFile(username));
+            BufferedWriter writer = new BufferedWriter(fileWriter)) {
+            _gson.toJson(userInf, writer);
         } catch(IOException e) {
             Logger.logMsg(Logger.ERROR, "Unable to save user state: " + e.getMessage());
         }

@@ -38,7 +38,7 @@ class OperationControl extends TitledPane {
         // Initialize check boxes
         for(Operator op : operation.operatorsProperty()) {
             for(CheckBox box : _operatorBoxes) {
-                if(op.symbol().equals(box.getText())) {
+                if(op.symbol.equals(box.getText())) {
                     box.setSelected(true);
                 }
             }
@@ -50,9 +50,9 @@ class OperationControl extends TitledPane {
         operation.operatorsProperty().bind(Bindings.createObjectBinding(() -> {
                     ObservableList<Operator> ops = FXCollections.observableArrayList();
                     for(CheckBox box : _operatorBoxes) {
-                        for(Operator.Type type : Operator.Type.values()) {
-                            if(box.getText().equals(type.symbol()) && box.isSelected())
-                                ops.add(type.create());
+                        for(Operator operator : Operator.values()) {
+                            if(box.getText().equals(operator.symbol) && box.isSelected())
+                                ops.add(operator);
                         }
                     }
                     return ops;
@@ -88,8 +88,8 @@ class OperationControl extends TitledPane {
     }
 
     private CheckBox        _operatorBoxes[] = new CheckBox[]{
-            new CheckBox(Operator.Type.ADD.symbol()),
-            new CheckBox(Operator.Type.SUBTRACT.symbol()),
-            new CheckBox(Operator.Type.MULTIPLY.symbol()),
-            new CheckBox(Operator.Type.DIVIDE.symbol())};
+            new CheckBox(Operator.ADD.symbol),
+            new CheckBox(Operator.SUBTRACT.symbol),
+            new CheckBox(Operator.MULTIPLY.symbol),
+            new CheckBox(Operator.DIVIDE.symbol)};
 }

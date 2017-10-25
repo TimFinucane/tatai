@@ -16,9 +16,11 @@ import javafx.scene.paint.Color;
 import javafx.util.Pair;
 import tatai.model.question.*;
 import tatai.model.test.TestJson;
+import util.NumberConstraint;
 import util.Views;
 
 import java.util.Optional;
+import static util.SpinnerFixes.*;
 
 /**
  * Allows the user to create their own question
@@ -32,8 +34,13 @@ public class CustomQuestionControl extends TitledPane {
         Views.load("CustomQuestion", this, this);
 
         // Initialize allowable range for spinner
-        triesSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 2));
-        roundsSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 1));
+        assign(triesSpinner, 1, 1000, 2);
+        assign(roundsSpinner, 1, 1000, 1);
+        assign(minSpinner, 1, 99, 1);
+        assign(maxSpinner, 1, 99, 99);
+
+        // Ensure that min is never greater than max
+        tieMinMax(minSpinner, maxSpinner);
 
         // Don't know whether JavaFX 8u40 is supported. Enforces a number only
         timelimitTxt.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -61,6 +68,8 @@ public class CustomQuestionControl extends TitledPane {
         // Set question values
         triesSpinner.getValueFactory().setValue(question.tries);
         roundsSpinner.getValueFactory().setValue(question.rounds);
+        minSpinner.getValueFactory().setValue(question.min);
+        maxSpinner.getValueFactory().setValue(question.max);
 
         _question.tagProperty().addListener(_tagListener);
 
@@ -71,7 +80,9 @@ public class CustomQuestionControl extends TitledPane {
                         _question.tagProperty().getValue().text,
                         triesSpinner.getValue(),
                         roundsSpinner.getValue(),
-                        timelimitTxt.getText().equals("") ? -1.0 : Double.parseDouble(timelimitTxt.getText())),
+                        timelimitTxt.getText().equals("") ? -1.0 : Double.parseDouble(timelimitTxt.getText()),
+                        minSpinner.getValue(),
+                        maxSpinner.getValue()),
                 // Relies on these properties
                 _question.tagProperty(),
                 triesSpinner.valueProperty(),
@@ -97,7 +108,7 @@ public class CustomQuestionControl extends TitledPane {
      * Updates the textflow with new tag structure
      * @param depth Used for colour coordination, determines colour of given text
      */
-    private void            updateFlow(Generatable.Tag rootTag, int depth) {
+    private void            updateFlow(QuestionPart.Tag rootTag, int depth) {
         if(rootTag.tags == null || rootTag.tags.length == 0) {
             addText(rootTag, depth);
             return;
@@ -127,7 +138,7 @@ public class CustomQuestionControl extends TitledPane {
     /**
      * Switches to viewing the QuestionPart the user clicked on
      */
-    private void            select(Generatable part) {
+    private void            select(QuestionPart part) {
         opBox.getChildren().remove(_selectedControl);
         _selected = part;
 
@@ -143,14 +154,14 @@ public class CustomQuestionControl extends TitledPane {
      * Appends the given tag to the textFlow
      * @param depth Used for colour coordination
      */
-    private void            addText(Generatable.Tag tag, int depth) {
+    private void            addText(QuestionPart.Tag tag, int depth) {
         addText(tag, 0, tag.text.length(), depth);
     }
     /**
      * Appends the text from start to end in the given tag to the textFlow
      * @param depth Used for colour coordination
      */
-    private void            addText(Generatable.Tag tag, int start, int end, int depth) {
+    private void            addText(QuestionPart.Tag tag, int start, int end, int depth) {
         Label text = new Label(tag.text.substring(start, end));
         text.setPrefWidth(text.getMinWidth());
         text.setPrefHeight(text.getMinHeight());
@@ -169,7 +180,7 @@ public class CustomQuestionControl extends TitledPane {
      */
     private void            addOperation() {
         Operation oldParent = _selected.parent();
-        Operation newOp = new Operation(_selected, new Range(), true, Operator.Type.ADD.create());
+        Operation newOp = new Operation(_selected, new Range(), true, Operator.ADD);
 
         if(_selected == _question.head())
             switchRoot(newOp);
@@ -189,7 +200,7 @@ public class CustomQuestionControl extends TitledPane {
                 new Alert(Alert.AlertType.ERROR,
                         "Can't remove this or there won't be anything in your question!");
             } else if(_selected instanceof Operation) {
-                Generatable newRoot = ((Operation)_selected).operandsProperty().get(0);
+                QuestionPart newRoot = ((Operation)_selected).operandsProperty().get(0);
                 // Sever connection with new _root. Seems odd, but ensures _root has no parent and is top of structure
                 ((Operation)_selected).replace(0, new Range());
                 switchRoot(newRoot);
@@ -203,7 +214,7 @@ public class CustomQuestionControl extends TitledPane {
 
                 if(button.isPresent() && button.get() == ButtonType.YES) {
                     // Replace the operation with the part the user did NOT select
-                    Generatable saved = _selected.parent().operandsProperty().get(0) == _selected ?
+                    QuestionPart saved = _selected.parent().operandsProperty().get(0) == _selected ?
                             _selected.parent().operandsProperty().get(1) :
                             _selected.parent().operandsProperty().get(0);
 
@@ -217,7 +228,7 @@ public class CustomQuestionControl extends TitledPane {
                     select(saved);
                 }
             } else if(_selected instanceof Operation) {
-                Generatable saved = ((Operation) _selected).operandsProperty().get(0);
+                QuestionPart saved = ((Operation) _selected).operandsProperty().get(0);
                 _selected.parent().replace(_selected, saved);
                 select(saved);
             }
@@ -228,21 +239,23 @@ public class CustomQuestionControl extends TitledPane {
      * Generates an example question for the user
      */
     private void            generate() {
-        generateLbl.setText(_question.generate());
+        generateLbl.setText(_question.head().generate(
+                new NumberConstraint(minSpinner.getValue(), maxSpinner.getValue(), 1, 0)
+        ).getKey());
     }
 
     /**
-     * Changes the question's root Generatable part
+     * Changes the question's root QuestionPart part
      */
-    private void            switchRoot(Generatable root) {
+    private void            switchRoot(QuestionPart root) {
         _question.switchHead(root);
         updateFlow();
     }
 
-    private int             startOf(Pair<Generatable.Tag, Integer> tag) {
+    private int             startOf(Pair<QuestionPart.Tag, Integer> tag) {
         return tag.getValue();
     }
-    private int             endOf(Pair<Generatable.Tag, Integer> tag) {
+    private int             endOf(Pair<QuestionPart.Tag, Integer> tag) {
         return tag.getValue() + tag.getKey().text.length();
     }
 
@@ -255,13 +268,13 @@ public class CustomQuestionControl extends TitledPane {
             Color.AZURE
     };
 
-    private ChangeListener<Generatable.Tag> _tagListener = (ObservableValue<? extends Generatable.Tag> obs,
-                                                            Generatable.Tag oldTag,
-                                                            Generatable.Tag newTag) ->
+    private ChangeListener<QuestionPart.Tag> _tagListener = (ObservableValue<? extends QuestionPart.Tag> obs,
+                                                             QuestionPart.Tag oldTag,
+                                                             QuestionPart.Tag newTag) ->
                                                                 updateFlow();
     private ObjectProperty<TestJson.Question> _output = new SimpleObjectProperty<>();
 
-    private Generatable     _selected;
+    private QuestionPart _selected;
     private Region          _selectedControl;
     private Question        _question;
 
@@ -274,4 +287,6 @@ public class CustomQuestionControl extends TitledPane {
     @FXML private JFXTextField      timelimitTxt;
     @FXML private JFXButton         generateBtn;
     @FXML private Label             generateLbl;
+    @FXML private Spinner<Integer>  minSpinner;
+    @FXML private Spinner<Integer>  maxSpinner;
 }

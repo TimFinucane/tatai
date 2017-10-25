@@ -13,7 +13,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import tatai.CreateCustomController;
 import tatai.TestController;
-import tatai.model.test.Test;
 import tatai.model.test.TestJson;
 import tatai.model.user.ScoreKeeper;
 import tatai.model.user.User;
@@ -35,7 +34,7 @@ public abstract class SelectTestController extends SelectController {
         }
         @Override
         protected void      buttonPressed(TestJson test) {
-            displayChild(new tatai.TestController(new Test(test), true));
+            displayChild(new tatai.TestController(test));
         }
     }
     public static class Normal extends SelectTestController {
@@ -60,9 +59,10 @@ public abstract class SelectTestController extends SelectController {
             tatai.TestController controller;
 
             if(user.getUnfinishedTest() != null && user.getUnfinishedTest().name.equals(test.name))
-                controller = new TestController(new Test(test, user.getUnfinishedTest().memento), test.practice);
+                controller = new TestController(test, user.getUnfinishedTest().memento);
             else
-                controller = new TestController(new Test(test), test.practice);
+                controller = new TestController(test);
+
             controller.onExit((state) -> {
                 if(state == ReturnState.FINISHED)
                     new ScoreKeeper(user, test.name).addScore(controller.score());

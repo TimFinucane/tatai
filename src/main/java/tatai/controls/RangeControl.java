@@ -1,12 +1,12 @@
 package tatai.controls;
 
-import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.GridPane;
 import tatai.model.question.Range;
+import util.SpinnerFixes;
 
 class RangeControl extends TitledPane {
     RangeControl(Range range) {
@@ -21,6 +21,8 @@ class RangeControl extends TitledPane {
 
         _minFld = new Spinner<>(1, 99, range.minProperty().get());
         _maxFld = new Spinner<>(1, 99, range.maxProperty().get());
+        _minFld.setEditable(true);
+        _maxFld.setEditable(true);
 
         main.add(new Label("Min"), 0, 0);
         main.add(new Label("Max"), 0, 1);
@@ -29,19 +31,10 @@ class RangeControl extends TitledPane {
 
         setContent(main);
 
-
         range.minProperty().bind(_minFld.valueProperty());
         range.maxProperty().bind(_maxFld.valueProperty());
 
-        // Ensure that min is never greater than max
-        _maxFld.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue < _minFld.getValue())
-                Platform.runLater(() -> _maxFld.increment());
-        });
-        _minFld.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue > _maxFld.getValue())
-                Platform.runLater(() -> _minFld.decrement());
-        });
+        SpinnerFixes.tieMinMax(_minFld, _maxFld);
     }
 
     private Spinner<Integer> _minFld;
