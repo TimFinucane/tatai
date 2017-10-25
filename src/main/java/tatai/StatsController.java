@@ -30,6 +30,8 @@ public class StatsController extends Controller {
     private void displayScores() {
         double average = 0.0;
         int i;
+        int min = _scores[0].score;
+        int max = _scores[0].score;
         for(i = 0; i < _scores.length; i++) {
             Label score = new Label(Integer.toString(_scores[i].score));
             Label date = new Label(_scores[i].date.toString());
@@ -38,6 +40,11 @@ public class StatsController extends Controller {
             date.getStyleClass().add("scores-label");
             dateBox.getChildren().add(date);
             scoreBox.getChildren().add(score);
+
+            if(_scores[i].score >= max)
+                max = _scores[i].score;
+            if(_scores[i].score <= min)
+                min = _scores[i].score;
 
             average += _scores[i].score;
         }
