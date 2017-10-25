@@ -55,8 +55,8 @@ public class User {
      */
     public User(String username) throws IllegalArgumentException {
         // Check name conforms
-        if(!username.matches("(\\d\\w)+")) {
-            throw new IllegalArgumentException("Improper username! Must only contain letters and numbers");
+        if(!username.matches("[\\w\\d-_]+")) {
+            throw new IllegalArgumentException("Improper username! Must only contain letters and numbers " + username);
         }
 
         this.username = username;
