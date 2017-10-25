@@ -114,8 +114,7 @@ public class Operation extends QuestionPart {
      * Encloses the op string in brackets if the operation generating it has lower precedence than this one
      */
     private String                      tryEnclose(QuestionPart questionPart, String op) {
-        if( questionPart instanceof Operation && ((Operation) questionPart)._op.precedence < _op.precedence ||
-           _enclosed.getValue())
+        if(questionPart instanceof Operation && ((Operation) questionPart)._op.precedence < _op.precedence)
             return "(" + op + ")";
         else
             return op;
