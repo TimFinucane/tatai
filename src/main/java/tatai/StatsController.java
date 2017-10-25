@@ -12,11 +12,13 @@ import tatai.model.user.User;
  * Class which displays the scores for the current test selected
  */
 public class StatsController extends Controller {
+
     public StatsController(ScoreKeeper scoreKeeper){
         loadFxml("Stats");
         _scores = scoreKeeper.getScores();
 
         titleLbl.setText("Statistics for ");
+
 
         if(_scores.length > 0) {
             dateBox.getChildren().add(new Label("Date"));
@@ -60,7 +62,9 @@ public class StatsController extends Controller {
     private static final String CSS_CLASS =     "scores-label";
     private static final String COLOUR_VALUE =  "#22A7F0";
 
+
     private static User.Score[]  _scores;
+
 
     // JavaFx controls
     @FXML private Gauge     gaugeValue;
