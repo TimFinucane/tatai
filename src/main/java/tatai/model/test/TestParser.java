@@ -4,8 +4,6 @@ import com.google.gson.Gson;
 import util.Files;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class TestParser {
 
@@ -27,10 +25,7 @@ public class TestParser {
      * Writes the given test so that it can be retrievable later
      */
     public static void          save(TestJson testInfo) throws IOException {
-        File file = Files.testFile(testInfo.name);
-        file.createNewFile();
-
-        try(Writer writer = new FileWriter(file)) {
+        try(Writer writer = new FileWriter(Files.testFile(testInfo.name))) {
             // Thank you again holy Gson
             Gson gson = new Gson();
 

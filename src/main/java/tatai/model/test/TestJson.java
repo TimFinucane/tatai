@@ -8,18 +8,24 @@ import tatai.model.question.Range;
 public class TestJson {
     public static class Question {
         public Question() {
+            min = 1;
+            max = 99;
             rounds = 1;
             tries = 2;
             timelimit = -1.0;
             question = new Range().tagProperty().getValue().text;
         }
-        public Question(String question, int rounds, int tries, double timelimit) {
+        public Question(String question, int rounds, int tries, double timelimit, int min, int max) {
+            this.min = min;
+            this.max = max;
             this.question = question;
             this.rounds = rounds;
             this.tries = tries;
             this.timelimit = timelimit;
         }
 
+        public int      min;
+        public int      max;
         public int      rounds;
         public int      tries;
         public double   timelimit;

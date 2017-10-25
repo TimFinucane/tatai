@@ -42,18 +42,18 @@ public class Test {
         reset(memento);
     }
 
-	public int          			score() {
-	    return _score;
+    public int                      score() {
+        return _score;
     }
 
-	/**
-	 * Gives the next question to display
-	 */
-	public Question		            nextRound() {
+    /**
+     * Gives the next question to display
+     */
+    public Question                 nextRound() {
         if(_curQuestion.correct())
-	        _score++;
+            _score++;
 
-	    if(_curRound == _questions[_curIndex].rounds) { // Next question
+        if(_curRound == _questions[_curIndex].rounds) { // Next question
             _curIndex++;
             _curRound = 0;
             _curQuestion = new Question(_questions[_curIndex]);
@@ -64,16 +64,16 @@ public class Test {
 
         return _curQuestion;
     }
-	public Question                 curQuestion() {
-	    return _curQuestion;
+    public Question                 curQuestion() {
+        return _curQuestion;
     }
 
-	/**
-	 * Returns whether or not there are any more rounds
-	 * @return true if there is at least one round remaining
-	 */
-	public boolean                  hasAnotherRound() {
-	    return !(_curIndex == _questions.length - 1 && _curRound == _questions[_curIndex].rounds);
+    /**
+     * Returns whether or not there are any more rounds
+     * @return true if there is at least one round remaining
+     */
+    public boolean                  hasAnotherRound() {
+        return !(_curIndex == _questions.length - 1 && _curRound == _questions[_curIndex].rounds);
     }
 
     /**
@@ -81,21 +81,20 @@ public class Test {
      */
     public void                     reset() {
         _score = 0;
-	    _curIndex = 0;
-	    _curRound = 0;
+        _curIndex = 0;
+        _curRound = 0;
 
         if(_randomize) {
             _shuffleSeed = new Random().nextInt(); // Generate a random number to use as a seed
             shuffleQuestions();
         }
-
         _curQuestion = new Question(_questions[0]);
     }
 
     /**
      * Resets the test to the state specified in memento
      */
-    public void                     reset(Memento memento) {
+    private void                    reset(Memento memento) {
         _score = memento.score;
         _curIndex = memento.index;
         _curRound = memento.round;
@@ -130,7 +129,7 @@ public class Test {
 
     public final String             name;
 
-    private int 	    			_score = 0;
+    private int                     _score = 0;
 
     private Question                _curQuestion;
     private int                     _curIndex = 0;

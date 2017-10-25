@@ -14,18 +14,18 @@ import java.util.function.Consumer;
 public class Recognizer {
     private static String TEMP = ".tmp/";
 
-    private static String HTK = System.getProperty("user.home") + "/Documents/HTK/MaoriNumbers/";
-    private static String[] HMMS = { HTK + "HMMs/hmm15/macros", HTK + "HMMs/hmm15/hmmdefs" };
-    private static String CONFIG = HTK + "user/configLR";
-    private static String NETWORK = HTK + "user/wordNetworkNum";
-    private static String OUTPUT = TEMP + "output.mlf";
-    private static String DICTIONARY = HTK + "user/dictionaryD";
-    private static String TIED_LIST = HTK + "user/tiedList";
+    private static final String HTK = System.getProperty("user.home") + "/Documents/HTK/MaoriNumbers/";
+    private static final String[] HMMS = { HTK + "HMMs/hmm15/macros", HTK + "HMMs/hmm15/hmmdefs" };
+    private static final String CONFIG = HTK + "user/configLR";
+    private static final String NETWORK = HTK + "user/wordNetworkNum";
+    private static final String OUTPUT = TEMP + "output.mlf";
+    private static final String DICTIONARY = HTK + "user/dictionaryD";
+    private static final String TIED_LIST = HTK + "user/tiedList";
 
-    private static String COMMAND_NAME = "HVite";
-    private static String COMMAND_OPTIONS = "-o SWT";
+    private static final String COMMAND_NAME = "HVite";
+    private static final String COMMAND_OPTIONS = "-o SWT";
 
-    private static String LOG_FILE = TEMP + "recognition.log";
+    private static final String LOG_FILE = TEMP + "recognition.log";
     /**
      * Produces a string output of the words recognized in the
      * file given by the filename input, and gives this result to
@@ -96,7 +96,7 @@ public class Recognizer {
      * Reads the file and outputs a series of words (space seperated) as a result
      */
     private static String processOutput(String outputFile) {
-        BufferedReader reader = null;
+        BufferedReader reader;
         try {
             reader = new BufferedReader(new FileReader(outputFile));
 

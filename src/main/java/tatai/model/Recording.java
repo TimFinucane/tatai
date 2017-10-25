@@ -2,6 +2,7 @@ package tatai.model;
 
 import javafx.scene.media.Media;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
 
@@ -9,17 +10,18 @@ import java.io.IOException;
  * Class for recording from device input and saving that input to a file
  */
 public class Recording {
-    private static String TEMP_FOLDER = ".tmp/";
-    private static String SOUND_LOG = TEMP_FOLDER + "sound.log";
-    private static String SOUND_FILE = TEMP_FOLDER + "sound.wav";
+    private static final String TEMP_FOLDER = ".tmp/";
+    private static final String SOUND_LOG = TEMP_FOLDER + "sound.log";
+    private static final String SOUND_FILE = TEMP_FOLDER + "sound.wav";
 
-    private static String COMMAND = "ffmpeg -y -f alsa -acodec pcm_s16le -ac 1 -ar 22050 -i default " + SOUND_FILE;
+    private static final String COMMAND = "ffmpeg -y -f alsa -acodec pcm_s16le -ac 1 -ar 22050 -i default " + SOUND_FILE;
 
     private Recording() {
         try {
             ProcessBuilder pb = new ProcessBuilder( COMMAND.split(" ") );
 
             pb.redirectError(new File(SOUND_LOG)); // TODO: Save this log when errors occur
+            //noinspection ResultOfMethodCallIgnored
             pb.redirectOutput();
 
             _recording = pb.start();
@@ -33,8 +35,10 @@ public class Recording {
      * make syntax clearer
      * @return The recording
      */
+    @Nonnull
     public static Recording start() {
         File file = new File(TEMP_FOLDER);
+        //noinspection ResultOfMethodCallIgnored
         file.mkdir();
 
         return new Recording();
@@ -45,9 +49,11 @@ public class Recording {
      */
     public void clean() {
         File dir = new File(TEMP_FOLDER);
-        for(File child : dir.listFiles()) {
-            child.delete();
-        }
+
+        if(dir.listFiles() != null)
+            for(File child : dir.listFiles())
+                child.delete();
+
         dir.delete();
     }
 

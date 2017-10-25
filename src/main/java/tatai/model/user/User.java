@@ -26,7 +26,7 @@ public class User {
         public Date date = new Date();
     }
     static class            TestScores {
-        public TestScores(String test) {
+        TestScores(String test) {
             this.test = test;
             this.scores = new Score[0];
         }
@@ -61,14 +61,8 @@ public class User {
 
         this.username = username;
 
-        // Create new file if one doesnt exist
-        if(!Files.listUsers().contains(this.username)) {
-            try {
-                Files.userFile(username).createNewFile();
-            } catch(IOException e) {
-                Logger.logMsg(Logger.ERROR, "Can't create a new user file: " + e.getMessage());
-            }
-        } else {
+        // Read file, or if it doesn't exist create it
+        if(Files.listUsers().contains(this.username)) {
             try {
                 UserInf inf = _gson.fromJson(new BufferedReader(new FileReader(Files.userFile(username))), UserInf.class);
 
@@ -79,10 +73,12 @@ public class User {
             } catch(FileNotFoundException e) {
                 // Can't happen.
             }
+        } else {
+            save();
         }
 
         // Save on updates
-        _testScores.addListener(((observable, oldValue, newValue) -> Platform.runLater(() ->save())));
+        _testScores.addListener(((observable, oldValue, newValue) -> Platform.runLater(this::save)));
     }
 
     /**
