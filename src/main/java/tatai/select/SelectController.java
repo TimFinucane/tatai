@@ -125,6 +125,7 @@ public abstract class SelectController extends Controller {
 
         basic.randomizeQuestions = false;
         basic.practice = true;
+        basic.prerequisites = null;
 
         basic.name = "Simple";
         basic.order = 0;
@@ -161,6 +162,3 @@ public abstract class SelectController extends Controller {
     @FXML private Label     titleLbl;
     @FXML private FlowPane  flowPane;
 }
-
-
-

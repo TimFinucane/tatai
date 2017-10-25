@@ -12,7 +12,6 @@ import tatai.controls.PlaybackControl;
 import tatai.controls.RecorderControl;
 import tatai.model.question.Question;
 import tatai.model.test.Test;
-import tatai.model.test.TestJson;
 
 /**
  * A test window, to which you can pass specifications for the type of test
@@ -23,9 +22,9 @@ public class TestController extends Controller {
 	 * When the user is ready to finish the test, notifyReturn is called
 	 * with the appropriate ReturnState.
      */
-	public TestController(TestJson model) {
-		_model = new Test(model);
-		_practice = model.practice;
+	public TestController(Test model, boolean practice) {
+		_model = model;
+		_practice = practice;
 
 	    // Load fxml, set self to act as controller and root
 		loadFxml("Test");

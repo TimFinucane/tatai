@@ -23,6 +23,7 @@ public class Test {
     public Test(TestJson info) {
         _questions = info.questions;
         _randomize = info.randomizeQuestions;
+        name = info.name;
 
         reset();
     }
@@ -83,6 +84,8 @@ public class Test {
     public Memento                  memento() {
         return new Memento(_curIndex, _curRound);
     }
+
+    public final String             name;
 
     private int 	    			_score = 0;
 

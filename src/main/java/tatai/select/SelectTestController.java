@@ -12,6 +12,8 @@ import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import tatai.CreateCustomController;
+import tatai.TestController;
+import tatai.model.test.Test;
 import tatai.model.test.TestJson;
 import tatai.model.user.ScoreKeeper;
 import tatai.model.user.User;
@@ -28,12 +30,12 @@ public abstract class SelectTestController extends SelectController {
     public static class Practice extends SelectTestController {
         public Practice(User user) {super(user);}
         @Override
-        protected boolean   select(TestJson test) {
-            return test.practice;
+        protected boolean   filter(TestJson test, JFXButton button) {
+            return test.practice && super.filter(test, button);
         }
         @Override
         protected void      buttonPressed(TestJson test) {
-            displayChild(new tatai.TestController(test));
+            displayChild(new tatai.TestController(new Test(test), true));
         }
     }
     public static class Normal extends SelectTestController {
@@ -41,12 +43,26 @@ public abstract class SelectTestController extends SelectController {
             super(user);
         }
         @Override
-        protected boolean   select(TestJson test) {
-            return !test.practice;
+        protected boolean   filter(TestJson test, JFXButton button) {
+            if(test.practice || !super.filter(test, button))
+                return false;
+
+            // Check if test is saved by user
+            if(user.getUnfinishedTest() != null && user.getUnfinishedTest().name.equals(test.name)) {
+                button.setTextFill(Color.RED);
+                button.setTooltip(new Tooltip("This test has been started but not completed"));
+            }
+
+            return true;
         }
         @Override
         protected void      buttonPressed(TestJson test) {
-            tatai.TestController controller = new tatai.TestController(test);
+            tatai.TestController controller;
+
+            if(user.getUnfinishedTest() != null && user.getUnfinishedTest().name.equals(test.name))
+                controller = new TestController(new Test(test, user.getUnfinishedTest().memento), test.practice);
+            else
+                controller = new TestController(new Test(test), test.practice);
             controller.onExit((state) -> {
                 if(state == ReturnState.FINISHED)
                     new ScoreKeeper(user, test.name).addScore(controller.score());
@@ -72,14 +88,15 @@ public abstract class SelectTestController extends SelectController {
         setVgrow(height, Priority.SOMETIMES);
     }
 
-    protected abstract boolean select(TestJson test);
-
     @Override
-    protected final boolean filter(TestJson test, JFXButton button) {
-        if(!select(test))
+    protected boolean filter(TestJson test, JFXButton button) {
+        // Check whether prerequisites have been fulfilled
+        if(test.prerequisites == null)
+            return true;
+
+        if(test.prerequisites.length > 0 && user == null)
             return false;
 
-        // Check whether prerequisites have been fulfilled
         int prerequisitesUnfulfilled = 0;
         TestJson.Prerequisite lastUnfulfilled = null;
 
@@ -92,6 +109,7 @@ public abstract class SelectTestController extends SelectController {
             }
         }
 
+        // Apply changes based on how close to unlocking the test the user is
         if(prerequisitesUnfulfilled > 1) // Skip it
             return false;
         else if(prerequisitesUnfulfilled == 1) { // Let them see that they dont have to do much more to get it
