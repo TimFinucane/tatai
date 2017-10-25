@@ -45,6 +45,8 @@ public abstract class SelectTestController extends SelectController {
             controller.onExit((state) -> {
                 if(state == ReturnState.FINISHED)
                     new ScoreKeeper(user, test.name).addScore(controller.score());
+                else
+                    user.saveTest(test.name, controller.save());
             });
 
             displayChild(controller);

@@ -60,6 +60,13 @@ public class TestController extends Controller {
 		return _model.score();
 	}
 
+	/**
+	 * Gives a Memento of the model for if the TestController exits early
+	 */
+	public Test.Memento	save() {
+		return _model.memento();
+	}
+
     /**
      * Asks user whether they want to exit, just to make sure
      */
