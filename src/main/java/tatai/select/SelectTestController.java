@@ -1,12 +1,16 @@
 package tatai.select;
 
+import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import tatai.CreateCustomController;
 import tatai.model.test.TestJson;
 import tatai.model.user.ScoreKeeper;
@@ -14,6 +18,7 @@ import tatai.model.user.User;
 import util.Files;
 import util.Views;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 /**
@@ -23,7 +28,7 @@ public abstract class SelectTestController extends SelectController {
     public static class Practice extends SelectTestController {
         public Practice(User user) {super(user);}
         @Override
-        protected boolean   filter(TestJson test) {
+        protected boolean   select(TestJson test) {
             return test.practice;
         }
         @Override
@@ -36,7 +41,7 @@ public abstract class SelectTestController extends SelectController {
             super(user);
         }
         @Override
-        protected boolean   filter(TestJson test) {
+        protected boolean   select(TestJson test) {
             return !test.practice;
         }
         @Override
@@ -67,6 +72,38 @@ public abstract class SelectTestController extends SelectController {
         setVgrow(height, Priority.SOMETIMES);
     }
 
+    protected abstract boolean select(TestJson test);
+
+    @Override
+    protected final boolean filter(TestJson test, JFXButton button) {
+        if(!select(test))
+            return false;
+
+        // Check whether prerequisites have been fulfilled
+        int prerequisitesUnfulfilled = 0;
+        TestJson.Prerequisite lastUnfulfilled = null;
+
+        for(TestJson.Prerequisite prerequisite : test.prerequisites) {
+            User.Score[] prereqScores = new ScoreKeeper(user, prerequisite.name).getScores();
+            if( Arrays.stream(prereqScores).filter(score -> score.score >= prerequisite.score).count() <
+                    prerequisite.times) {
+                prerequisitesUnfulfilled++;
+                lastUnfulfilled = prerequisite;
+            }
+        }
+
+        if(prerequisitesUnfulfilled > 1) // Skip it
+            return false;
+        else if(prerequisitesUnfulfilled == 1) { // Let them see that they dont have to do much more to get it
+            button.setOnAction((e) -> {});
+            button.setTextFill(Paint.valueOf("555555"));
+            button.setRipplerFill(Color.TRANSPARENT);
+            button.setTooltip(new Tooltip("You only need to get better on the " + lastUnfulfilled.name + " test!"));
+        }
+
+        return true;
+    }
+
     /**
      * Create a custom test
      */
@@ -92,7 +129,7 @@ public abstract class SelectTestController extends SelectController {
 
         displayChild(new SelectController(user, "Select a custom test to edit") {
             @Override
-            boolean     filter(TestJson test) {
+            boolean     filter(TestJson test, JFXButton button) {
                 return test.custom;
             }
             @Override
@@ -114,7 +151,7 @@ public abstract class SelectTestController extends SelectController {
 
         displayChild(new SelectController(user, "Select a custom test to delete") {
             @Override
-            boolean     filter(TestJson test) {
+            boolean     filter(TestJson test, JFXButton button) {
                 return test.custom;
             }
             @Override

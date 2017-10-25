@@ -3,20 +3,16 @@ package tatai.select;
 import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import tatai.Controller;
 import tatai.model.test.TestJson;
 import tatai.model.test.TestParser;
-import tatai.model.user.ScoreKeeper;
 import tatai.model.user.User;
 import util.Files;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Arrays;
 
 /**
  * A window in which the user can select a test
@@ -32,7 +28,15 @@ public abstract class SelectController extends Controller {
         refreshButtons();
     }
 
-    abstract boolean    filter(TestJson test);
+    /**
+     * Does two things: Will return whether or not the given test should be displayed as an option,
+     * and (optionally) modifies the (already set up) button based on the test.
+     */
+    abstract boolean    filter(TestJson test, JFXButton button);
+
+    /**
+     * Is called when the given button is pressed
+     */
     abstract void       buttonPressed(TestJson test);
 
     /**
@@ -49,38 +53,14 @@ public abstract class SelectController extends Controller {
                 continue; /* Skip */
             }
 
-            if(!filter(info))
-                continue;
-
             JFXButton button = new JFXButton(testName);
             button.setRipplerFill(Paint.valueOf("dddddd"));
             button.setTextFill(Paint.valueOf("ffffff"));
 
             button.setOnAction(e -> buttonPressed(info));
 
-            // Check whether prerequisites have been fulfilled
-            if(!info.practice && info.prerequisites != null) {
-                int prerequisitesUnfulfilled = 0;
-                TestJson.Prerequisite lastUnfulfilled = null;
-
-                for( TestJson.Prerequisite prerequisite : info.prerequisites ) {
-                    User.Score[] prereqScores = new ScoreKeeper(user, prerequisite.name).getScores();
-                    if(Arrays.stream(prereqScores).filter(score -> score.score >= prerequisite.score).count() <
-                            prerequisite.times) {
-                        prerequisitesUnfulfilled++;
-                        lastUnfulfilled = prerequisite;
-                    }
-                }
-
-                if(prerequisitesUnfulfilled > 1) // Skip it
-                    continue;
-                else if(prerequisitesUnfulfilled == 1) { // Let them see that they dont have to do much more to get it
-                    button.setOnAction((e) -> {});
-                    button.setTextFill(Paint.valueOf("555555"));
-                    button.setRipplerFill(Color.TRANSPARENT);
-                    button.setTooltip(new Tooltip("You only need to get better on the " + lastUnfulfilled.name + " test!"));
-                }
-            }
+            if(!filter(info, button))
+                continue;
 
             // If this model asked to be put in a specific place, put it there
             if(!info.custom && info.order >= 0)
