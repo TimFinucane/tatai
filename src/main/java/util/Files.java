@@ -53,7 +53,7 @@ public class Files {
         return file;
     }
     private static File userFolder() {
-        File file = new File("./scores");
+        File file = new File("./users");
 
         if(!file.exists())
             file.mkdir();
