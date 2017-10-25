@@ -105,11 +105,11 @@ public class Question {
     /**
      * Gets the head generatable of the question
      */
-    public QuestionPart head() {
+    public QuestionPart     head() {
         return _question;
     }
 
-    private void             setup(TestJson.Question questionInfo) {
+    private void            setup(TestJson.Question questionInfo) {
         _question = QuestionReader.read(questionInfo.question);
         _maxTries = questionInfo.tries;
         _timelimit = questionInfo.timelimit;
@@ -125,7 +125,9 @@ public class Question {
 
     private ObjectProperty<QuestionPart.Tag> _headTag = new SimpleObjectProperty<>();
 
+    private int             _min;
+    private int             _max;
     private double          _timelimit;
     private int             _maxTries;
-    private QuestionPart _question;
+    private QuestionPart    _question;
 }

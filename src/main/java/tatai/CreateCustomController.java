@@ -11,31 +11,18 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.util.converter.IntegerStringConverter;
 import tatai.controls.CustomQuestionControl;
 import tatai.model.test.TestJson;
 import tatai.model.test.TestParser;
 import tatai.model.user.User;
 import util.Files;
+import util.SafeTextFieldTableCellIntegerFormatter;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
 
 public class CreateCustomController extends Controller {
-    /**
-     * Makes a safe version which prevents throwing exceptions at basic user error
-     */
-    public static class SafeIntegerStringConverter extends IntegerStringConverter {
-        @Override
-        public Integer fromString(String str) {
-            try {
-                return super.fromString(str);
-            } catch(NumberFormatException e) {
-                return -1;
-            }
-        }
-    }
 
     /**
      * Used by the table view to hold prerequisite information
@@ -64,13 +51,17 @@ public class CreateCustomController extends Controller {
             return prereq;
         }
 
+        // These are used for reflexive purposes
+        @SuppressWarnings("unused")
         public StringProperty   nameProperty() {
             return name;
         }
-        public IntegerProperty scoreProperty() {
+        @SuppressWarnings("unused")
+        public IntegerProperty  scoreProperty() {
             return score;
         }
-        public IntegerProperty timesProperty() {
+        @SuppressWarnings("unused")
+        public IntegerProperty  timesProperty() {
             return times;
         }
 
@@ -110,28 +101,16 @@ public class CreateCustomController extends Controller {
         TableColumn<Prerequisite, String> nameCol = new TableColumn<>("Test Name");
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         nameCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        nameCol.setOnEditCommit(
-                (TableColumn.CellEditEvent<Prerequisite, String> cell) ->
-                    cell.getTableView().getItems().get(cell.getTablePosition().getRow()).name.set(cell.getNewValue())
-                );
 
 
         TableColumn<Prerequisite, Integer> scoreCol = new TableColumn<>("Score");
         scoreCol.setCellValueFactory(new PropertyValueFactory<>("score"));
-        scoreCol.setCellFactory(TextFieldTableCell.forTableColumn(new SafeIntegerStringConverter()));
-        scoreCol.setOnEditCommit(
-                (TableColumn.CellEditEvent<Prerequisite, Integer> cell) ->
-                        intEditCommit(cell, cell.getTableView().getItems().get(cell.getTablePosition().getRow()).score)
-                );
+        scoreCol.setCellFactory(c -> new SafeTextFieldTableCellIntegerFormatter<>(0));
 
         TableColumn<Prerequisite, Integer> timesCol = new TableColumn<>("Times");
         timesCol.setEditable(true);
         timesCol.setCellValueFactory(new PropertyValueFactory<>("times"));
-        timesCol.setCellFactory(TextFieldTableCell.forTableColumn(new SafeIntegerStringConverter()));
-        timesCol.setOnEditCommit(
-                (TableColumn.CellEditEvent<Prerequisite, Integer> cell) ->
-                        intEditCommit(cell, cell.getTableView().getItems().get(cell.getTablePosition().getRow()).times)
-                );
+        timesCol.setCellFactory(c -> new SafeTextFieldTableCellIntegerFormatter<>(0));
 
         prerequisiteTable.setPlaceholder(new Label("No prerequisites"));
         prerequisiteTable.setItems(_prerequisites);
@@ -287,7 +266,7 @@ public class CreateCustomController extends Controller {
     }
 
     /**
-     * Does a safe check for whether the edited cell remains an integer. If it doesn't, the cell is reverted to it's
+     * Does a safe check for whether the edited cell remains an integer. If it doesn't, the cell is reverted to its
      * previous value and the property is not updated.
      */
     private void intEditCommit(TableColumn.CellEditEvent<Prerequisite, Integer> cell, IntegerProperty property) {

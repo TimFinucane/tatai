@@ -16,9 +16,11 @@ import javafx.scene.paint.Color;
 import javafx.util.Pair;
 import tatai.model.question.*;
 import tatai.model.test.TestJson;
+import util.NumberConstraint;
 import util.Views;
 
 import java.util.Optional;
+import static util.SpinnerFixes.*;
 
 /**
  * Allows the user to create their own question
@@ -32,8 +34,13 @@ public class CustomQuestionControl extends TitledPane {
         Views.load("CustomQuestion", this, this);
 
         // Initialize allowable range for spinner
-        triesSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 2));
-        roundsSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 1));
+        assign(triesSpinner, 1, 1000, 2);
+        assign(roundsSpinner, 1, 1000, 1);
+        assign(minSpinner, 1, 99, 1);
+        assign(maxSpinner, 1, 99, 99);
+
+        // Ensure that min is never greater than max
+        tieMinMax(minSpinner, maxSpinner);
 
         // Don't know whether JavaFX 8u40 is supported. Enforces a number only
         timelimitTxt.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -61,6 +68,8 @@ public class CustomQuestionControl extends TitledPane {
         // Set question values
         triesSpinner.getValueFactory().setValue(question.tries);
         roundsSpinner.getValueFactory().setValue(question.rounds);
+        minSpinner.getValueFactory().setValue(question.min);
+        maxSpinner.getValueFactory().setValue(question.max);
 
         _question.tagProperty().addListener(_tagListener);
 
@@ -71,7 +80,9 @@ public class CustomQuestionControl extends TitledPane {
                         _question.tagProperty().getValue().text,
                         triesSpinner.getValue(),
                         roundsSpinner.getValue(),
-                        timelimitTxt.getText().equals("") ? -1.0 : Double.parseDouble(timelimitTxt.getText())),
+                        timelimitTxt.getText().equals("") ? -1.0 : Double.parseDouble(timelimitTxt.getText()),
+                        minSpinner.getValue(),
+                        maxSpinner.getValue()),
                 // Relies on these properties
                 _question.tagProperty(),
                 triesSpinner.valueProperty(),
@@ -228,8 +239,9 @@ public class CustomQuestionControl extends TitledPane {
      * Generates an example question for the user
      */
     private void            generate() {
-        _question.generate();
-        generateLbl.setText(_question.text());
+        generateLbl.setText(_question.head().generate(
+                new NumberConstraint(minSpinner.getValue(), maxSpinner.getValue(), 1, 0)
+        ).getKey());
     }
 
     /**
@@ -275,4 +287,6 @@ public class CustomQuestionControl extends TitledPane {
     @FXML private JFXTextField      timelimitTxt;
     @FXML private JFXButton         generateBtn;
     @FXML private Label             generateLbl;
+    @FXML private Spinner<Integer>  minSpinner;
+    @FXML private Spinner<Integer>  maxSpinner;
 }

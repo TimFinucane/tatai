@@ -16,8 +16,8 @@ public enum Operator {
         }
 
         @Override
-        NumberConstraint    chooseLeft(NumberConstraint original, int right) {
-            return original.applyConstraint(original.mod, original.eqClass - right);
+        NumberConstraint    chooseLeft(NumberConstraint o, int right) {
+            return new NumberConstraint(o.min - right, o.max - right, o.mod, o.eqClass - right);
         }
     },
     SUBTRACT    ("\u2212",   1) {
@@ -27,8 +27,8 @@ public enum Operator {
         }
 
         @Override
-        NumberConstraint    chooseLeft(NumberConstraint original, int right) {
-            return original.applyConstraint(original.mod, original.eqClass + right);
+        NumberConstraint    chooseLeft(NumberConstraint o, int right) {
+            return new NumberConstraint(o.min + right, o.max + right, o.mod, o.eqClass + right);
         }
     },
     MULTIPLY    ("\u00D7",   2) {
@@ -45,9 +45,9 @@ public enum Operator {
         }
 
         @Override
-        NumberConstraint    chooseLeft(NumberConstraint original, int right) {
+        NumberConstraint    chooseLeft(NumberConstraint o, int right) {
             // As right side has Eq of original Eq, this has to have Eq of 1
-            return original.applyConstraint(original.mod, 1);
+            return new NumberConstraint(o.min / right, o.max / right, o.mod, 1);
         }
     },
     DIVIDE      ("\u00F7",   2) {
@@ -59,9 +59,9 @@ public enum Operator {
         // TODO: ChooseRight that ensures small enough number?
 
         @Override
-        NumberConstraint    chooseLeft(NumberConstraint original, int right) {
+        NumberConstraint    chooseLeft(NumberConstraint o, int right) {
             // Both are multiplied as the number will be divided to produce the requested equivalence class
-            return original.applyConstraint(original.mod * right, original.eqClass * right);
+            return new NumberConstraint(o.min * right, o.max * right, o.mod * right, o.eqClass * right);
         }
     };
 
@@ -109,7 +109,7 @@ public enum Operator {
      * This is called first, to let the operator decide constraints on the right hand side
      */
     NumberConstraint                    chooseRight(NumberConstraint original) {
-        return new NumberConstraint(); // No constraint
+        return original; // No constraint
     }
 
     /**
