@@ -20,9 +20,21 @@ import java.util.Date;
 public class StatsController extends Controller {
     public StatsController(ScoreKeeper scoreKeeper){
         loadFxml("Stats");
+<<<<<<< HEAD
         _scores = scoreKeeper.getScores();
 
         titleLbl.setText("Statistics for ");
+=======
+        _scores = scoreKeeper.getScores(testName);
+
+        titleLbl.setText("Statistics for " + testName);
+
+        if(_scores.length > 0)
+            displayScores();
+        else
+            titleLbl.setText("You have not completed any tests yet!");
+    }
+>>>>>>> Fix case when no tests completed yet
 
         if(_scores.length > 0) {
             dateBox.getChildren().add(new Label("Date"));
@@ -35,6 +47,10 @@ public class StatsController extends Controller {
 
     private void displayScores() {
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> Fix case when no tests completed yet
         double average = 0.0;
         int i;
         int min = _scores[0].score;

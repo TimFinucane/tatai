@@ -16,6 +16,4 @@ public class SelectStatsController extends SelectController {
     @Override
     protected void      buttonPressed(TestJson test) {
         displayChild(new tatai.StatsController(new ScoreKeeper(user, test.name)));
-
-    }
 }
