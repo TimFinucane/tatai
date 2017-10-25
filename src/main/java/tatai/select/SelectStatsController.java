@@ -1,10 +1,11 @@
 package tatai.select;
 
-import tatai.model.ScoreKeeper;
 import tatai.model.test.TestJson;
+import tatai.model.user.ScoreKeeper;
+import tatai.model.user.User;
 
 public class SelectStatsController extends SelectController {
-    public SelectStatsController(String user) {
+    public SelectStatsController(User user) {
         super(user, "Select a test to view your stats");
     }
     @Override
@@ -13,6 +14,6 @@ public class SelectStatsController extends SelectController {
     }
     @Override
     protected void      buttonPressed(TestJson test) {
-        displayChild(new tatai.StatsController(new ScoreKeeper(user), test.name));
+        displayChild(new tatai.StatsController(new ScoreKeeper(user, test.name)));
     }
 }

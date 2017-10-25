@@ -15,6 +15,7 @@ import javafx.util.converter.IntegerStringConverter;
 import tatai.controls.CustomQuestionControl;
 import tatai.model.test.TestJson;
 import tatai.model.test.TestParser;
+import tatai.model.user.User;
 import util.Files;
 
 import java.io.IOException;
@@ -81,7 +82,7 @@ public class CreateCustomController extends Controller {
     /**
      * Creates a new test
      */
-    public CreateCustomController(String author) {
+    public CreateCustomController(User author) {
         loadFxml("CreateCustom");
         _author = author;
 
@@ -150,7 +151,7 @@ public class CreateCustomController extends Controller {
     /**
      * Modifies the given test
      */
-    public CreateCustomController(String author, TestJson test) {
+    public CreateCustomController(User author, TestJson test) {
         this(author);
 
         randomizeCheck.setSelected(test.randomizeQuestions);
@@ -213,7 +214,7 @@ public class CreateCustomController extends Controller {
         // Make it
         TestJson newTest = new TestJson();
         newTest.name = nameTxt.getText();
-        newTest.author = _author;
+        newTest.author = _author.username;
         newTest.custom = true;
         newTest.order = -1; // Is custom so no order
         newTest.practice = practiceCheck.isSelected();
@@ -304,7 +305,7 @@ public class CreateCustomController extends Controller {
     private CustomQuestionControl               _selectedQuestion = null;
     private ChangeListener<TestJson.Question>   _questionListener = null;
 
-    private String                              _author;
+    private User                                _author;
 
     // JavaFX controls
     @FXML private JFXTextField                  nameTxt;

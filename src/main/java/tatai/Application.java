@@ -7,6 +7,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import tatai.controls.Sidebar;
+import tatai.model.user.User;
 import tatai.select.SelectStatsController;
 import tatai.select.SelectTestController;
 
@@ -51,7 +52,7 @@ public class Application extends javafx.application.Application implements Sideb
 
             setScreen(login, (state) -> {
                 if(state == Controller.ReturnState.FINISHED) {
-                    _user = login.name();
+                    _user = new User(login.name());
                     _sidebar.unlockButtons();
                 }
             });
@@ -64,7 +65,7 @@ public class Application extends javafx.application.Application implements Sideb
     // Called when practice button pressed
     @Override
     public void practice() {
-        setScreen(new SelectTestController.Practice());
+        setScreen(new SelectTestController.Practice(_user));
     }
 
     // Called when test button pressed
@@ -127,7 +128,7 @@ public class Application extends javafx.application.Application implements Sideb
 
     private Controller  _curScreen = null;
 
-    private String      _user = null;
+    private User        _user = null;
     private AnchorPane  _centre;
     private Sidebar     _sidebar;
 }

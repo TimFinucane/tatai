@@ -1,6 +1,7 @@
 package tatai.model;
 
 import org.junit.Test;
+import tatai.model.user.ScoreKeeper;
 
 import java.util.Calendar;
 import java.util.Date;

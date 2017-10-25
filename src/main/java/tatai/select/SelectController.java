@@ -8,9 +8,10 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import tatai.Controller;
-import tatai.model.ScoreKeeper;
 import tatai.model.test.TestJson;
 import tatai.model.test.TestParser;
+import tatai.model.user.ScoreKeeper;
+import tatai.model.user.User;
 import util.Files;
 
 import java.io.FileNotFoundException;
@@ -21,7 +22,7 @@ import java.util.Arrays;
  * A window in which the user can select a test
  */
 public abstract class SelectController extends Controller {
-    SelectController(String user, String title) {
+    SelectController(User user, String title) {
         loadFxml("select/Select");
         createBasicTests();
 
@@ -61,19 +62,19 @@ public abstract class SelectController extends Controller {
             if(!info.practice && info.prerequisites != null) {
                 int prerequisitesUnfulfilled = 0;
                 TestJson.Prerequisite lastUnfulfilled = null;
-                ScoreKeeper scores = new ScoreKeeper(user);
+
                 for( TestJson.Prerequisite prerequisite : info.prerequisites ) {
-                    ScoreKeeper.Score[] prereqScores = scores.getScores(prerequisite.name);
-                    if( Arrays.stream(prereqScores).filter(score -> score.score >= prerequisite.score).count() <
-                            prerequisite.times ) {
+                    User.Score[] prereqScores = new ScoreKeeper(user, prerequisite.name).getScores();
+                    if(Arrays.stream(prereqScores).filter(score -> score.score >= prerequisite.score).count() <
+                            prerequisite.times) {
                         prerequisitesUnfulfilled++;
                         lastUnfulfilled = prerequisite;
                     }
                 }
 
-                if( prerequisitesUnfulfilled > 1 ) // Skip it
+                if(prerequisitesUnfulfilled > 1) // Skip it
                     continue;
-                else if( prerequisitesUnfulfilled == 1 ) { // Let them see that they dont have to do much more to get it
+                else if(prerequisitesUnfulfilled == 1) { // Let them see that they dont have to do much more to get it
                     button.setOnAction((e) -> {});
                     button.setTextFill(Paint.valueOf("555555"));
                     button.setRipplerFill(Color.TRANSPARENT);
@@ -174,7 +175,7 @@ public abstract class SelectController extends Controller {
         }
     }
 
-    protected final String  user;
+    protected final User    user;
 
     //    JavaFX controls
     @FXML private Label     titleLbl;

@@ -8,8 +8,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import tatai.CreateCustomController;
-import tatai.model.ScoreKeeper;
 import tatai.model.test.TestJson;
+import tatai.model.user.ScoreKeeper;
+import tatai.model.user.User;
 import util.Files;
 import util.Views;
 
@@ -20,7 +21,7 @@ import java.util.Optional;
  */
 public abstract class SelectTestController extends SelectController {
     public static class Practice extends SelectTestController {
-        public Practice() {super("");}
+        public Practice(User user) {super(user);}
         @Override
         protected boolean   filter(TestJson test) {
             return test.practice;
@@ -31,9 +32,8 @@ public abstract class SelectTestController extends SelectController {
         }
     }
     public static class Normal extends SelectTestController {
-        public Normal(String user) {
+        public Normal(User user) {
             super(user);
-            _keeper = new ScoreKeeper(user);
         }
         @Override
         protected boolean   filter(TestJson test) {
@@ -44,16 +44,14 @@ public abstract class SelectTestController extends SelectController {
             tatai.TestController controller = new tatai.TestController(test);
             controller.onExit((state) -> {
                 if(state == ReturnState.FINISHED)
-                    _keeper.addScore(test.name, controller.score());
+                    new ScoreKeeper(user, test.name).addScore(controller.score());
             });
 
             displayChild(controller);
         }
-
-        private ScoreKeeper _keeper;
     }
 
-    private SelectTestController(String user) {
+    private SelectTestController(User user) {
         super(user, "Choose a test to play"); // Haha
 
         // Display test additions in bottom right corner
@@ -72,6 +70,11 @@ public abstract class SelectTestController extends SelectController {
      */
     @FXML
     void    createCustom(ActionEvent ignored) {
+        if(user == null) {
+            new Alert(Alert.AlertType.ERROR, "You must log in to complete this action.").show();
+            return;
+        }
+
         displayChild(new CreateCustomController(user));
     }
 
@@ -80,7 +83,12 @@ public abstract class SelectTestController extends SelectController {
      */
     @FXML
     void    editCustom(ActionEvent ignored) {
-        displayChild(new SelectController("", "Select a custom test to edit") {
+        if(user == null) {
+            new Alert(Alert.AlertType.ERROR, "You must log in to complete this action.").show();
+            return;
+        }
+
+        displayChild(new SelectController(user, "Select a custom test to edit") {
             @Override
             boolean     filter(TestJson test) {
                 return test.custom;
@@ -97,7 +105,12 @@ public abstract class SelectTestController extends SelectController {
      */
     @FXML
     void    deleteCustom(ActionEvent ignored) {
-        displayChild(new SelectController("", "Select a custom test to delete") {
+        if(user == null) {
+            new Alert(Alert.AlertType.ERROR, "You must log in to complete this action.").show();
+            return;
+        }
+
+        displayChild(new SelectController(user, "Select a custom test to delete") {
             @Override
             boolean     filter(TestJson test) {
                 return test.custom;
@@ -110,7 +123,7 @@ public abstract class SelectTestController extends SelectController {
                         .showAndWait();
 
                 if(type.isPresent() && type.get() == ButtonType.YES)
-                    Files.scoreFile(json.name).delete();
+                    Files.testFile(json.name).delete();
 
                 exit(ReturnState.FINISHED);
             }
