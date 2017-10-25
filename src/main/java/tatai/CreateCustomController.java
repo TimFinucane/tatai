@@ -5,7 +5,6 @@ import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -83,25 +82,16 @@ public class CreateCustomController extends Controller {
             @Override
             protected void updateItem(TestJson.Question question, boolean bln) {
                 super.updateItem(question, bln);
-                if (question != null) {
-                    setText(question.question);
-                } else {
-                    setText("");
-                }
+                setText(question == null ? "" : question.question);
             }
         });
         questionList.getSelectionModel().selectedIndexProperty().addListener(
-                (ObservableValue<? extends Number> val,
-                 Number oldVal,
-                 Number newVal) ->
-                    Platform.runLater(() -> selectQuestion(newVal.intValue()))
-        );
+                (observableValue, oldVal, newVal) -> Platform.runLater(() -> selectQuestion(newVal.intValue())));
 
-        // Prerequisite setup
+        // Prerequisite table setup
         TableColumn<Prerequisite, String> nameCol = new TableColumn<>("Test Name");
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         nameCol.setCellFactory(TextFieldTableCell.forTableColumn());
-
 
         TableColumn<Prerequisite, Integer> scoreCol = new TableColumn<>("Score");
         scoreCol.setCellValueFactory(new PropertyValueFactory<>("score"));
@@ -262,20 +252,6 @@ public class CreateCustomController extends Controller {
         int index = prerequisiteTable.getSelectionModel().getSelectedIndex();
         if(index >= 0) {
             _prerequisites.remove(index);
-        }
-    }
-
-    /**
-     * Does a safe check for whether the edited cell remains an integer. If it doesn't, the cell is reverted to its
-     * previous value and the property is not updated.
-     */
-    private void intEditCommit(TableColumn.CellEditEvent<Prerequisite, Integer> cell, IntegerProperty property) {
-        if(cell.getNewValue() < 0) { // Indicates an invalid result
-            // workaround for refreshing rendered values
-            cell.getTableView().getColumns().get(0).setVisible(false);
-            cell.getTableView().getColumns().get(0).setVisible(true);
-        } else {
-            property.setValue(cell.getNewValue());
         }
     }
 
