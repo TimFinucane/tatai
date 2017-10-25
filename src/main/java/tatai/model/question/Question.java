@@ -84,14 +84,14 @@ public class Question {
     /**
      * The tag property of the head. Will update self on a head switch.
      */
-    public ObjectProperty<Generatable.Tag> tagProperty() {
+    public ObjectProperty<QuestionPart.Tag> tagProperty() {
         return _headTag;
     }
 
     /**
      * Switches the question's head to this one
      */
-    public void             switchHead(Generatable newHead) {
+    public void             switchHead(QuestionPart newHead) {
         if(newHead.parent() != null)
             throw new IllegalArgumentException("The new head to switch to must have no parents");
 
@@ -105,7 +105,7 @@ public class Question {
     /**
      * Gets the head generatable of the question
      */
-    public Generatable      head() {
+    public QuestionPart head() {
         return _question;
     }
 
@@ -123,9 +123,9 @@ public class Question {
     private String          _curText = "";
     private int             _tries;
 
-    private ObjectProperty<Generatable.Tag> _headTag = new SimpleObjectProperty<>();
+    private ObjectProperty<QuestionPart.Tag> _headTag = new SimpleObjectProperty<>();
 
     private double          _timelimit;
     private int             _maxTries;
-    private Generatable     _question;
+    private QuestionPart _question;
 }

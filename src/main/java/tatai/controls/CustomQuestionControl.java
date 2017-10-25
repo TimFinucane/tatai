@@ -97,7 +97,7 @@ public class CustomQuestionControl extends TitledPane {
      * Updates the textflow with new tag structure
      * @param depth Used for colour coordination, determines colour of given text
      */
-    private void            updateFlow(Generatable.Tag rootTag, int depth) {
+    private void            updateFlow(QuestionPart.Tag rootTag, int depth) {
         if(rootTag.tags == null || rootTag.tags.length == 0) {
             addText(rootTag, depth);
             return;
@@ -127,7 +127,7 @@ public class CustomQuestionControl extends TitledPane {
     /**
      * Switches to viewing the QuestionPart the user clicked on
      */
-    private void            select(Generatable part) {
+    private void            select(QuestionPart part) {
         opBox.getChildren().remove(_selectedControl);
         _selected = part;
 
@@ -143,14 +143,14 @@ public class CustomQuestionControl extends TitledPane {
      * Appends the given tag to the textFlow
      * @param depth Used for colour coordination
      */
-    private void            addText(Generatable.Tag tag, int depth) {
+    private void            addText(QuestionPart.Tag tag, int depth) {
         addText(tag, 0, tag.text.length(), depth);
     }
     /**
      * Appends the text from start to end in the given tag to the textFlow
      * @param depth Used for colour coordination
      */
-    private void            addText(Generatable.Tag tag, int start, int end, int depth) {
+    private void            addText(QuestionPart.Tag tag, int start, int end, int depth) {
         Label text = new Label(tag.text.substring(start, end));
         text.setPrefWidth(text.getMinWidth());
         text.setPrefHeight(text.getMinHeight());
@@ -189,7 +189,7 @@ public class CustomQuestionControl extends TitledPane {
                 new Alert(Alert.AlertType.ERROR,
                         "Can't remove this or there won't be anything in your question!");
             } else if(_selected instanceof Operation) {
-                Generatable newRoot = ((Operation)_selected).operandsProperty().get(0);
+                QuestionPart newRoot = ((Operation)_selected).operandsProperty().get(0);
                 // Sever connection with new _root. Seems odd, but ensures _root has no parent and is top of structure
                 ((Operation)_selected).replace(0, new Range());
                 switchRoot(newRoot);
@@ -203,7 +203,7 @@ public class CustomQuestionControl extends TitledPane {
 
                 if(button.isPresent() && button.get() == ButtonType.YES) {
                     // Replace the operation with the part the user did NOT select
-                    Generatable saved = _selected.parent().operandsProperty().get(0) == _selected ?
+                    QuestionPart saved = _selected.parent().operandsProperty().get(0) == _selected ?
                             _selected.parent().operandsProperty().get(1) :
                             _selected.parent().operandsProperty().get(0);
 
@@ -217,7 +217,7 @@ public class CustomQuestionControl extends TitledPane {
                     select(saved);
                 }
             } else if(_selected instanceof Operation) {
-                Generatable saved = ((Operation) _selected).operandsProperty().get(0);
+                QuestionPart saved = ((Operation) _selected).operandsProperty().get(0);
                 _selected.parent().replace(_selected, saved);
                 select(saved);
             }
@@ -233,17 +233,17 @@ public class CustomQuestionControl extends TitledPane {
     }
 
     /**
-     * Changes the question's root Generatable part
+     * Changes the question's root QuestionPart part
      */
-    private void            switchRoot(Generatable root) {
+    private void            switchRoot(QuestionPart root) {
         _question.switchHead(root);
         updateFlow();
     }
 
-    private int             startOf(Pair<Generatable.Tag, Integer> tag) {
+    private int             startOf(Pair<QuestionPart.Tag, Integer> tag) {
         return tag.getValue();
     }
-    private int             endOf(Pair<Generatable.Tag, Integer> tag) {
+    private int             endOf(Pair<QuestionPart.Tag, Integer> tag) {
         return tag.getValue() + tag.getKey().text.length();
     }
 
@@ -256,13 +256,13 @@ public class CustomQuestionControl extends TitledPane {
             Color.AZURE
     };
 
-    private ChangeListener<Generatable.Tag> _tagListener = (ObservableValue<? extends Generatable.Tag> obs,
-                                                            Generatable.Tag oldTag,
-                                                            Generatable.Tag newTag) ->
+    private ChangeListener<QuestionPart.Tag> _tagListener = (ObservableValue<? extends QuestionPart.Tag> obs,
+                                                             QuestionPart.Tag oldTag,
+                                                             QuestionPart.Tag newTag) ->
                                                                 updateFlow();
     private ObjectProperty<TestJson.Question> _output = new SimpleObjectProperty<>();
 
-    private Generatable     _selected;
+    private QuestionPart _selected;
     private Region          _selectedControl;
     private Question        _question;
 

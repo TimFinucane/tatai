@@ -11,13 +11,13 @@ import javax.annotation.Nonnull;
 /**
  * Specifies generation of a random number between min and max (inclusive)
  */
-public class Range extends Generatable {
+public class Range extends QuestionPart {
     private class TagBinding extends ObjectBinding<Tag> {
         public Tag computeValue() {
             return generateTag();
         }
 
-        protected void rebind() {
+        void rebind() {
             getDependencies().clear();
             bind(_min, _max);
         }
@@ -26,12 +26,13 @@ public class Range extends Generatable {
     public Range() {
         this(1, 9);
     }
-    public Range(int min, int max) {
+    Range(int min, int max) {
         _min.setValue(min);
         _max.setValue(max);
 
-        _binding.rebind();
-        bindGeneratable(_binding);
+        TagBinding binding = new TagBinding();
+        binding.rebind();
+        bindPart(binding);
     }
 
     /**
@@ -44,11 +45,9 @@ public class Range extends Generatable {
     }
 
     @Nonnull
-    public Tag      generateTag() {
+    private Tag generateTag() {
         return new Tag(this,"(" + Integer.toString(_min.get()) + " to " + Integer.toString(_max.get()) + ")");
     }
-
-    private TagBinding      _binding = new TagBinding();
 
     public IntegerProperty  minProperty() {
         return _min;

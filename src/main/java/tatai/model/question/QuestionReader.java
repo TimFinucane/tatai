@@ -7,15 +7,15 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class QuestionReader {
+class QuestionReader {
     /**
      * Reads the given string, assuming it is in question format.
      * TODO: Produce documentation for question format
      */
     @Nonnull
-    public static Generatable  read(String question) {
+    static QuestionPart read(String question) {
         // Stores the generatables that are created throughout
-        ArrayList<Generatable> _elements = new ArrayList<>();
+        ArrayList<QuestionPart> _elements = new ArrayList<>();
 
         // First parse each number range, add to list, and replace with ints
         Pattern range = Pattern.compile("\\((\\d+) to (\\d+)\\)");
@@ -51,8 +51,8 @@ public class QuestionReader {
                     matches.appendReplacement(opLess, Integer.toString(_elements.size()));
 
                     // And create an op
-                    Generatable left = _elements.get(Integer.valueOf(matches.group(1)));
-                    Generatable right = _elements.get(Integer.valueOf(matches.group(3)));
+                    QuestionPart left = _elements.get(Integer.valueOf(matches.group(1)));
+                    QuestionPart right = _elements.get(Integer.valueOf(matches.group(3)));
 
                     _elements.add(new Operation(
                             left,

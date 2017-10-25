@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 /**
  * A generatable part of a question that uses an operator on two input operands
  */
-public class Operation extends Generatable {
+public class Operation extends QuestionPart {
     private class TagBinding extends ObjectBinding<Tag> {
         public Tag computeValue() {
             return generateTag();
@@ -27,7 +27,7 @@ public class Operation extends Generatable {
         }
     }
 
-    public Operation(Generatable first, Generatable second, boolean enclosed, Operator... ops) {
+    public Operation(QuestionPart first, QuestionPart second, boolean enclosed, Operator... ops) {
         first.parent = this;
         second.parent = this;
 
@@ -36,7 +36,7 @@ public class Operation extends Generatable {
         _enclosed.setValue(enclosed);
 
         _binding.rebind();
-        bindGeneratable(_binding);
+        bindPart(_binding);
     }
 
     @Override
@@ -88,9 +88,9 @@ public class Operation extends Generatable {
     }
 
     /**
-     * Replaces the Generatable at operand index (0 = left, 1 = right for binary) with the new given part
+     * Replaces the QuestionPart at operand index (0 = left, 1 = right for binary) with the new given part
      */
-    public void replace(int operand, Generatable part) {
+    public void replace(int operand, QuestionPart part) {
         if(_operands.get(operand).parent == this)
             _operands.get(operand).parent = null;
 
@@ -104,7 +104,7 @@ public class Operation extends Generatable {
     /**
      * Replaces the old with the new, if the old exists as a direct child of this
      */
-    public void replace(Generatable oldPart, Generatable newPart) {
+    public void replace(QuestionPart oldPart, QuestionPart newPart) {
         for(int i = 0; i < _operands.size(); ++i)
             if(_operands.get(i) == oldPart)
                 replace(i, newPart);
@@ -113,8 +113,8 @@ public class Operation extends Generatable {
     /**
      * Encloses the op string in brackets if the operation generating it has lower precedence than this one
      */
-    private String                      tryEnclose(Generatable generatable, String op) {
-        if(generatable instanceof Operation && ((Operation) generatable)._op.precedence < _op.precedence ||
+    private String                      tryEnclose(QuestionPart questionPart, String op) {
+        if( questionPart instanceof Operation && ((Operation) questionPart)._op.precedence < _op.precedence ||
            _enclosed.getValue())
             return "(" + op + ")";
         else
@@ -127,13 +127,13 @@ public class Operation extends Generatable {
     public ListProperty<Operator>       operatorsProperty() {
         return _operators;
     }
-    public ListProperty<Generatable>    operandsProperty() { return _operands; }
+    public ListProperty<QuestionPart>    operandsProperty() { return _operands; }
 
     private Operator                    _op;
 
     private TagBinding                  _binding = new TagBinding();
 
-    private ListProperty<Generatable>   _operands;
+    private ListProperty<QuestionPart>   _operands;
     private BooleanProperty             _enclosed = new SimpleBooleanProperty();
     private ListProperty<Operator>      _operators;
 }
