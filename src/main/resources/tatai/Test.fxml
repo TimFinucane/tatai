@@ -37,6 +37,9 @@
          </children>
       </HBox>
       <Label fx:id="timeLbl" />
-      <Label fx:id="questionNumberLbl" />
+      <Label fx:id="questionNumberLbl">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
    </children>
 </fx:root>
