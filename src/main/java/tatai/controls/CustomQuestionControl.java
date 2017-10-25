@@ -169,7 +169,7 @@ public class CustomQuestionControl extends TitledPane {
      */
     private void            addOperation() {
         Operation oldParent = _selected.parent();
-        Operation newOp = new Operation(_selected, new Range(), true, Operator.Type.ADD.create());
+        Operation newOp = new Operation(_selected, new Range(), true, Operator.ADD);
 
         if(_selected == _question.head())
             switchRoot(newOp);

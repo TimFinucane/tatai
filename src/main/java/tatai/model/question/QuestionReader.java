@@ -29,11 +29,11 @@ public class QuestionReader {
         matches.appendTail(rangeless);
 
         // Now start reading in ops in order of precedence
-        Collection<List<Operator.Type>> operators = Operator.Type.getOperatorPrecedences();
-        List<Operator.Type> precedencesList = new ArrayList<>();
+        Collection<List<Operator>> operators = Operator.getOperatorPrecedences();
+        List<Operator> precedencesList = new ArrayList<>();
 
         StringBuffer sBuffer = rangeless;
-        for(List<Operator.Type> operatorList : operators) {
+        for(List<Operator> operatorList : operators) {
             precedencesList.addAll(operatorList);
             Pattern precedence = Pattern.compile(opsPattern(precedencesList));
 
@@ -58,7 +58,7 @@ public class QuestionReader {
                             left,
                             right,
                             !matches.group(4).isEmpty(), // Parentheses
-                            Operator.Type.createOperators(matches.group(2))
+                            Operator.createOperators(matches.group(2))
                     ));
                 }
                 // Finish replacement
@@ -79,10 +79,10 @@ public class QuestionReader {
      * Produces a pattern that searches for a use of any of the given ops in the form (operand OPERATOR operand)
      */
     @Nonnull
-    private static String   opsPattern(List<Operator.Type> ops) {
+    private static String   opsPattern(List<Operator> ops) {
         StringBuilder output = new StringBuilder("\\(?(\\d+) \\[((?:");
-        for(Operator.Type op : ops)
-            output.append(Pattern.quote(op.symbol())).append("|");
+        for(Operator op : ops)
+            output.append(Pattern.quote(op.symbol)).append("|");
 
         output.append(",\\s)+)\\] (\\d+)(\\)?)");
 

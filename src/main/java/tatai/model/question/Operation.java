@@ -21,7 +21,7 @@ public class Operation extends Generatable {
             return generateTag();
         }
 
-        public void rebind() {
+        void rebind() {
             getDependencies().clear();
             bind(_operands.get(0).tagProperty(), _operands.get(1).tagProperty(), _operators, _enclosed);
         }
@@ -48,16 +48,16 @@ public class Operation extends Generatable {
         Pair<String, Integer> right = _operands.get(1).generate(_op.chooseRight(constraint));
         Pair<String, Integer> left = _operands.get(0).generate(_op.chooseLeft(constraint, right.getValue()));
 
-        String question = tryEnclose(_operands.get(0), left.getKey()) + _op.symbol() +
+        String question = tryEnclose(_operands.get(0), left.getKey()) + _op.symbol +
                           tryEnclose(_operands.get(1), right.getKey());
 
         return new Pair<>(question, _op.apply(left.getValue(), right.getValue()));
     }
 
     @Nonnull
-    public Tag                      generateTag() {
-        int firstIndex = 0;
-        int secondIndex = 0;
+    private Tag                      generateTag() {
+        int firstIndex;
+        int secondIndex;
 
         Tag firstTag = _operands.get(0).tagProperty().getValue();
         Tag secondTag = _operands.get(1).tagProperty().getValue();
@@ -72,7 +72,7 @@ public class Operation extends Generatable {
         builder.append(firstTag.text);
 
         builder.append(" [");
-        builder.append(_operators.stream().map(Operator::symbol).collect(Collectors.joining(", ")));
+        builder.append(_operators.stream().map(op -> op.symbol).collect(Collectors.joining(", ")));
         builder.append("] ");
 
         // Second part
@@ -114,7 +114,7 @@ public class Operation extends Generatable {
      * Encloses the op string in brackets if the operation generating it has lower precedence than this one
      */
     private String                      tryEnclose(Generatable generatable, String op) {
-        if(generatable instanceof Operation && ((Operation) generatable)._op.precedence() < _op.precedence() ||
+        if(generatable instanceof Operation && ((Operation) generatable)._op.precedence < _op.precedence ||
            _enclosed.getValue())
             return "(" + op + ")";
         else
