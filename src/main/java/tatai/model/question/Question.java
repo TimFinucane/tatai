@@ -41,7 +41,7 @@ public class Question {
     public void             generate() {
         _tries = _maxTries;
 
-        Pair<String, Integer> pair = _question.generate(new NumberConstraint());
+        Pair<String, Integer> pair = _question.generate(new NumberConstraint(_min, _max));
         _curAnswer = pair.getValue();
         _curText = pair.getKey();
     }
@@ -127,7 +127,7 @@ public class Question {
 
     private int             _min;
     private int             _max;
-    private double          _timelimit;
+    private double          _timelimit; // Store this parameter just in case, but not using it for now
     private int             _maxTries;
     private QuestionPart    _question;
 }
