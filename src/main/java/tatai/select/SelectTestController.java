@@ -102,7 +102,7 @@ public abstract class SelectTestController extends SelectController {
 
         for(TestJson.Prerequisite prerequisite : test.prerequisites) {
             User.Score[] prereqScores = new ScoreKeeper(user, prerequisite.name).getScores();
-            if( Arrays.stream(prereqScores).filter(score -> score.score >= prerequisite.score).count() <
+            if(Arrays.stream(prereqScores).filter(score -> score.score >= prerequisite.score).count() <
                     prerequisite.times) {
                 prerequisitesUnfulfilled++;
                 lastUnfulfilled = prerequisite;

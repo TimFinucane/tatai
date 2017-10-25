@@ -28,7 +28,7 @@ public class User {
     static class            TestScores {
         public TestScores(String test) {
             this.test = test;
-            this.scores = null;
+            this.scores = new Score[0];
         }
 
         String      test;
@@ -68,15 +68,14 @@ public class User {
             } catch(IOException e) {
                 Logger.logMsg(Logger.ERROR, "Can't create a new user file: " + e.getMessage());
             }
-
-            _savedTest = null;
-            _testScores = new SimpleListProperty<>(FXCollections.observableArrayList());
         } else {
             try {
                 UserInf inf = _gson.fromJson(new BufferedReader(new FileReader(Files.userFile(username))), UserInf.class);
 
-                _savedTest = inf.savedTest;
-                _testScores = new SimpleListProperty<>(FXCollections.observableArrayList(inf.tests));
+                if(inf != null) {
+                    _savedTest = inf.savedTest;
+                    _testScores = new SimpleListProperty<>(FXCollections.observableArrayList(inf.tests));
+                }
             } catch(FileNotFoundException e) {
                 // Can't happen.
             }
@@ -124,6 +123,6 @@ public class User {
 
     private Gson                        _gson = new GsonBuilder().setDateFormat("yyyy MMM dd HH:mm").setLenient().create();
 
-    private UnfinishedTest              _savedTest;
-    private ListProperty<TestScores>    _testScores;
+    private UnfinishedTest              _savedTest = null;
+    private ListProperty<TestScores>    _testScores = new SimpleListProperty<>(FXCollections.observableArrayList());
 }

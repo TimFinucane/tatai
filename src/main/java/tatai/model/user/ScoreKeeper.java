@@ -2,6 +2,7 @@ package tatai.model.user;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 
 import java.util.Arrays;
 
@@ -50,5 +51,5 @@ public class ScoreKeeper {
     private User            _user;
 
     private String          _test;
-    private IntegerProperty _index;
+    private IntegerProperty _index = new SimpleIntegerProperty();
 }
