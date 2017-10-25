@@ -20,6 +20,7 @@ import java.util.Date;
 public class StatsController extends Controller {
     public StatsController(ScoreKeeper scoreKeeper){
         loadFxml("Stats");
+<<<<<<< HEAD
         _scores = scoreKeeper.getScores();
 
         titleLbl.setText("Statistics for ");
@@ -67,6 +68,41 @@ public class StatsController extends Controller {
     private static final String COLOUR_VALUE =  "#22A7F0";
 
     private static User.Score[]  _scores;
+=======
+        _scores = scoreKeeper.getScores(testName);
+
+        titleLbl.setText("Statistics for " + testName);
+
+        displayScores();
+    }
+
+
+    private void displayScores() {
+        double average = 0.0;
+        int i;
+        for(i = 0; i < _scores.length; i++) {
+            Label score = new Label(Integer.toString(_scores[i].score));
+            Label date = new Label(_scores[i].date.toString());
+
+            score.getStyleClass().add("scores-label");
+            date.getStyleClass().add("scores-label");
+            dateBox.getChildren().add(date);
+            scoreBox.getChildren().add(score);
+
+            average += _scores[i].score;
+        }
+        average /= i;
+
+        gaugeValue.setMaxValue(12.0);
+        gaugeValue.setMinValue(10.0);
+        gaugeValue.setValue(average);
+    }
+
+    private static          ScoreKeeper.Score[] _scores;
+
+    private ScoreKeeper     _scoreKeeper;
+    private String          _testName;
+>>>>>>> Add average score gauge
 
     // JavaFx controls
     @FXML private Gauge     gaugeValue;

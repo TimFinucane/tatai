@@ -8,6 +8,10 @@
     -fx-text-fill: #ffffff;
     -fx-font-size: 36;
 }
+.scores-label {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 20;
+}
 .text-input {
     -fx-text-fill: #ffffff;
     -fx-prompt-text-fill: #ffffff;
