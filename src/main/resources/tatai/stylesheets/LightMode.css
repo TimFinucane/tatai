@@ -1,20 +1,65 @@
-.root {
-    -fx-background-color: #dfe3ee;
+* {
+    -fx-text-fill: black;
+    -fx-background-radius: 0;
 }
+
+.pane, .root {
+    -fx-alignment: center;
+}
+
+// General controls
+.button, .jfx-button {
+    -fx-alignment: center;
+    -jfx-rippler-fill: dddddd;
+}
+
+.button:false-disable, .jfx-button:false-disable {
+    -fx-text-fill: gray;
+}
+
+.jfx-button:false-disable .jfx-rippler { -jfx-rippler-fill: transparent; } // Try to disable rippler. Doesn't work :(
+
+.glyph-icon {
+    -fx-size: 26;
+}
+
 .label {
-    -fx-text-fill: #000000;
+    -fx-font-style: italic;
 }
-.button {
-    -fx-text-fill: #000000;
+
+.text-field {
+    -fx-background-radius: 0;
 }
-.text-input {
-    -fx-text-fill: #000000;
-    -fx-prompt-text-fill: #000000;
+
+// Custom controls
+#recorder-control .jfx-button .glyph-icon{
+    -fx-fill: #f03434;
 }
-.jfx-text-field {
-    -jfx-unfocus-color: #000000;
+#playback-control .jfx-button .glyph-icon{
+    -fx-fill: #00e640;
 }
+#playback-control:stop .jfx-button .glyph-icon{
+    -fx-fill: #f03434;
+>>>>>>> ui-revamp
+}
+
+// Flow pane text for custom question control
+.label:flow-text {
+    -fx-background-color: rgba(68, 142, 163, 0.2);
+}
+
+.label:flow-text-odd {
+    -fx-background-color: rgba(162, 68, 68, 0.2);
+}
+<<<<<<< HEAD
 .check-box .box {
     -fx-background-color: #f7f7f7;
 }
 
+=======
+
+// Spinners
+.spinner {
+    -fx-border-width: 1;
+}
+>>>>>>> ui-revamp
