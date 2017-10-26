@@ -94,3 +94,16 @@
 .check-box:selected .box .mark {
     -fx-background-color: white;
 }
+
+// Scroll bars
+.scroll-bar {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .track {
+    -fx-background-color: rgba(255, 255, 255, 0.03);
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: rgba(255, 255, 255, 0.08);
+}
