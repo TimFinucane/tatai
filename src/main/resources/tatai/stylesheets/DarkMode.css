@@ -4,6 +4,7 @@
 
 .glyph-icon {
     -fx-fill: white;
+    -fx-size: 26;
 }
 
 .pane, .root {
@@ -11,6 +12,7 @@
 }
 
 .button, .jfx-button {
+    -fx-alignment: center;
 }
 
 .label {
