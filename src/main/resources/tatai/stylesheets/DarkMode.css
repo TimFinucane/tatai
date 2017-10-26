@@ -9,6 +9,7 @@
 
 .pane, .root {
     -fx-background-color: #29292D;
+    -fx-alignment: center;
 }
 
 .button, .jfx-button {
