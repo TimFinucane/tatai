@@ -1,6 +1,6 @@
 * {
-    -fx-text-fill: black;
     -fx-background-radius: 0;
+    -fx-text-fill: black;
 }
 
 .pane, .root {
@@ -40,7 +40,6 @@
 }
 #playback-control:stop .jfx-button .glyph-icon{
     -fx-fill: #f03434;
->>>>>>> ui-revamp
 }
 
 // Flow pane text for custom question control
@@ -51,15 +50,8 @@
 .label:flow-text-odd {
     -fx-background-color: rgba(162, 68, 68, 0.2);
 }
-<<<<<<< HEAD
-.check-box .box {
-    -fx-background-color: #f7f7f7;
-}
-
-=======
 
 // Spinners
 .spinner {
     -fx-border-width: 1;
 }
->>>>>>> ui-revamp
