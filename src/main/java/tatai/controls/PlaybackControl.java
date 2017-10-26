@@ -70,7 +70,6 @@ public class PlaybackControl extends Region {
     // Called when the play button is pressed
     private void play() {
         _player.play();
-        //_imageView.setImage(_stopImage);
         _playbackBtn.setGraphic(setStop());
         _playing = true;
     }
@@ -78,7 +77,6 @@ public class PlaybackControl extends Region {
     private void stop() {
         _player.stop();
         _playbackBtn.setGraphic(setPlay());
-        //_imageView.setImage(_playImage);
         _playing = false;
     }
 
@@ -99,9 +97,5 @@ public class PlaybackControl extends Region {
 
     private boolean     _playing = false;
     private MediaPlayer _player = null;
-    private JFXButton      _playbackBtn;
-
-    //private Image       _playImage = new Image(getClass().getResourceAsStream("/tatai/icons/play.png"));
-  //  private Image       _stopImage = new Image(getClass().getResourceAsStream("/tatai/icons/stop.png"));
-   // private ImageView   _imageView = new ImageView(_playImage);
+    private JFXButton   _playbackBtn;
 }
