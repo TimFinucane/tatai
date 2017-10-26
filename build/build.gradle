@@ -1,5 +1,17 @@
-apply plugin: 'java'
-apply plugin: 'eclipse'
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "com.smokejumperit.gradle.license:Gradle-License-Report:0.0.2"
+    }
+}
+
+plugins {
+    id 'java'
+    id 'eclipse'
+}
+apply plugin: 'license-report'
 
 group 'tif.tat'
 version '1.1'
