@@ -1,10 +1,24 @@
-.root * {
+* {
+    -base-color: #29292D;
+    -indent-color: #2D2D31;
+    -accent-color: #5797ef;
+
+    -mild-outdent: rgba(0, 0, 0, 0.02);
+    -mild-indent: rgba(255, 255, 255, 0.01);
+    -medium-indent: rgba(255, 255, 255, 0.03);
+    -heavy-indent: rgba(255, 255, 255, 0.08);
+}
+
+* {
     -fx-text-fill: white;
     -fx-background-radius: 0;
+
+    -fx-accent: -accent-color;
+    -fx-focus-color: -accent-color;
 }
 
 .pane, .root {
-    -fx-background-color: #29292D;
+    -fx-background-color: -base-color;
     -fx-alignment: center;
 }
 
@@ -28,28 +42,28 @@
 }
 
 .text-field {
-    -fx-background-color: #2D2D31;
+    -fx-background-color: -indent-color;
     -fx-background-radius: 0;
 }
 
 // Tables and lists
 .list-view, .table-view {
     -fx-background-color: transparent;
-    -fx-border-color: rgba(255, 255, 255, 0.08);
-    -fx-table-cell-border-color: rgba(255, 255, 255, 0.08);
+    -fx-border-color: -heavy-indent;
+    -fx-table-cell-border-color: -heavy-indent;
 }
 
 .table-view .column-header {
-    -fx-background-color: #2D2D31;
+    -fx-background-color: -indent-color;
 }
 
 .list-cell, .table-row-cell {
-    -fx-cell-hover-color: rgba(0, 0, 0, 0.02);
-    -fx-background-color: rgba(255, 255, 255, 0.01);
+    -fx-cell-hover-color: -mild-outdent;
+    -fx-background-color: -mild-indent;
 }
 
 .list-cell:odd, .table-row-cell:odd {
-    -fx-background-color: rgba(255, 255, 255, 0.03);
+    -fx-background-color: -medium-indent;
 }
 
 // Titled panes
@@ -59,37 +73,37 @@
 
 .titled-pane .content {
     -fx-background-color: transparent;
-    -fx-border-color: rgba(255, 255, 255, 0.08);
+    -fx-border-color: -heavy-indent;
 }
 
 .titled-pane .title {
-    -fx-background-color: rgba(255, 255, 255, 0.08);
+    -fx-background-color: -heavy-indent;
 }
 
 .titled-pane .arrow-button .arrow {
-    -fx-background-color: rgba(255, 255, 255, 0.08);
+    -fx-background-color: -heavy-indent;
 }
 
 // Spinners
 .spinner {
     -fx-background-color: transparent;
-    -fx-border-color: rgba(255, 255, 255, 0.08);
+    -fx-border-color: -heavy-indent;
     -fx-border-width: 1;
 }
 
 .spinner .increment-arrow-button,
 .spinner .decrement-arrow-button {
-    -fx-background-color: rgba(0, 0, 0, 0.02);
+    -fx-background-color: -mild-outdent;
 }
 
 .spinner .increment-arrow,
 .spinner .decrement-arrow {
-    -fx-background-color: rgba(255, 255, 255, 0.08);
+    -fx-background-color: -heavy-indent;
 }
 
 // And check boxes
 .check-box .box {
-    -fx-background-color: rgba(255, 255, 255, 0.08);
+    -fx-background-color: -heavy-indent;
 }
 .check-box:selected .box .mark {
     -fx-background-color: white;
@@ -101,9 +115,9 @@
 }
 
 .scroll-bar .track {
-    -fx-background-color: rgba(255, 255, 255, 0.03);
+    -fx-background-color: -medium-indent;
 }
 
 .scroll-bar .thumb {
-    -fx-background-color: rgba(255, 255, 255, 0.08);
+    -fx-background-color: -heavy-indent;
 }
