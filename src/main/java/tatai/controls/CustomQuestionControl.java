@@ -8,11 +8,12 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.util.Pair;
 import tatai.model.question.*;
 import tatai.model.test.TestJson;
@@ -20,7 +21,9 @@ import util.NumberConstraint;
 import util.Views;
 
 import java.util.Optional;
-import static util.SpinnerFixes.*;
+
+import static util.SpinnerFixes.assign;
+import static util.SpinnerFixes.tieMinMax;
 
 /**
  * Allows the user to create their own question
@@ -166,8 +169,9 @@ public class CustomQuestionControl extends TitledPane {
         text.setPrefWidth(text.getMinWidth());
         text.setPrefHeight(text.getMinHeight());
 
-        Color c = colours[depth % colours.length];
-        text.setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
+        text.pseudoClassStateChanged(PseudoClass.getPseudoClass("flow-text"), true);
+        if(depth % 2 == 1)
+            text.pseudoClassStateChanged(PseudoClass.getPseudoClass("flow-text-odd"), true);
 
         // Ensure that when the user clicks this bit, we select it
         text.setOnMouseClicked(event -> select(tag.owner));
@@ -258,15 +262,6 @@ public class CustomQuestionControl extends TitledPane {
     private int             endOf(Pair<QuestionPart.Tag, Integer> tag) {
         return tag.getValue() + tag.getKey().text.length();
     }
-
-    // TODO: Give to CSS to choose?
-    // Colours for the text flow
-    private static final Color colours[] = new Color[]{
-            Color.BLANCHEDALMOND,
-            Color.ALICEBLUE,
-            Color.ROSYBROWN,
-            Color.AZURE
-    };
 
     private ChangeListener<QuestionPart.Tag> _tagListener = (ObservableValue<? extends QuestionPart.Tag> obs,
                                                              QuestionPart.Tag oldTag,

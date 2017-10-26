@@ -1,6 +1,7 @@
 package tatai.select;
 
 import com.jfoenix.controls.JFXButton;
+import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -10,7 +11,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import tatai.CreateCustomController;
 import tatai.TestController;
 import tatai.model.test.TestJson;
@@ -114,8 +114,7 @@ public abstract class SelectTestController extends SelectController {
             return false;
         else if(prerequisitesUnfulfilled == 1) { // Let them see that they dont have to do much more to get it
             button.setOnAction((e) -> {});
-            button.setTextFill(Paint.valueOf("555555"));
-            button.setRipplerFill(Color.TRANSPARENT);
+            button.pseudoClassStateChanged(PseudoClass.getPseudoClass("false-disable"), true);
             button.setTooltip(new Tooltip("You only need to get better on the " + lastUnfulfilled.name + " test!"));
         }
 

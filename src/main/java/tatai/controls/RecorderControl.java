@@ -5,7 +5,6 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.scene.layout.Region;
 import javafx.scene.media.Media;
-import javafx.scene.paint.Paint;
 import tatai.model.Recognizer;
 import tatai.model.Recording;
 
@@ -21,6 +20,8 @@ public class RecorderControl extends Region {
     public RecorderControl() {
         _button = new JFXButton("");
         _button.setGraphic(setRecord());
+
+        setId("recorder-control");
 
         getChildren().add(_button);
 
@@ -90,20 +91,18 @@ public class RecorderControl extends Region {
     // Just some helper methods to create the icon to be displayed.
     private static FontAwesomeIconView setRecord() {
         FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.CIRCLE);
-        icon.setFill(Paint.valueOf("#f03434"));
-        icon.setGlyphSize(60);
+        icon.setGlyphSize(50);
         return icon;
     }
 
     private static FontAwesomeIconView setStop() {
         FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.STOP);
-        icon.setFill(Paint.valueOf("#f03434"));
-        icon.setGlyphSize(60);
+        icon.setGlyphSize(50);
         return icon;
     }
 
-    private JFXButton      _button;
-    private Recording   _recording = null;
+    private JFXButton       _button;
+    private Recording       _recording = null;
 
     private Runnable            _mediaAvailable = null;
     private Runnable            _recordingStarted = null;

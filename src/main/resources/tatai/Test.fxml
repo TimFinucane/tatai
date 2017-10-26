@@ -3,18 +3,21 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import tatai.controls.PlaybackControl?>
 <?import tatai.controls.RecorderControl?>
 
-<fx:root alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="15.0" style="-fx-background-color: #29292D;" type="VBox" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="15.0" type="VBox" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="titleLbl" text="5" textFill="WHITE">
+      <Region VBox.vgrow="SOMETIMES" />
+      <Label fx:id="titleLbl" textFill="WHITE">
          <font>
             <Font size="96.0" />
          </font>
       </Label>
+      <Region VBox.vgrow="SOMETIMES" />
       <HBox alignment="TOP_CENTER" spacing="50.0">
          <children>
             <RecorderControl fx:id="recorderControl" />
@@ -26,6 +29,7 @@
             <Font size="26.0" />
          </font>
       </Label>
+      <Region VBox.vgrow="SOMETIMES" />
       <Label fx:id="retryLbl" textFill="WHITE">
          <font>
             <Font name="System Italic" size="12.0" />
@@ -33,13 +37,15 @@
       </Label>
       <HBox alignment="TOP_CENTER" spacing="50.0">
          <children>
-            <JFXButton fx:id="submitBtn" text="Submit" textFill="WHITE" />
+            <JFXButton fx:id="submitBtn" text="Submit" />
          </children>
       </HBox>
+      <Region VBox.vgrow="SOMETIMES" />
       <Label fx:id="timeLbl" />
       <Label fx:id="questionNumberLbl">
          <font>
             <Font size="18.0" />
-         </font></Label>
+         </font>
+      </Label>
    </children>
 </fx:root>
