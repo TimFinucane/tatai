@@ -1,19 +1,39 @@
-.root{
+.root * {
+    -fx-text-fill: white;
+}
+
+.glyph-icon {
+    -fx-fill: white;
+    -fx-size: 26;
+}
+
+.pane, .root {
     -fx-background-color: #29292D;
+    -fx-alignment: center;
 }
+
+.button, .jfx-button {
+    -fx-alignment: center;
+}
+
 .label {
-    -fx-text-fill: #ffffff;
-}
-.button {
-    -fx-text-fill: #ffffff;
-}
-.text-input {
-    -fx-text-fill: #ffffff;
-    -fx-prompt-text-fill: #ffffff;
-}
-.jfx-text-field {
-    -jfx-unfocus-color: #ffffff;
+    -fx-font-style: italic;
 }
 
+.list-view, .table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: rgba(255, 255, 255, 0.08);
+}
 
+.table-view .column-header {
+    -fx-background-color: #2D2D31;
+}
 
+.list-cell, .table-row-cell {
+    -fx-cell-hover-color: rgba(0, 0, 0, 0.02);
+    -fx-background-color: rgba(255, 255, 255, 0.01);
+}
+
+.list-cell:odd, .table-row-cell:odd {
+    -fx-background-color: rgba(255, 255, 255, 0.03);
+}

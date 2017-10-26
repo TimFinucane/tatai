@@ -23,8 +23,6 @@ public class Application extends javafx.application.Application implements Sideb
 
     @Override
     public void start(Stage stage) {
-        //setUserAgentStylesheet("/tatai/stylesheets/DarkMode.css");
-
         // Have a sidebar on the left, and a pane in the centre to add our screens
         _sidebar = new Sidebar(this);
         _centre = new AnchorPane();
@@ -33,7 +31,14 @@ public class Application extends javafx.application.Application implements Sideb
         pane.setLeft(_sidebar);
         pane.setCenter(_centre);
 
+<<<<<<< HEAD
         stage.setScene(new Scene(pane, 700, 400));
+=======
+        _scene = new Scene(pane, 600, 400);
+        _scene.getStylesheets().add("/tatai/stylesheets/DarkMode.css");
+
+        stage.setScene(_scene);
+>>>>>>> ui-revamp
 
         stage.setTitle(APP_NAME);
         stage.show();
@@ -91,10 +96,13 @@ public class Application extends javafx.application.Application implements Sideb
         alert.getDialogPane().getScene().getWindow().setOnCloseRequest((e) -> alert.close());
 
         alert.showAndWait().ifPresent(type -> {
-            if(type == light)
-                setUserAgentStylesheet("/tatai/stylesheets/LightMode.css");
-            else if(type == dark)
-                setUserAgentStylesheet("/tatai/stylesheets/DarkMode.css");
+            if(type == light) {
+                _scene.getStylesheets().add("/tatai/stylesheets/LightMode.css");
+                _scene.getStylesheets().remove("/tatai/stylesheets/DarkMode.css");
+            } else if(type == dark) {
+                _scene.getStylesheets().add("/tatai/stylesheets/DarkMode.css");
+                _scene.getStylesheets().remove("/tatai/stylesheets/LightMode.css");
+            }
         });
     }
 
@@ -129,6 +137,8 @@ public class Application extends javafx.application.Application implements Sideb
     private Controller  _curScreen = null;
 
     private User        _user = null;
+
+    private Scene       _scene;
     private AnchorPane  _centre;
     private Sidebar     _sidebar;
 }

@@ -240,7 +240,7 @@ public class CustomQuestionControl extends TitledPane {
      */
     private void            generate() {
         generateLbl.setText(_question.head().generate(
-                new NumberConstraint(minSpinner.getValue(), maxSpinner.getValue(), 1, 0)
+                new NumberConstraint(minSpinner.getValue(), maxSpinner.getValue())
         ).getKey());
     }
 

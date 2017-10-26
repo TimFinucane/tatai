@@ -12,7 +12,6 @@ import tatai.model.user.User;
 import util.Files;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
 /**
  * A window in which the user can select a test
@@ -75,7 +74,7 @@ public abstract class SelectController extends Controller {
      * Temporary method for creating basic tests if they are not already made
      */
     private static void createBasicTests() {
-        if( Files.listTests().contains("Easy"))
+        if(Files.listTests().contains("Easy"))
             return;
 
         TestJson basic = new TestJson();
@@ -93,11 +92,7 @@ public abstract class SelectController extends Controller {
         basic.questions[0].min = 1;
         basic.questions[0].max = 9;
 
-        try {
-            TestParser.save(basic);
-        } catch(IOException e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        TestParser.save(basic);
 
         basic.name = "Hard";
         basic.order = 1;
@@ -106,14 +101,14 @@ public abstract class SelectController extends Controller {
         basic.questions[0] = new TestJson.Question();
         basic.questions[0].rounds = 4;
         basic.questions[0].tries = 2;
-        basic.questions[0].question = "(1 to 99) [+] (1 to 99)";
+        basic.questions[0].question = "(1 to 99) [\uFF0B] (1 to 99)";
         basic.questions[0].min = 1;
         basic.questions[0].max = 99;
 
         basic.questions[1] = new TestJson.Question();
         basic.questions[1].rounds = 3;
         basic.questions[1].tries = 2;
-        basic.questions[1].question = "(1 to 9) [\u00D7, +] (1 to 9)";
+        basic.questions[1].question = "(1 to 9) [\u00D7, \uFF0B] (1 to 9)";
         basic.questions[1].min = 1;
         basic.questions[1].max = 99;
 
@@ -126,11 +121,7 @@ public abstract class SelectController extends Controller {
 
         basic.prerequisites = new TestJson.Prerequisite[] { new TestJson.Prerequisite("Easy", 8, 1) };
 
-        try {
-            TestParser.save(basic);
-        } catch(IOException e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        TestParser.save(basic);
 
         basic.randomizeQuestions = false;
         basic.practice = true;
@@ -146,11 +137,7 @@ public abstract class SelectController extends Controller {
         basic.questions[0].min = 1;
         basic.questions[0].max = 9;
 
-        try {
-            TestParser.save(basic);
-        } catch(IOException e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        TestParser.save(basic);
 
         basic.name = "Advanced";
         basic.order = 1;
@@ -162,11 +149,7 @@ public abstract class SelectController extends Controller {
         basic.questions[0].min = 1;
         basic.questions[0].max = 99;
 
-        try {
-            TestParser.save(basic);
-        } catch(IOException e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        TestParser.save(basic);
     }
 
     protected final User    user;

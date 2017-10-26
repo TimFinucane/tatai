@@ -1,5 +1,6 @@
 .button {
-    -fx-text-fill: white;
+    -fx-alignment: center_left;
+    -fx-font-size: 20;
 }
 .button:hover {
     -fx-background-color: rgba(255, 255, 255, 0.01);

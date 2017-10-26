@@ -7,11 +7,10 @@ import java.util.Random;
  */
 public class NumberConstraint {
     public NumberConstraint() {
-        mod = 1;
-        eqClass = 0;
-
-        this.min = Integer.MIN_VALUE;
-        this.max = Integer.MAX_VALUE;
+        this(Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+    public NumberConstraint(int min, int max) {
+        this(min, max, 1, 0);
     }
     public NumberConstraint(int min, int max, int mod, int eqClass) {
         this.min = min;
