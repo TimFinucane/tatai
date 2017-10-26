@@ -8,8 +8,9 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.converter.DefaultStringConverter;
 import tatai.controls.CustomQuestionControl;
 import tatai.model.question.Question;
 import tatai.model.test.TestJson;
@@ -91,7 +92,7 @@ public class CreateCustomController extends Controller {
         // Prerequisite table setup
         TableColumn<Prerequisite, String> nameCol = new TableColumn<>("Test Name");
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        nameCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        nameCol.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(), FXCollections.observableArrayList(Files.listTests())));
 
         TableColumn<Prerequisite, Integer> scoreCol = new TableColumn<>("Score");
         scoreCol.setCellValueFactory(new PropertyValueFactory<>("score"));
@@ -170,8 +171,10 @@ public class CreateCustomController extends Controller {
 
         // Check whether prerequisites are for real tests
         for(Prerequisite req : _prerequisites) {
-            if(!Files.testFile(req.name.getValue()).exists()) {
-                new Alert(Alert.AlertType.ERROR, "Can't have a requisite for the test: " + req.name +
+            if(req.name.isEmpty().get()) {
+                new Alert(Alert.AlertType.ERROR, "You have a requisite with no test specified!").show();
+            } else if(!Files.testFile(req.name.getValue()).exists()) {
+                new Alert(Alert.AlertType.ERROR, "Can't have a requisite for the test: " + req.name.get() +
                         ", it doesn't exist").show();
                 return;
             }
