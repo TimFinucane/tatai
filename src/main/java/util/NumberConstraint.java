@@ -35,8 +35,8 @@ public class NumberConstraint {
      * Generates a number following all constraints that fits within the given range
      */
     public int      generate(int min, int max) throws ConstraintException {
-        int smallestMin = (int)(Math.ceil(Math.max(min, this.min)/mod) * mod);
-        int largestMax = (int)(Math.floor(Math.min(max, this.max)-eqClass)/mod) * mod;
+        int smallestMin = (int)(Math.ceil(Math.max(min, this.min)/(double)mod) * mod);
+        int largestMax = (int)Math.floor((Math.min(max, this.max)-eqClass)/(double)mod) * mod;
 
         if(largestMax - smallestMin < 0) {
             throw new ConstraintException(this, true);
