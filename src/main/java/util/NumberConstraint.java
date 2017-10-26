@@ -16,7 +16,7 @@ public class NumberConstraint {
         this.min = min;
         this.max = max;
         this.mod = mod;
-        this.eqClass = eqClass;
+        this.eqClass = eqClass % mod;
     }
 
     /**
