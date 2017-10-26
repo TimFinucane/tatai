@@ -42,11 +42,7 @@
       </FlowPane>
       <Region VBox.vgrow="SOMETIMES" />
    </children>
-<<<<<<< HEAD
-</fx:root>
-=======
    <padding>
       <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
    </padding>
 </fx:root>
->>>>>>> master
