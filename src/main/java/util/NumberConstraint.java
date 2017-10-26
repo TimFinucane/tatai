@@ -6,9 +6,21 @@ import java.util.Random;
  * Defines basic constraints on a randomly generatable number.
  */
 public class NumberConstraint {
-    public NumberConstraint() {
-        this(Integer.MIN_VALUE, Integer.MAX_VALUE);
+    /**
+     * Indicates that the current line of questioning cannot produce a result.
+     * The field maybefixable indicates whether there *may* be a configuration of the question that does not produce
+     * an exception.
+     */
+    public class ConstraintException extends Exception {
+        public ConstraintException(NumberConstraint constraint, boolean maybefixable) {
+            this.constraint = constraint;
+            this.maybefixable = maybefixable;
+        }
+
+        public final NumberConstraint   constraint;
+        public final boolean maybefixable;
     }
+
     public NumberConstraint(int min, int max) {
         this(min, max, 1, 0);
     }
@@ -22,9 +34,13 @@ public class NumberConstraint {
     /**
      * Generates a number following all constraints that fits within the given range
      */
-    public int      generate(int min, int max) {
+    public int      generate(int min, int max) throws ConstraintException {
         int smallestMin = (int)(Math.ceil(Math.max(min, this.min)/mod) * mod);
         int largestMax = (int)(Math.floor(Math.min(max, this.max)-eqClass)/mod) * mod;
+
+        if(largestMax - smallestMin < 0) {
+            throw new ConstraintException(this, true);
+        }
 
         return smallestMin + _random.nextInt((largestMax - smallestMin)/ mod + 1) * mod + eqClass;
     }

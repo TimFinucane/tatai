@@ -39,7 +39,7 @@ public class Range extends QuestionPart {
      * Produces a number between the minimum and maximum
      */
     @Override
-    public Pair<String, Integer> generate(NumberConstraint constraint) {
+    public Pair<String, Integer> generate(NumberConstraint constraint) throws NumberConstraint.ConstraintException {
         int answer = constraint.generate(_min.getValue(), _max.getValue());
         return new Pair<>(Integer.toString(answer), answer);
     }

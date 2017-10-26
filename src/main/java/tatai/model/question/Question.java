@@ -41,7 +41,24 @@ public class Question {
     public void             generate() {
         _tries = _maxTries;
 
-        Pair<String, Integer> pair = _question.generate(new NumberConstraint(_min, _max));
+        // Run the generator up to 15 times if we get invalid results. This is for leniency's sake
+        Pair<String, Integer> pair = null;
+
+        int tries = 0;
+        while(tries < 15) {
+            try {
+                pair = _question.generate(new NumberConstraint(_min, _max));
+                break;
+            } catch(NumberConstraint.ConstraintException e) {
+                if(!e.maybefixable)
+                    throw new IllegalStateException("Question is impossible to create!");
+            }
+            tries++;
+        }
+        if(pair == null) {
+            throw new IllegalStateException("Question is impossible to create!");
+        }
+
         _curAnswer = pair.getValue();
         _curText = pair.getKey();
     }

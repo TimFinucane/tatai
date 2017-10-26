@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import tatai.controls.CustomQuestionControl;
+import tatai.model.question.Question;
 import tatai.model.test.TestJson;
 import tatai.model.test.TestParser;
 import tatai.model.user.User;
@@ -167,6 +168,7 @@ public class CreateCustomController extends Controller {
             return;
         }
 
+        // Check whether prerequisites are for real tests
         for(Prerequisite req : _prerequisites) {
             if(!Files.testFile(req.name.getValue()).exists()) {
                 new Alert(Alert.AlertType.ERROR, "Can't have a requisite for the test: " + req.name +
@@ -175,6 +177,17 @@ public class CreateCustomController extends Controller {
             }
             if(req.score.getValue() < 0 || req.times.getValue() < 0) {
                 new Alert(Alert.AlertType.ERROR, "Requisite Scores and Times must be 1 or greater!").show();
+                return;
+            }
+        }
+
+        // Check whether questions generate valid values
+        for(TestJson.Question question : _questions) {
+            try {
+                new Question(question).generate();
+            } catch (IllegalStateException e) {
+                new Alert(Alert.AlertType.ERROR, question.question + " doesn't generate valid questions! " +
+                        "Please modify it before you continue").show();
                 return;
             }
         }

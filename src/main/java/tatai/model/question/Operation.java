@@ -40,7 +40,7 @@ public class Operation extends QuestionPart {
     }
 
     @Override
-    public Pair<String, Integer>    generate(NumberConstraint constraint) {
+    public Pair<String, Integer>    generate(NumberConstraint constraint) throws NumberConstraint.ConstraintException{
         // Choose op to use
         _op = _operators.get((int)(Math.random() * _operators.size()));
 
