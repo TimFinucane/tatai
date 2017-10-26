@@ -48,8 +48,8 @@ public class Operation extends QuestionPart {
         Pair<String, Integer> right = _operands.get(1).generate(_op.chooseRight(constraint));
         Pair<String, Integer> left = _operands.get(0).generate(_op.chooseLeft(constraint, right.getValue()));
 
-        String question = tryEnclose(_operands.get(0), left.getKey()) + _op.symbol +
-                          tryEnclose(_operands.get(1), right.getKey());
+        String question = (_enclosed.get() ? "(" : "") + tryEnclose(_operands.get(0), left.getKey()) + _op.symbol +
+                          tryEnclose(_operands.get(1), right.getKey()) + (_enclosed.get() ? ")" : "");
 
         return new Pair<>(question, _op.apply(left.getValue(), right.getValue()));
     }
