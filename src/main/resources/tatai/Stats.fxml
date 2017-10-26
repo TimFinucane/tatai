@@ -3,22 +3,23 @@
 <?import eu.hansolo.medusa.Gauge?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<fx:root alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" type="VBox" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" type="VBox" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Region minHeight="-Infinity" prefHeight="20.0" prefWidth="200.0" />
-      <Gauge fx:id="gaugeValue" animated="true" animationDuration="500" areaTextVisible="true" lcdFont="ELEKTRA" ledColor="#22A7F0" minHeight="-Infinity" prefHeight="100.0" prefWidth="670.0" skinType="SLIM" title="Average Score" />
-      <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="645.0" spacing="20.0">
+      <Gauge fx:id="gaugeValue" animated="true" animationDuration="500" areaTextVisible="true" lcdFont="ELEKTRA" ledColor="#22A7F0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" skinType="SLIM" title="Average Score" />
+      <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="20.0">
          <children>
-            <VBox fx:id="dateBox" alignment="TOP_CENTER" prefHeight="400.0" prefWidth="393.0" spacing="10.0" HBox.hgrow="SOMETIMES" />
-            <VBox fx:id="scoreBox" alignment="TOP_CENTER" prefHeight="400.0" prefWidth="167.0" spacing="10.0" />
-            <VBox fx:id="progressBox" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="200.0" spacing="21.0" />
+            <VBox fx:id="dateBox" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" />
+            <VBox fx:id="scoreBox" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" />
+            <VBox fx:id="progressBox" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="21.0" />
          </children>
          <VBox.margin>
             <Insets left="10.0" right="10.0" />
          </VBox.margin>
       </HBox>
    </children>
+   <padding>
+      <Insets bottom="10.0" top="10.0" />
+   </padding>
 </fx:root>
