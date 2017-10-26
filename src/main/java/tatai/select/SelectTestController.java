@@ -12,14 +12,17 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.util.Pair;
 import tatai.CreateCustomController;
 import tatai.TestController;
 import tatai.model.test.TestJson;
+import tatai.model.test.TestParser;
 import tatai.model.user.ScoreKeeper;
 import tatai.model.user.User;
 import util.Files;
 import util.Views;
 
+import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Optional;
@@ -106,27 +109,45 @@ public abstract class SelectTestController extends SelectController {
         if(test.prerequisites.length > 0 && user == null)
             return false;
 
+        Pair<Integer, TestJson.Prerequisite> prereqs = countPrerequisites(test);
+
+        // Apply changes based on how close to unlocking the test the user is
+        if(prereqs.getKey() > 1) // Skip it
+            return false;
+        else if(prereqs.getKey() == 1) { // Let them see that they dont have to do much more to get it
+            // Check whether THAT prerequisite has been fulfilled first though
+            try {
+                if(countPrerequisites(TestParser.read(prereqs.getValue().name)).getKey() > 0)
+                    return false;
+            } catch(FileNotFoundException e) { /* Do nothing, pretend we dont have the prerequisite */ }
+
+            button.setOnAction((e) -> {});
+            button.pseudoClassStateChanged(PseudoClass.getPseudoClass("false-disable"), true);
+            button.setTooltip(new Tooltip("You only need to get better on the " + prereqs.getValue().name + " test!"));
+
+        }
+        return true;
+    }
+
+    /**
+     * Counts the number of unfulfilled prerequisites the given test has. If there are more then 0, one
+     * of them will be returned with the pair
+     */
+    private Pair<Integer, TestJson.Prerequisite> countPrerequisites(TestJson test) {
         int prerequisitesUnfulfilled = 0;
         TestJson.Prerequisite lastUnfulfilled = null;
 
         for(TestJson.Prerequisite prerequisite : test.prerequisites) {
             User.Score[] prereqScores = new ScoreKeeper(user, prerequisite.name).getScores();
+            // Check whether the prereq has been completed, and if so
             if(Arrays.stream(prereqScores).filter(score -> score.score >= prerequisite.score).count() <
-                    prerequisite.times) {
-                prerequisitesUnfulfilled++;
-                lastUnfulfilled = prerequisite;
+               prerequisite.times) {
+                    prerequisitesUnfulfilled++;
+                    lastUnfulfilled = prerequisite;
             }
         }
 
-        // Apply changes based on how close to unlocking the test the user is
-        if(prerequisitesUnfulfilled > 1) // Skip it
-            return false;
-        else if(prerequisitesUnfulfilled == 1) { // Let them see that they dont have to do much more to get it
-            button.setOnAction((e) -> {});
-            button.pseudoClassStateChanged(PseudoClass.getPseudoClass("false-disable"), true);
-            button.setTooltip(new Tooltip("You only need to get better on the " + lastUnfulfilled.name + " test!"));
-        }
-        return true;
+        return new Pair<>(prerequisitesUnfulfilled, lastUnfulfilled);
     }
 
     /**
