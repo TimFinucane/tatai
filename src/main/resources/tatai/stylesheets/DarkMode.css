@@ -86,6 +86,10 @@
     -fx-background-color: -medium-indent;
 }
 
+.list-cell:selected, .table-row-cell:selected {
+    -fx-background-color: -mild-outdent;
+}
+
 // Titled panes
 .titled-pane {
     -fx-background-color: transparent;
