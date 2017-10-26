@@ -22,7 +22,7 @@ import java.util.function.Consumer;
  */
 public class Application extends javafx.application.Application implements Sidebar.User {
     public static class Home extends Controller {
-        public Home(String user) {
+        Home(String user) {
             loadFxml("Home");
 
             welcomeLbl.setText("Welcome, " + user + "!");

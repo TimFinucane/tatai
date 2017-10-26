@@ -103,7 +103,7 @@ public class CustomQuestionControl extends TitledPane {
      * Tries to generate question text, and if it fails to will return null
      */
     @Nullable
-    public String           tryGenerateQuestion() {
+    private String           tryGenerateQuestion() {
         int i = 0;
         NumberConstraint.ConstraintException exception;
         do {
