@@ -40,7 +40,7 @@
                         <Label text="Rounds" GridPane.rowIndex="1" />
                         <Spinner fx:id="triesSpinner" editable="true" GridPane.columnIndex="1" />
                         <Spinner fx:id="roundsSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <JFXTextField fx:id="timelimitTxt" promptText="Time Limit" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
+                        <JFXTextField fx:id="timelimitTxt" managed="false" focusTraversable="false" promptText="Time Limit" visible="false" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
                      </children>
                   </GridPane>
                </children>
