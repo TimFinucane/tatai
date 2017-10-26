@@ -20,7 +20,6 @@ public class PlaybackControl extends Region {
 
         getChildren().add(_playbackBtn);
         _playbackBtn.setDisable(true);
-       // _imageView.setPreserveRatio(true);
 
         _playbackBtn.setOnAction((ignored) -> {
             if(!_playing) {
@@ -59,14 +58,6 @@ public class PlaybackControl extends Region {
         stop();
     }
 
-    /**
-     * A special resize function which only takes one parameter that determines both the width and height
-     *  of the icons control.
-     */
-    //public void     resize(double size) {
-  //      _imageView.setFitHeight(size);
-  //  }
-
     // Called when the play button is pressed
     private void play() {
         _player.play();
@@ -80,7 +71,7 @@ public class PlaybackControl extends Region {
         _playing = false;
     }
 
-//    Helper methods to display icons.
+    // Helper methods to display icons.
     private static FontAwesomeIconView setPlay() {
         FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.PLAY);
         icon.setFill(Paint.valueOf("#00e640"));
