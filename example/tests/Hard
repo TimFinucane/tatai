@@ -1,0 +1,1 @@
+{"name":"Hard","author":"","practice":false,"custom":false,"order":7,"prerequisites":[{"name":"Multiplication","score":8,"times":1},{"name":"Division","score":8,"times":1},{"name":"Advanced","score":9,"times":2}],"randomizeQuestions":false,"questions":[{"min":1,"max":99,"rounds":10,"tries":1,"timelimit":-1.0,"question":"(1 to 99) [＋, −, ×, ÷] (1 to 99)"}]}

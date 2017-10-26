@@ -1,0 +1,1 @@
+{"name":"Multiplication","author":"","practice":false,"custom":false,"order":5,"prerequisites":[{"name":"Advanced","score":8,"times":1}],"randomizeQuestions":false,"questions":[{"min":1,"max":50,"rounds":7,"tries":2,"timelimit":-1.0,"question":"(1 to 9) [×] (1 to 9)"},{"min":1,"max":99,"rounds":3,"tries":2,"timelimit":-1.0,"question":"(1 to 9) [×] (1 to 9)"}]}

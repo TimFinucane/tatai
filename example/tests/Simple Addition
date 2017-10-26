@@ -1,0 +1,1 @@
+{"name":"Simple Addition","author":"","practice":false,"custom":false,"order":2,"prerequisites":[{"name":"Simple","score":5,"times":1}],"randomizeQuestions":false,"questions":[{"min":1,"max":9,"rounds":10,"tries":2,"timelimit":-1.0,"question":"(1 to 9) [＋] (1 to 9)"}]}
