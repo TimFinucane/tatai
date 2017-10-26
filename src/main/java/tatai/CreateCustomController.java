@@ -214,7 +214,6 @@ public class CreateCustomController extends Controller {
 
     private void selectQuestion(int next) {
         if(next < 0) {
-            getChildren().remove(_selectedQuestion);
             return;
         }
 
@@ -233,7 +232,7 @@ public class CreateCustomController extends Controller {
     }
     private void addQuestion() {
         _questions.add(new TestJson.Question());
-        selectQuestion(_questions.size() - 1);
+        questionList.getSelectionModel().select(_questions.size() - 1);
     }
     private void deleteQuestion() {
         int index = questionList.getSelectionModel().getSelectedIndex();

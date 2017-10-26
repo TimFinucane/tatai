@@ -79,7 +79,7 @@ public class CustomQuestionControl extends TitledPane {
         _output.unbind();
         _output.bind(Bindings.createObjectBinding(
                 // Create the question info
-                () ->new TestJson.Question(
+                () -> new TestJson.Question(
                         _question.tagProperty().getValue().text,
                         roundsSpinner.getValue(),
                         triesSpinner.getValue(),
