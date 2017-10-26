@@ -204,10 +204,7 @@ public class CustomQuestionControl extends TitledPane {
                 new Alert(Alert.AlertType.ERROR,
                         "Can't remove this or there won't be anything in your question!");
             } else if(_selected instanceof Operation) {
-                QuestionPart newRoot = ((Operation)_selected).operandsProperty().get(0);
-                // Sever connection with new _root. Seems odd, but ensures _root has no parent and is top of structure
-                ((Operation)_selected).replace(0, new Range());
-                switchRoot(newRoot);
+                switchRoot(((Operation)_selected).operandsProperty().get(0));
             }
         } else {
             if(_selected instanceof Range) {
@@ -252,6 +249,9 @@ public class CustomQuestionControl extends TitledPane {
      * Changes the question's root QuestionPart part
      */
     private void            switchRoot(QuestionPart root) {
+        if(root.parent() != null)
+            root.parent().replace(root, new Range()); // Ensures the head we are switching to has no parent
+
         _question.switchHead(root);
         updateFlow();
     }
