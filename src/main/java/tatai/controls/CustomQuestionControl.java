@@ -81,8 +81,8 @@ public class CustomQuestionControl extends TitledPane {
                 // Create the question info
                 () ->new TestJson.Question(
                         _question.tagProperty().getValue().text,
-                        triesSpinner.getValue(),
                         roundsSpinner.getValue(),
+                        triesSpinner.getValue(),
                         timelimitTxt.getText().equals("") ? -1.0 : Double.parseDouble(timelimitTxt.getText()),
                         minSpinner.getValue(),
                         maxSpinner.getValue()),
