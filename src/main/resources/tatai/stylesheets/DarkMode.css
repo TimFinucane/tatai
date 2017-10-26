@@ -129,6 +129,11 @@
     -fx-background-color: white;
 }
 
+// Combo boxes
+.combo-box {
+    -fx-background-color: -heavy-indent;
+}
+
 // Scroll bars
 .scroll-bar {
     -fx-background-color: transparent;
