@@ -3,10 +3,12 @@ package tatai;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import util.Files;
 
@@ -19,6 +21,10 @@ public class LoginController extends Controller {
         loadFxml("Login");
 
         usernameFld.textProperty().addListener((observable, oldVal, newVal) -> onTextChange(newVal));
+        usernameFld.setOnKeyPressed(event -> {
+            if(event.getCode().equals(KeyCode.ENTER))
+                Platform.runLater(this::onSubmit);
+        });
         signInBtn.setOnAction((e) -> onSubmit());
     }
 
