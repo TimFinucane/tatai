@@ -1,5 +1,6 @@
 * {
     -fx-background-radius: 0;
+    -fx-text-fill: black;
 }
 
 .pane, .root {

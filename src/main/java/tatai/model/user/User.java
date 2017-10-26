@@ -17,13 +17,25 @@ import java.util.Date;
  * Tracks user information
  */
 public class User {
-    public static class     Score {
+    public static class     Score implements Comparable<Score>{
         Score(int score) {
             this.score = score;
         }
 
         public int  score;
         public Date date = new Date();
+
+        @Override
+        public int compareTo(Score o) {
+            if(this.score < o.score) {
+                return 1;
+            }
+            if(this.score == o.score) {
+                return 0;
+            }
+            else
+                return -1;
+        }
     }
     static class            TestScores {
         TestScores(String test) {
