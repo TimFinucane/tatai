@@ -2,24 +2,34 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.HBox?>
 
-<VBox alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<HBox alignment="BOTTOM_RIGHT" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#createCustom" prefHeight="55.0" prefWidth="55.0" ripplerFill="#dddddd" text="+Custom">
             <graphic>
                 <FontAwesomeIconView glyphName="PLUS" size="26" />
             </graphic>
+            <tooltip>
+                <Tooltip text="Create a new test" />
+            </tooltip>
         </JFXButton>
-        <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#editCustom" mnemonicParsing="false" prefHeight="55.0" prefWidth="55.0" ripplerFill="#dddddd" text="+Custom">
+        <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#editCustom" prefHeight="55.0" prefWidth="55.0" ripplerFill="#dddddd" text="+Custom">
             <graphic>
                 <FontAwesomeIconView glyphName="EDIT" size="26" strokeType="OUTSIDE" strokeWidth="0.0" />
             </graphic>
+            <tooltip>
+                <Tooltip text="Modify an existing test" />
+            </tooltip>
         </JFXButton>
         <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#deleteCustom" prefHeight="55.0" prefWidth="55.0" ripplerFill="#dddddd" text="-Custom">
             <graphic>
                 <FontAwesomeIconView glyphName="MINUS" size="26" />
             </graphic>
+            <tooltip>
+                <Tooltip text="Delete a custom test" />
+            </tooltip>
         </JFXButton>
     </children>
-</VBox>
+</HBox>

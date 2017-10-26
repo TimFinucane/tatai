@@ -1,8 +1,12 @@
 package tatai;
 
+import com.jfoenix.controls.JFXButton;
+import javafx.application.Platform;
+import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -17,6 +21,18 @@ import java.util.function.Consumer;
  * The top level class of this project. Is controller of the application/initial window
  */
 public class Application extends javafx.application.Application implements Sidebar.User {
+    public static class Home extends Controller {
+        public Home(String user) {
+            loadFxml("Home");
+
+            welcomeLbl.setText("Welcome, " + user + "!");
+            signoutBtn.setOnAction((e) -> Platform.runLater(() -> displayChild(new LoginController(user))));
+        }
+
+        @FXML private Label     welcomeLbl;
+        @FXML private JFXButton signoutBtn;
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -58,8 +74,7 @@ public class Application extends javafx.application.Application implements Sideb
                 }
             });
         } else {
-            _curScreen = null;
-            // TODO: Screen for when already logged in
+            setScreen(new Home(_user.username));
         }
     }
 
@@ -122,6 +137,8 @@ public class Application extends javafx.application.Application implements Sideb
         controller.display(_centre);
         controller.onExit((state) -> {
             onExit.accept(state);
+
+            _curScreen = null;
 
             if(state == Controller.ReturnState.FINISHED)
                 home();

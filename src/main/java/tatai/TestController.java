@@ -7,6 +7,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 import tatai.controls.PlaybackControl;
 import tatai.controls.RecorderControl;
 import tatai.model.question.Question;
@@ -27,13 +28,12 @@ public class TestController extends Controller {
 		_practice = model.practice;
 
 		if(!_practice)
-			for(TestJson.Question q : model.questions)
-				_maxQuestions += q.rounds;
+			_maxQuestions = model.rounds();
 
 	    // Load fxml, set self to act as controller and root
 		loadFxml("Test");
 
-		titleLbl.setStyle("-fx-font-size: " + Integer.toString(TITLE_TEXT_SIZE));
+		titleLbl.setFont(Font.font(TITLE_TEXT_SIZE));
 		titleLbl.setText("Welcome to the " + model.name + " test");
 
 		playbackControl.setVisible(false);
@@ -44,7 +44,7 @@ public class TestController extends Controller {
 
 		submitBtn.setText("Start");
 		submitBtn.setOnAction(e -> {
-			titleLbl.setStyle("-fx-font-size: " + Integer.toString(TITLE_NUMBERS_SIZE));
+			titleLbl.setFont(Font.font(TITLE_NUMBERS_SIZE));
 
 			playbackControl.setVisible(true);
 			recorderControl.setVisible(true);
@@ -175,7 +175,7 @@ public class TestController extends Controller {
 	private void		finish() {
 		questionNumberLbl.setVisible(false);
 
-		titleLbl.setStyle("-fx-font-size: " + Integer.toString(TITLE_TEXT_SIZE));
+        titleLbl.setFont(Font.font(TITLE_TEXT_SIZE));
 		titleLbl.setText(_model.score() + "/10");
 
 		recognitionLbl.setVisible(false);

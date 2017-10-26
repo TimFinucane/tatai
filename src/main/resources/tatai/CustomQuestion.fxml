@@ -2,9 +2,11 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
@@ -12,17 +14,23 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Question" type="TitledPane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="Infinity" maxWidth="Infinity" text="Question" type="TitledPane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
     <content>
-        <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="15.0">
+        <HBox alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" spacing="15.0">
             <children>
-                <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0">
+                <VBox alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" spacing="20.0" HBox.hgrow="ALWAYS">
                     <children>
                         <FlowPane fx:id="textFlow" alignment="CENTER" columnHalignment="CENTER" prefWidth="200.0" />
                         <HBox alignment="CENTER" spacing="15.0">
                             <children>
-                                <JFXButton fx:id="addBtn" mnemonicParsing="false" text="Add Operation" />
-                                <JFXButton fx:id="deleteBtn" mnemonicParsing="false" text="Delete" />
+                                <JFXButton fx:id="addBtn" mnemonicParsing="false" text="Add Operation">
+                                    <tooltip>
+                                        <Tooltip text="Adds an operation, with the selected item and a range as operands" />
+                                    </tooltip></JFXButton>
+                                <JFXButton fx:id="deleteBtn" mnemonicParsing="false" text="Delete">
+                                    <tooltip>
+                                        <Tooltip text="Removes the selected part from the question" />
+                                    </tooltip></JFXButton>
                             </children>
                         </HBox>
                         <GridPane alignment="CENTER" hgap="5.0" vgap="5.0">
@@ -36,20 +44,35 @@
                                 <RowConstraints vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <Label text="Tries" />
-                                <Label text="Rounds" GridPane.rowIndex="1" />
-                                <Spinner fx:id="triesSpinner" editable="true" GridPane.columnIndex="1" />
-                                <Spinner fx:id="roundsSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                <JFXTextField fx:id="timelimitTxt" managed="false" focusTraversable="false" promptText="Time Limit" visible="false" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
+                                <Label text="Tries">
+                                    <tooltip>
+                                        <Tooltip text="The number of tries the user gets at a single question" />
+                                    </tooltip></Label>
+                                <Label text="Rounds" GridPane.rowIndex="1">
+                                    <tooltip>
+                                        <Tooltip text="The number of times this question will be repeated" />
+                                    </tooltip></Label>
+                                <Spinner fx:id="triesSpinner" editable="true" GridPane.columnIndex="1">
+                                    <tooltip>
+                                        <Tooltip text="Can be any value from 1 up to 1000" />
+                                    </tooltip></Spinner>
+                                <Spinner fx:id="roundsSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <tooltip>
+                                        <Tooltip text="Can be any value from 1 up to 1000" />
+                                    </tooltip></Spinner>
+                                <JFXTextField fx:id="timelimitTxt" focusTraversable="false" managed="false" promptText="Time Limit" visible="false" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
                             </children>
                         </GridPane>
                     </children>
                 </VBox>
-                <VBox fx:id="opBox" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="10.0">
+                <VBox fx:id="opBox" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" spacing="10.0">
                     <children>
                         <HBox alignment="CENTER" spacing="10.0">
                             <children>
-                                <JFXButton fx:id="generateBtn" mnemonicParsing="false" text="Generate" />
+                                <JFXButton fx:id="generateBtn" mnemonicParsing="false" text="Generate">
+                                    <tooltip>
+                                        <Tooltip text="Shows a possible query created from the question" />
+                                    </tooltip></JFXButton>
                                 <Label fx:id="generateLbl" alignment="CENTER" contentDisplay="CENTER" />
                             </children>
                         </HBox>
@@ -63,10 +86,22 @@
                                 <RowConstraints vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <Label text="Min" />
-                                <Spinner fx:id="minSpinner" editable="true" GridPane.columnIndex="1" />
-                                <Label text="Max" GridPane.rowIndex="1" />
-                                <Spinner fx:id="maxSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                <Label text="Min">
+                                    <tooltip>
+                                        <Tooltip text="The minimum value the answer can be" />
+                                    </tooltip></Label>
+                                <Spinner fx:id="minSpinner" editable="true" GridPane.columnIndex="1">
+                                    <tooltip>
+                                        <Tooltip text="The minimum answer can be anywhere from 1 to 99" />
+                                    </tooltip></Spinner>
+                                <Label text="Max" GridPane.rowIndex="1">
+                                    <tooltip>
+                                        <Tooltip text="The maximum answer the question can generate" />
+                                    </tooltip></Label>
+                                <Spinner fx:id="maxSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <tooltip>
+                                        <Tooltip text="The maximum answer can be anywhere between 1 to 99" />
+                                    </tooltip></Spinner>
                             </children>
                         </GridPane>
                     </children>
@@ -74,4 +109,7 @@
             </children>
         </HBox>
     </content>
+    <padding>
+        <Insets left="10.0" right="10.0" />
+    </padding>
 </fx:root>

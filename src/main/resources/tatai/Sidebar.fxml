@@ -3,11 +3,12 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<fx:root type="VBox" alignment="CENTER_LEFT" onMouseEntered="#openPane" onMouseExited="#closePane" stylesheets="@stylesheets/Sidebar.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root alignment="CENTER_LEFT" onMouseEntered="#openPane" onMouseExited="#closePane" stylesheets="@stylesheets/Sidebar.css" type="VBox" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <Pane minHeight="-Infinity" minWidth="-Infinity" prefHeight="55.0" prefWidth="55.0" style="-fx-background-color: #22A7F0;" />
         <JFXButton fx:id="homeBtn" contentDisplay="GRAPHIC_ONLY" graphicTextGap="15.0" maxWidth="Infinity" prefHeight="55.0" text="Home">
@@ -19,22 +20,34 @@
             <graphic>
                 <FontAwesomeIconView glyphName="SORT_NUMERIC_ASC" size="26" text="" />
             </graphic>
+         <tooltip>
+            <Tooltip text="Lets you choose from the practice tests" />
+         </tooltip>
         </JFXButton>
         <JFXButton fx:id="testBtn" contentDisplay="GRAPHIC_ONLY" graphicTextGap="15.0" maxWidth="Infinity" prefHeight="55.0" text="Test">
             <graphic>
                 <FontAwesomeIconView glyphName="CALCULATOR" size="26" text="" />
             </graphic>
+         <tooltip>
+            <Tooltip text="Lets you choose a test to run" />
+         </tooltip>
         </JFXButton>
         <JFXButton fx:id="statsBtn" contentDisplay="GRAPHIC_ONLY" graphicTextGap="15.0" maxWidth="Infinity" prefHeight="55.0" text="Statistics">
             <graphic>
                 <FontAwesomeIconView glyphName="LIST_OL" size="26" text="" />
             </graphic>
+         <tooltip>
+            <Tooltip text="Shows statistics about your test performance" />
+         </tooltip>
         </JFXButton>
         <Region maxHeight="Infinity" maxWidth="Infinity" minHeight="0.0" minWidth="0.0" VBox.vgrow="SOMETIMES" />
-        <JFXButton fx:id="infoBtn" style="-fx-alignment: CENTER;" contentDisplay="GRAPHIC_ONLY" maxWidth="Infinity">
+        <JFXButton fx:id="infoBtn" contentDisplay="GRAPHIC_ONLY" maxWidth="Infinity" style="-fx-alignment: CENTER;">
             <graphic>
-                <MaterialDesignIconView glyphName="BRIGHTNESS_4" size="26" text=""/>
+                <MaterialDesignIconView glyphName="BRIGHTNESS_4" size="26" text="" />
             </graphic>
+         <tooltip>
+            <Tooltip text="Choose a theme" />
+         </tooltip>
         </JFXButton>
     </children>
 </fx:root>

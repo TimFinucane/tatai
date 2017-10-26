@@ -1,16 +1,17 @@
 package tatai.select;
 
 import com.jfoenix.controls.JFXButton;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Tooltip;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import tatai.CreateCustomController;
 import tatai.TestController;
 import tatai.model.test.TestJson;
@@ -20,6 +21,7 @@ import util.Files;
 import util.Views;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Optional;
 
 /**
@@ -77,19 +79,26 @@ public abstract class SelectTestController extends SelectController {
     private SelectTestController(User user) {
         super(user, "Choose a test to play"); // Haha
 
-        // Display test additions in bottom right corner
-        Region height = new Region();
-        Region width = new Region();
-
-        HBox bottom = new HBox(0, width, Views.load("select/TestAdditions", this, null));
-        HBox.setHgrow(width, Priority.SOMETIMES);
-
-        getChildren().addAll(height, bottom);
-        setVgrow(height, Priority.SOMETIMES);
+        getChildren().addAll(Views.load("select/TestAdditions", this, null));
     }
 
     @Override
     protected boolean filter(TestJson test, JFXButton button) {
+        if(!filterPrerequisites(test, button))
+            return false;
+
+        if(user != null)
+            applyColourChange(test, button);
+
+        return true;
+    }
+
+    /**
+     * Performs the normal filtering (as in Select.filter) for prerequisites.
+     * If there are too many prerequisites the button isnt displayed. If there's one
+     * prerequisite then it is displayed, but disabled.
+     */
+    private boolean filterPrerequisites(TestJson test, JFXButton button) {
         // Check whether prerequisites have been fulfilled
         if(test.prerequisites == null)
             return true;
@@ -117,8 +126,39 @@ public abstract class SelectTestController extends SelectController {
             button.pseudoClassStateChanged(PseudoClass.getPseudoClass("false-disable"), true);
             button.setTooltip(new Tooltip("You only need to get better on the " + lastUnfulfilled.name + " test!"));
         }
-
         return true;
+    }
+
+    /**
+     * Changes the colour of the test button based on the high score (the better the greener)
+     */
+    private void    applyColourChange(TestJson test, JFXButton button) {
+        // Make the button greener the more high scores they get
+        Optional<Integer> highScore = Arrays.stream(new ScoreKeeper(user, test.name).getScores()).map(score -> score.score).max(Comparator.naturalOrder());
+        double maxScore = (double)test.rounds();
+
+        highScore.ifPresent((Integer score) ->
+                button.textFillProperty().addListener(new ChangeListener<Paint>() {
+                    Color oldVal;
+
+                    @Override
+                    public void changed(ObservableValue<? extends Paint> observable, Paint oldValue, Paint newValue) {
+                        double modGreen = score / maxScore;
+                        double modNorm = 1 - modGreen;
+
+                        Color c = (Color) newValue;
+
+                        Color nextVal = Color.color(
+                                c.getRed() * modNorm,
+                                c.getGreen() * modNorm + modGreen,
+                                c.getRed() * modNorm);
+
+                        if(!newValue.equals(oldVal))
+                            Platform.runLater(() -> button.textFillProperty().setValue(nextVal));
+
+                        oldVal = nextVal;
+                    }
+                }));
     }
 
     /**
@@ -178,9 +218,14 @@ public abstract class SelectTestController extends SelectController {
                         ButtonType.YES, ButtonType.NO)
                         .showAndWait();
 
-                if(type.isPresent() && type.get() == ButtonType.YES)
+                if(type.isPresent() && type.get() == ButtonType.YES) {
                     Files.testFile(json.name).delete();
 
+                    // Remove from users
+                    for(String username : Files.listUsers()) {
+                        new User(username).clear(json.name);
+                    }
+                }
                 exit(ReturnState.FINISHED);
             }
         });
