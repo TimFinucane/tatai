@@ -104,6 +104,18 @@ public class User {
     }
 
     /**
+     * Removes all records of the given test from the user
+     */
+    public void                     clear(String name) {
+        for(int i = 0; i < _testScores.getSize(); i++) {
+            if(_testScores.get(i).test.equals(name)) {
+                _testScores.remove(i);
+                return;
+            }
+        }
+    }
+
+    /**
      * Saves the state of the user
      */
     private void                    save() {

@@ -218,9 +218,14 @@ public abstract class SelectTestController extends SelectController {
                         ButtonType.YES, ButtonType.NO)
                         .showAndWait();
 
-                if(type.isPresent() && type.get() == ButtonType.YES)
+                if(type.isPresent() && type.get() == ButtonType.YES) {
                     Files.testFile(json.name).delete();
 
+                    // Remove from users
+                    for(String username : Files.listUsers()) {
+                        new User(username).clear(json.name);
+                    }
+                }
                 exit(ReturnState.FINISHED);
             }
         });
