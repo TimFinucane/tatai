@@ -14,15 +14,23 @@
 
 .button, .jfx-button {
     -fx-alignment: center;
+    -fx-background-radius: 0;
 }
 
 .label {
     -fx-font-style: italic;
 }
 
+.text-field {
+    -fx-background-color: #2D2D31;
+    -fx-background-radius: 0;
+}
+
+// Tables and lists
 .list-view, .table-view {
     -fx-background-color: transparent;
     -fx-border-color: rgba(255, 255, 255, 0.08);
+    -fx-table-cell-border-color: rgba(255, 255, 255, 0.08);
 }
 
 .table-view .column-header {
@@ -36,4 +44,18 @@
 
 .list-cell:odd, .table-row-cell:odd {
     -fx-background-color: rgba(255, 255, 255, 0.03);
+}
+
+// Titled panes
+.titled-pane {
+    -fx-background-color: transparent;
+}
+
+.titled-pane .content {
+    -fx-background-color: transparent;
+    -fx-border-color: rgba(255, 255, 255, 0.08);
+}
+
+.titled-pane .title {
+    -fx-background-color: rgba(255, 255, 255, 0.08);
 }
