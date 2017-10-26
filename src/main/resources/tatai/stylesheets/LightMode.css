@@ -1,17 +1,45 @@
-.root {
-    -fx-background-color: #DADFE1;
+* {
+    -fx-background-radius: 0;
 }
-.button {
-    -fx-text-fill: #000000;
+
+.pane, .root {
+    -fx-alignment: center;
 }
+
+// General controls
+.button, .jfx-button {
+    -fx-alignment: center;
+    -jfx-rippler-fill: dddddd;
+}
+
+.button:false-disable, .jfx-button:false-disable {
+    -fx-text-fill: gray;
+}
+
+.jfx-button:false-disable .jfx-rippler { -jfx-rippler-fill: transparent; } // Try to disable rippler. Doesn't work :(
+
+.glyph-icon {
+    -fx-size: 26;
+}
+
 .label {
-    -fx-text-fill: #000000;
-    -fx-font-size: 36;
+    -fx-font-style: italic;
 }
-.text-input {
-    -fx-text-fill: #000000;
-    -fx-prompt-text-fill: #000000;
+
+.text-field {
+    -fx-background-radius: 0;
 }
-.jfx-text-field {
-    -jfx-unfocus-color: #000000;
+
+// Flow pane text for custom question control
+.label:flow-text {
+    -fx-background-color: rgba(68, 142, 163, 0.2);
+}
+
+.label:flow-text-odd {
+    -fx-background-color: rgba(162, 68, 68, 0.2);
+}
+
+// Spinners
+.spinner {
+    -fx-border-width: 1;
 }

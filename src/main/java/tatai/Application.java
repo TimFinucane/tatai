@@ -93,11 +93,11 @@ public class Application extends javafx.application.Application implements Sideb
 
         alert.showAndWait().ifPresent(type -> {
             if(type == light) {
-                _scene.getStylesheets().add("/tatai/stylesheets/LightMode.css");
                 _scene.getStylesheets().remove("/tatai/stylesheets/DarkMode.css");
+                _scene.getStylesheets().add("/tatai/stylesheets/LightMode.css");
             } else if(type == dark) {
-                _scene.getStylesheets().add("/tatai/stylesheets/DarkMode.css");
                 _scene.getStylesheets().remove("/tatai/stylesheets/LightMode.css");
+                _scene.getStylesheets().add("/tatai/stylesheets/DarkMode.css");
             }
         });
     }
