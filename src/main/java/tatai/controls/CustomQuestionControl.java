@@ -7,7 +7,6 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -20,6 +19,7 @@ import tatai.model.test.TestJson;
 import util.NumberConstraint;
 import util.Views;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 
 import static util.SpinnerFixes.assign;
@@ -97,6 +97,24 @@ public class CustomQuestionControl extends TitledPane {
     }
     public ObjectProperty<TestJson.Question>    outputProperty() {
         return _output;
+    }
+
+    /**
+     * Tries to generate question text, and if it fails to will return null
+     */
+    @Nullable
+    public String           tryGenerateQuestion() {
+        int i = 0;
+        NumberConstraint.ConstraintException exception;
+        do {
+            try {
+                return _question.head().generate(new NumberConstraint(minSpinner.getValue(), maxSpinner.getValue())).getKey();
+            } catch(NumberConstraint.ConstraintException e) {
+                exception = e;
+            }
+            i++;
+        } while(i < 5 && exception.maybefixable);
+        return null; // Indicates error
     }
 
     /**
@@ -204,10 +222,7 @@ public class CustomQuestionControl extends TitledPane {
                 new Alert(Alert.AlertType.ERROR,
                         "Can't remove this or there won't be anything in your question!");
             } else if(_selected instanceof Operation) {
-                QuestionPart newRoot = ((Operation)_selected).operandsProperty().get(0);
-                // Sever connection with new _root. Seems odd, but ensures _root has no parent and is top of structure
-                ((Operation)_selected).replace(0, new Range());
-                switchRoot(newRoot);
+                switchRoot(((Operation)_selected).operandsProperty().get(0));
             }
         } else {
             if(_selected instanceof Range) {
@@ -243,15 +258,20 @@ public class CustomQuestionControl extends TitledPane {
      * Generates an example question for the user
      */
     private void            generate() {
-        generateLbl.setText(_question.head().generate(
-                new NumberConstraint(minSpinner.getValue(), maxSpinner.getValue())
-        ).getKey());
+        String text = tryGenerateQuestion();
+        if(text == null)
+            generateLbl.setText("Impossible!");
+        else
+            generateLbl.setText(text);
     }
 
     /**
      * Changes the question's root QuestionPart part
      */
     private void            switchRoot(QuestionPart root) {
+        if(root.parent() != null)
+            root.parent().replace(root, new Range()); // Ensures the head we are switching to has no parent
+
         _question.switchHead(root);
         updateFlow();
     }
@@ -263,10 +283,7 @@ public class CustomQuestionControl extends TitledPane {
         return tag.getValue() + tag.getKey().text.length();
     }
 
-    private ChangeListener<QuestionPart.Tag> _tagListener = (ObservableValue<? extends QuestionPart.Tag> obs,
-                                                             QuestionPart.Tag oldTag,
-                                                             QuestionPart.Tag newTag) ->
-                                                                updateFlow();
+    private ChangeListener<QuestionPart.Tag> _tagListener = (obs, oldTag, newTag) -> updateFlow();
     private ObjectProperty<TestJson.Question> _output = new SimpleObjectProperty<>();
 
     private QuestionPart _selected;

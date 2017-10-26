@@ -19,24 +19,24 @@ class RangeControl extends TitledPane {
         main.setHgap(5);
         main.setAlignment(Pos.CENTER);
 
-        _minFld = new Spinner<>(1, 99, range.minProperty().get());
-        _maxFld = new Spinner<>(1, 99, range.maxProperty().get());
-        _minFld.setEditable(true);
-        _maxFld.setEditable(true);
+        Spinner<Integer> minFld = new Spinner<>(1, 99, range.minProperty().get());
+        Spinner<Integer> maxFld = new Spinner<>(1, 99, range.maxProperty().get());
+        SpinnerFixes.fix(minFld);
+        SpinnerFixes.fix(maxFld);
+        minFld.setEditable(true);
+        maxFld.setEditable(true);
 
         main.add(new Label("Min"), 0, 0);
         main.add(new Label("Max"), 0, 1);
-        main.add(_minFld, 1, 0);
-        main.add(_maxFld, 1, 1);
+        main.add(minFld, 1, 0);
+        main.add(maxFld, 1, 1);
 
         setContent(main);
 
-        range.minProperty().bind(_minFld.valueProperty());
-        range.maxProperty().bind(_maxFld.valueProperty());
+        range.minProperty().bind(minFld.valueProperty());
+        range.maxProperty().bind(maxFld.valueProperty());
 
-        SpinnerFixes.tieMinMax(_minFld, _maxFld);
+        SpinnerFixes.tieMinMax(minFld, maxFld);
     }
 
-    private Spinner<Integer> _minFld;
-    private Spinner<Integer> _maxFld;
 }

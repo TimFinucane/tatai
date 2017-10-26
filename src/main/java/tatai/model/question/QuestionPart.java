@@ -40,7 +40,7 @@ public abstract class QuestionPart {
     public Operation                        parent() {
         return parent;
     }
-    public abstract Pair<String, Integer>   generate(NumberConstraint number);
+    public abstract Pair<String, Integer>   generate(NumberConstraint number) throws NumberConstraint.ConstraintException;
 
     Operation                   parent = null;
     private Property<Tag>       tag = new SimpleObjectProperty<>();
