@@ -4,7 +4,6 @@ import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.paint.Paint;
 import tatai.Controller;
 import tatai.model.test.TestJson;
 import tatai.model.test.TestParser;
@@ -53,8 +52,6 @@ public abstract class SelectController extends Controller {
             }
 
             JFXButton button = new JFXButton(testName);
-            button.setRipplerFill(Paint.valueOf("dddddd"));
-            button.setTextFill(Paint.valueOf("ffffff"));
 
             button.setOnAction(e -> buttonPressed(info));
 

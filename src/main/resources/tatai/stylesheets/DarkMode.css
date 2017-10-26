@@ -1,10 +1,6 @@
 .root * {
     -fx-text-fill: white;
-}
-
-.glyph-icon {
-    -fx-fill: white;
-    -fx-size: 26;
+    -fx-background-radius: 0;
 }
 
 .pane, .root {
@@ -12,9 +8,19 @@
     -fx-alignment: center;
 }
 
+// General controls
 .button, .jfx-button {
     -fx-alignment: center;
-    -fx-background-radius: 0;
+    -jfx-rippler-fill: dddddd;
+}
+.button:false-disable, .jfx-button:false-disable {
+    -fx-text-fill: gray;
+}
+.jfx-button:false-disable .jfx-rippler { -jfx-rippler-fill: transparent; } // Try to disable rippler. Doesn't work :(
+
+.glyph-icon {
+    -fx-fill: white;
+    -fx-size: 26;
 }
 
 .label {
@@ -57,5 +63,26 @@
 }
 
 .titled-pane .title {
+    -fx-background-color: rgba(255, 255, 255, 0.08);
+}
+
+.titled-pane .arrow-button .arrow {
+    -fx-background-color: rgba(255, 255, 255, 0.08);
+}
+
+// Spinners
+.spinner {
+    -fx-background-color: transparent;
+    -fx-border-color: rgba(255, 255, 255, 0.08);
+    -fx-border-width: 1;
+}
+
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+    -fx-background-color: rgba(0, 0, 0, 0.02);
+}
+
+.spinner .increment-arrow,
+.spinner .decrement-arrow {
     -fx-background-color: rgba(255, 255, 255, 0.08);
 }
