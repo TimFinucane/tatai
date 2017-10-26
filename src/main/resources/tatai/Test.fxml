@@ -8,7 +8,7 @@
 <?import tatai.controls.PlaybackControl?>
 <?import tatai.controls.RecorderControl?>
 
-<fx:root type="VBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="15.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="15.0" type="VBox" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="titleLbl" textFill="WHITE">
          <font>
@@ -40,6 +40,7 @@
       <Label fx:id="questionNumberLbl">
          <font>
             <Font size="18.0" />
-         </font></Label>
+         </font>
+      </Label>
    </children>
 </fx:root>
