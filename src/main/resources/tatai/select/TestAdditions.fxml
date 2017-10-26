@@ -11,11 +11,11 @@
                 <FontAwesomeIconView glyphName="PLUS" size="26" />
             </graphic>
         </JFXButton>
-      <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#editCustom" mnemonicParsing="false" prefHeight="55.0" prefWidth="55.0" ripplerFill="#dddddd" text="+Custom">
-         <graphic>
-            <FontAwesomeIconView glyphName="EDIT" size="26" strokeType="OUTSIDE" strokeWidth="0.0" />
-         </graphic>
-      </JFXButton>
+        <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#editCustom" mnemonicParsing="false" prefHeight="55.0" prefWidth="55.0" ripplerFill="#dddddd" text="+Custom">
+            <graphic>
+                <FontAwesomeIconView glyphName="EDIT" size="26" strokeType="OUTSIDE" strokeWidth="0.0" />
+            </graphic>
+        </JFXButton>
         <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#deleteCustom" prefHeight="55.0" prefWidth="55.0" ripplerFill="#dddddd" text="-Custom">
             <graphic>
                 <FontAwesomeIconView glyphName="MINUS" size="26" />

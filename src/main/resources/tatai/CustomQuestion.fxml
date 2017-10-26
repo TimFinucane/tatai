@@ -12,66 +12,66 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #ffffff;" text="Question" type="TitledPane" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
-   <content>
-      <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="15.0" style="-fx-background-color: #ffffff;">
-         <children>
-            <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0" style="-fx-background-color: #ffffff;">
-               <children>
-                  <FlowPane fx:id="textFlow" alignment="CENTER" columnHalignment="CENTER" prefWidth="200.0" />
-                  <HBox alignment="CENTER" spacing="15.0" style="-fx-background-color: #ffffff;">
-                     <children>
-                        <JFXButton fx:id="addBtn" mnemonicParsing="false" style="-fx-background-color: #0084b4;" text="Add Operation" textFill="WHITE" />
-                        <JFXButton fx:id="deleteBtn" mnemonicParsing="false" style="-fx-background-color: #0084b4;" text="Delete" textFill="WHITE" />
-                     </children>
-                  </HBox>
-                  <GridPane alignment="CENTER" hgap="5.0" style="-fx-background-color: #ffffff;" vgap="5.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" />
-                      <ColumnConstraints hgrow="SOMETIMES" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints vgrow="SOMETIMES" />
-                      <RowConstraints vgrow="SOMETIMES" />
-                      <RowConstraints vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <Label text="Tries" />
-                        <Label text="Rounds" GridPane.rowIndex="1" />
-                        <Spinner fx:id="triesSpinner" editable="true" GridPane.columnIndex="1" />
-                        <Spinner fx:id="roundsSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <JFXTextField fx:id="timelimitTxt" promptText="Time Limit" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
-                     </children>
-                  </GridPane>
-               </children>
-            </VBox>
-            <VBox fx:id="opBox" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="10.0" style="-fx-background-color: #ffffff;">
-               <children>
-                  <HBox alignment="CENTER" spacing="10.0" style="-fx-background-color: #ffffff;">
-                     <children>
-                        <JFXButton fx:id="generateBtn" mnemonicParsing="false" style="-fx-background-color: #0084b4;" text="Generate" textFill="WHITE" />
-                        <Label fx:id="generateLbl" alignment="CENTER" contentDisplay="CENTER" />
-                     </children>
-                  </HBox>
-                  <GridPane alignment="CENTER" hgap="5.0" style="-fx-background-color: #ffffff;" vgap="5.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" />
-                      <ColumnConstraints hgrow="SOMETIMES" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints vgrow="SOMETIMES" />
-                      <RowConstraints vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <Label text="Min" />
-                        <Spinner fx:id="minSpinner" editable="true" GridPane.columnIndex="1" />
-                        <Label text="Max" GridPane.rowIndex="1" />
-                        <Spinner fx:id="maxSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                     </children>
-                  </GridPane>
-               </children>
-            </VBox>
-         </children>
-      </HBox>
-   </content>
+<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Question" type="TitledPane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+    <content>
+        <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="15.0">
+            <children>
+                <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0">
+                    <children>
+                        <FlowPane fx:id="textFlow" alignment="CENTER" columnHalignment="CENTER" prefWidth="200.0" />
+                        <HBox alignment="CENTER" spacing="15.0">
+                            <children>
+                                <JFXButton fx:id="addBtn" mnemonicParsing="false" text="Add Operation" />
+                                <JFXButton fx:id="deleteBtn" mnemonicParsing="false" text="Delete" />
+                            </children>
+                        </HBox>
+                        <GridPane alignment="CENTER" hgap="5.0" vgap="5.0">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" />
+                                <ColumnConstraints hgrow="SOMETIMES" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints vgrow="SOMETIMES" />
+                                <RowConstraints vgrow="SOMETIMES" />
+                                <RowConstraints vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                                <Label text="Tries" />
+                                <Label text="Rounds" GridPane.rowIndex="1" />
+                                <Spinner fx:id="triesSpinner" editable="true" GridPane.columnIndex="1" />
+                                <Spinner fx:id="roundsSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                <JFXTextField fx:id="timelimitTxt" promptText="Time Limit" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
+                            </children>
+                        </GridPane>
+                    </children>
+                </VBox>
+                <VBox fx:id="opBox" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="10.0">
+                    <children>
+                        <HBox alignment="CENTER" spacing="10.0">
+                            <children>
+                                <JFXButton fx:id="generateBtn" mnemonicParsing="false" text="Generate" />
+                                <Label fx:id="generateLbl" alignment="CENTER" contentDisplay="CENTER" />
+                            </children>
+                        </HBox>
+                        <GridPane alignment="CENTER" hgap="5.0" vgap="5.0">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" />
+                                <ColumnConstraints hgrow="SOMETIMES" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints vgrow="SOMETIMES" />
+                                <RowConstraints vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                                <Label text="Min" />
+                                <Spinner fx:id="minSpinner" editable="true" GridPane.columnIndex="1" />
+                                <Label text="Max" GridPane.rowIndex="1" />
+                                <Spinner fx:id="maxSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                            </children>
+                        </GridPane>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </content>
 </fx:root>

@@ -55,7 +55,6 @@ public abstract class SelectController extends Controller {
             JFXButton button = new JFXButton(testName);
             button.setRipplerFill(Paint.valueOf("dddddd"));
             button.setTextFill(Paint.valueOf("000000"));
-            button.setStyle("-fx-background-color: #00aced");
 
             button.setOnAction(e -> buttonPressed(info));
 

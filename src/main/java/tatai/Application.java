@@ -31,14 +31,10 @@ public class Application extends javafx.application.Application implements Sideb
         pane.setLeft(_sidebar);
         pane.setCenter(_centre);
 
-<<<<<<< HEAD
-        stage.setScene(new Scene(pane, 700, 400));
-=======
         _scene = new Scene(pane, 600, 400);
         _scene.getStylesheets().add("/tatai/stylesheets/DarkMode.css");
 
         stage.setScene(_scene);
->>>>>>> ui-revamp
 
         stage.setTitle(APP_NAME);
         stage.show();
