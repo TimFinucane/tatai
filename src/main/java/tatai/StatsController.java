@@ -20,23 +20,30 @@ public class StatsController extends Controller {
         _test = test;
         _scores = scoreKeeper.getScores();
 
-        dateBox.getChildren().add(new Label("Date"));
-        scoreBox.getChildren().add(new Label("Score"));
-        progressBox.getChildren().add(new Label("Result"));
         displayScores();
-
     }
 
+    /**
+     * This method creates the score labels to be displayed.
+     */
     private void displayScores() {
+
+        // Gets the number of rounds in the selected test.
         int maxQuestions = 0;
         for(TestJson.Question q : _test.questions)
             maxQuestions += q.rounds;
 
+        dateBox.getChildren().add(new Label("Date"));
+        scoreBox.getChildren().add(new Label("Score /" + maxQuestions ));
+        progressBox.getChildren().add(new Label("Result"));
+
+        // Creates labels to show the user their score
         double average = 0.0;
         int i;
         int min = _scores[0].score;
         int max = _scores[0].score;
         for(i = 0; i < _scores.length; i++) {
+
             Label score = new Label(Integer.toString(_scores[i].score) );
             Label date = new Label(_scores[i].date.toString());
 
@@ -52,7 +59,7 @@ public class StatsController extends Controller {
             if(_scores[i].score <= min)
                 min = _scores[i].score;
 
-            average += ((_scores[i].score)*1000)/1000;
+            average += ((_scores[i].score)*1000)/1000; // Simple way to display 2dp.
         }
         average /= i;
 

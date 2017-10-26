@@ -52,11 +52,6 @@ public abstract class SelectController extends Controller {
             }
 
             JFXButton button = new JFXButton(testName);
-<<<<<<< HEAD
-            button.setRipplerFill(Paint.valueOf("dddddd"));
-            button.setTextFill(Paint.valueOf("000000"));
-=======
->>>>>>> ui-revamp
 
             button.setOnAction(e -> buttonPressed(info));
 
