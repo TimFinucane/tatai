@@ -10,6 +10,8 @@ import tatai.model.test.TestJson;
 import tatai.model.user.ScoreKeeper;
 import tatai.model.user.User;
 
+import java.util.Arrays;
+
 /**
  * Class which displays the scores for the current test selected
  */
@@ -19,6 +21,7 @@ public class StatsController extends Controller {
         loadFxml("Stats");
         _test = test;
         _scores = scoreKeeper.getScores();
+        Arrays.sort(_scores);
 
         displayScores();
     }
