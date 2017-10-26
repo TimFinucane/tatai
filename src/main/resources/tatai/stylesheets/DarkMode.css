@@ -19,3 +19,21 @@
 .label {
     -fx-font-style: italic;
 }
+
+.list-view, .table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: rgba(255, 255, 255, 0.08);
+}
+
+.table-view .column-header {
+    -fx-background-color: #2D2D31;
+}
+
+.list-cell, .table-row-cell {
+    -fx-cell-hover-color: rgba(0, 0, 0, 0.02);
+    -fx-background-color: rgba(255, 255, 255, 0.01);
+}
+
+.list-cell:odd, .table-row-cell:odd {
+    -fx-background-color: rgba(255, 255, 255, 0.03);
+}
