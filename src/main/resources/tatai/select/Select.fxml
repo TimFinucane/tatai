@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -13,6 +15,7 @@
             <Font size="36.0" />
          </font>
       </Label>
+      <Region VBox.vgrow="SOMETIMES" />
       <FlowPane fx:id="flowPane" alignment="CENTER" columnHalignment="CENTER" hgap="30.0" vgap="30.0">
          <children>
             <JFXButton fx:id="_btnEasy" alignment="CENTER" contentDisplay="TEXT_ONLY" prefWidth="150.0" text="Easy" textAlignment="CENTER">
@@ -37,5 +40,9 @@
             </JFXButton>
          </children>
       </FlowPane>
+      <Region VBox.vgrow="SOMETIMES" />
    </children>
+   <padding>
+      <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+   </padding>
 </fx:root>

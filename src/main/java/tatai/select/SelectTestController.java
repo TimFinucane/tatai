@@ -10,9 +10,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Tooltip;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import tatai.CreateCustomController;
@@ -82,15 +79,7 @@ public abstract class SelectTestController extends SelectController {
     private SelectTestController(User user) {
         super(user, "Choose a test to play"); // Haha
 
-        // Display test additions in bottom right corner
-        Region height = new Region();
-        Region width = new Region();
-
-        HBox bottom = new HBox(0, width, Views.load("select/TestAdditions", this, null));
-        HBox.setHgrow(width, Priority.SOMETIMES);
-
-        getChildren().addAll(height, bottom);
-        setVgrow(height, Priority.SOMETIMES);
+        getChildren().addAll(Views.load("select/TestAdditions", this, null));
     }
 
     @Override

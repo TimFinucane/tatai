@@ -3,10 +3,10 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.Tooltip?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 
-<VBox alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
-    <children>
+<HBox alignment="BOTTOM_RIGHT" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
         <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#createCustom" prefHeight="55.0" prefWidth="55.0" ripplerFill="#dddddd" text="+Custom">
             <graphic>
                 <FontAwesomeIconView glyphName="PLUS" size="26" />
@@ -31,5 +31,5 @@
             <Tooltip text="Delete a custom test" />
          </tooltip>
         </JFXButton>
-    </children>
-</VBox>
+   </children>
+</HBox>
