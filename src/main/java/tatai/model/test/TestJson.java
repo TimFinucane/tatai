@@ -48,6 +48,14 @@ public class TestJson {
         public int      times;
     }
 
+    public int              rounds() {
+        int sum = 0;
+        for(Question question : questions)
+            sum += question.rounds;
+
+        return sum;
+    }
+
     public String           name;
     public String           author = "";
 
