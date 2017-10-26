@@ -17,16 +17,10 @@ public class StatsController extends Controller {
         loadFxml("Stats");
         _scores = scoreKeeper.getScores();
 
-        titleLbl.setText("Statistics for ");
+        dateBox.getChildren().add(new Label("Date"));
+        scoreBox.getChildren().add(new Label("Score"));
+        displayScores();
 
-
-        if(_scores.length > 0) {
-            dateBox.getChildren().add(new Label("Date"));
-            scoreBox.getChildren().add(new Label("Score"));
-            displayScores();
-        }
-        else
-            titleLbl.setText("You have not completed any tests yet!");
     }
 
     private void displayScores() {
@@ -65,5 +59,4 @@ public class StatsController extends Controller {
     @FXML private VBox      dateBox;
     @FXML private VBox      scoreBox;
     @FXML private VBox      progressBox;
-    @FXML private Label     titleLbl;
 }
