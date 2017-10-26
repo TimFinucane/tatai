@@ -98,7 +98,8 @@ public abstract class SelectTestController extends SelectController {
         if(!filterPrerequisites(test, button))
             return false;
 
-        applyColourChange(test, button);
+        if(user != null)
+            applyColourChange(test, button);
 
         return true;
     }
