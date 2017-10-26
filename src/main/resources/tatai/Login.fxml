@@ -4,11 +4,12 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<fx:root type="VBox" alignment="CENTER" spacing="50.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root alignment="CENTER" spacing="50.0" type="VBox" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <Label fx:id="loginLbl" minHeight="-Infinity" minWidth="-Infinity" text="Sign in">
             <font>
@@ -21,8 +22,11 @@
                  <font>
                      <Font size="20.0" />
                  </font>
+               <tooltip>
+                  <Tooltip text="Red indicator means invalid, green means valid, and blue is existing user" />
+               </tooltip>
              </JFXTextField>
-             <FontAwesomeIconView fx:id="indicatorIcon" glyphName="CIRCLE" size="12"/>
+             <FontAwesomeIconView fx:id="indicatorIcon" glyphName="CIRCLE" size="12" />
          </children>
       </HBox>
         <JFXButton fx:id="signInBtn" buttonType="RAISED" text="Next">

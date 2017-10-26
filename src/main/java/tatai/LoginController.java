@@ -58,7 +58,10 @@ public class LoginController extends Controller {
 
     private void    onTextChange(String newText) {
         if(validate(newText))
-            indicatorIcon.setFill(Color.GREEN);
+            if(Files.listUsers().contains(newText))
+                indicatorIcon.setFill(Color.BLUE);
+            else
+                indicatorIcon.setFill(Color.GREEN);
         else
             indicatorIcon.setFill(Color.RED);
     }
