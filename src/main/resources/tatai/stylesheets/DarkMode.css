@@ -46,6 +46,15 @@
     -fx-background-radius: 0;
 }
 
+// Flow pane text for custom question control
+.label:flow-text {
+    -fx-background-color: rgba(68, 142, 163, 0.2);
+}
+
+.label:flow-text-odd {
+    -fx-background-color: rgba(162, 68, 68, 0.2);
+}
+
 // Tables and lists
 .list-view, .table-view {
     -fx-background-color: transparent;
