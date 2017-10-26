@@ -1,6 +1,7 @@
 package tatai.select;
 
 import com.jfoenix.controls.JFXButton;
+import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
@@ -51,6 +52,7 @@ public abstract class SelectController extends Controller {
             }
 
             JFXButton button = new JFXButton(testName);
+            button.pseudoClassStateChanged(PseudoClass.getPseudoClass("select-button"), true);
 
             button.setOnAction(e -> buttonPressed(info));
 

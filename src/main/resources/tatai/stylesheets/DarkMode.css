@@ -57,6 +57,10 @@
     -fx-fill: #f03434;
 }
 
+.button:select-button {
+    -fx-font-size: 18;
+}
+
 // Flow pane text for custom question control
 .label:flow-text {
     -fx-background-color: rgba(68, 142, 163, 0.2);
