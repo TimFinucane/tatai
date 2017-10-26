@@ -87,7 +87,7 @@ public abstract class SelectController extends Controller {
         basic.questions[0] = new TestJson.Question();
         basic.questions[0].rounds = 10;
         basic.questions[0].tries = 2;
-        basic.questions[0].question = "(1 to 9) [+] (1 to 9)";
+        basic.questions[0].question = "(1 to 9) [\uFF0B] (1 to 9)";
         basic.questions[0].min = 1;
         basic.questions[0].max = 9;
 
