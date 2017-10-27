@@ -137,6 +137,9 @@ public abstract class SelectTestController extends SelectController {
         int prerequisitesUnfulfilled = 0;
         TestJson.Prerequisite lastUnfulfilled = null;
 
+        if(test.prerequisites == null)
+            return new Pair<>(prerequisitesUnfulfilled, lastUnfulfilled);
+
         for(TestJson.Prerequisite prerequisite : test.prerequisites) {
             User.Score[] prereqScores = new ScoreKeeper(user, prerequisite.name).getScores();
             // Check whether the prereq has been completed, and if so
