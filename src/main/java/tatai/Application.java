@@ -19,6 +19,7 @@ import java.util.function.Consumer;
 
 /**
  * The top level class of this project. Is controller of the application/initial window
+ * Group Members: Andrew Fairweather and Timothy Finucane
  */
 public class Application extends javafx.application.Application implements Sidebar.User {
     public static class Home extends Controller {
