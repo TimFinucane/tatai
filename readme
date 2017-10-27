@@ -4,5 +4,7 @@ Building: (Only necessary if you downloaded from a repo)
 	To build, run gradlew with the command build. Output is placed in the bin folder.
 	
 Running:
-	In the current version, there are two tests and two practices. These can be accessed from the
-	side bar. Currently no in-app way of creating custom tests exists, and stats are being reworked.
+	Use the command java -jar tatai-1.2.jar The application is located in the bin folder.
+
+	In the current version, there are three tests and two practices. These can be accessed from the
+	side bar. See the user manual for detailed instructions.
